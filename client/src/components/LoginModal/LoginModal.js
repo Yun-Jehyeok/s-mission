@@ -114,9 +114,9 @@ function LoginModal({ buttonType }) {
             <div style={{ textAlign: 'center' }}>
               <span>Not a Member?&nbsp;&nbsp;</span>
               <span>
-                <Link to="/user/signup" onClick={handleSignInCancel}>
+                <a href="/user/signup" onClick={handleSignInCancel}>
                   Sign Up
-                </Link>
+                </a>
               </span>
             </div>
           </Form>
