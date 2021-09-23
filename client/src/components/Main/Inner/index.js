@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // antd
-import { Avatar, Card } from 'antd';
+import { Card, Divider, List } from 'antd';
 
 // style
 import {
@@ -15,8 +15,17 @@ import {
 // component
 import LoginModal from 'components/LoginModal/LoginModal';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const { Meta } = Card;
+
+const data = [
+  '1st Side Project',
+  '2nd Side Project',
+  '3rd Side Project',
+  '4th Side Project',
+  '5th Side Project',
+];
 
 function Inner() {
   const [FirstButton, setFirstButton] = useState('primary');
@@ -38,6 +47,8 @@ function Inner() {
       setThirdButton('primary');
     }
   };
+
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   return (
     <InnerContainer>
@@ -95,8 +106,24 @@ function Inner() {
       </div>
 
       <AsideBox>
-        <div>회원 정보가 들어갈 공간입니다.</div>
-        <LoginModal buttonType="primary" />
+        {isAuthenticated ? (
+          <div style={{ paddingLeft: '32px' }}>
+            <Divider orientation="center" style={{ marginTop: '0' }}>
+              My Side Projects
+            </Divider>
+            <List
+              size="small"
+              bordered
+              dataSource={data}
+              renderItem={(item) => <List.Item>{item}</List.Item>}
+            />
+          </div>
+        ) : (
+          <div style={{ paddingTop: '133px' }}>
+            <div>로그인이 필요합니다.</div>
+            <LoginModal buttonType="primary" />
+          </div>
+        )}
       </AsideBox>
     </InnerContainer>
   );

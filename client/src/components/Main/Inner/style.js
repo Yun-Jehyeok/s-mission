@@ -43,11 +43,9 @@ export const CardContent = styled(Card)`
 export const AsideBox = styled.div`
   width: 30%;
   border-left: 1px solid #eaedf4;
-  padding: 32px;
   text-align: center;
-  padding-top: 140px;
 
-  & > div {
+  & > div > div {
     margin-bottom: 16px;
   }
 `;

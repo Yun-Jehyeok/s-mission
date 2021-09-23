@@ -43,7 +43,7 @@ function Footer() {
           </div>
         </FooterBody>
         <FooterBottom>
-          Copyright &copy; Logo Since 2021. All rights reserved.
+          Copyright &copy; S-Mission Since 2021. All rights reserved.
         </FooterBottom>
       </FooterWrap>
     </FooterContainer>

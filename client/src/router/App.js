@@ -9,6 +9,8 @@ import Main from 'pages/Main/index';
 import SignUp from 'pages/SignUp/index';
 import PlaceDetail from 'pages/PlaceDetail';
 import MyPage from 'pages/MyPage';
+import ProjectList from 'pages/ProjectList';
+import ProjectManager from 'pages/ProjectManager';
 
 // components
 import Navbar from 'components/Navbar';
@@ -28,6 +30,9 @@ function App() {
 
         <Route path="/user/signup" exact component={SignUp} />
         <Route path="/user/mypage/:id" exact component={MyPage} />
+        <Route path="/user/project/:id" exact component={ProjectManager} />
+
+        <Route path="/project" exact component={ProjectList} />
 
         <Route path="/place/:id" exact component={PlaceDetail} />
       </Switch>

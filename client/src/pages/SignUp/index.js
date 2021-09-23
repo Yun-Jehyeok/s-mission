@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { registerAction } from 'redux/actions/user_actions';
+import LogoImg from 'components/Navbar/logo.png';
 
 // antd
 import { Button, Form, Input } from 'antd';
@@ -47,7 +48,9 @@ function SignUp() {
       <Wrap>
         <FormContainer>
           <div>
-            <a href="/">Logo Logo</a>
+            <a href="/">
+              <img src={LogoImg} style={{ width: '64px', height: '64px' }} />
+            </a>
           </div>
           <Form onSubmit={onSubmit}>
             <Form.Item label="NAME">

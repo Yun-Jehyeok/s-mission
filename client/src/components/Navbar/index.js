@@ -101,7 +101,7 @@ function Navbar() {
           </div>
         </MenuContainer>
         <SearchInput />
-        <LoginModal buttonType="link" />
+        <LoginModal buttonType="default" />
         {isAuthenticated ? (
           <a href="/user/mypage">
             <Button type="primary">My Page</Button>
