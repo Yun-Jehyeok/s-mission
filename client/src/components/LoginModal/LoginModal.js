@@ -26,6 +26,8 @@ function LoginModal({ buttonType }) {
     password: '',
   });
 
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
 
   const onChange = (e) => {
@@ -44,6 +46,7 @@ function LoginModal({ buttonType }) {
       const user = { email, password };
 
       dispatch(loginAction(user));
+      setSignInVisible(false);
     },
     [form, dispatch],
   );
@@ -59,9 +62,13 @@ function LoginModal({ buttonType }) {
 
   return (
     <div>
-      <Button onClick={showSignInModal} type={buttonType}>
-        Sign In
-      </Button>
+      {isAuthenticated ? (
+        <Button onClick={onLogoutClick}>Logout</Button>
+      ) : (
+        <Button onClick={showSignInModal} type={buttonType}>
+          Sign In
+        </Button>
+      )}
       <Modal visible={signInVisible} onCancel={handleSignInCancel} footer="">
         <h2 style={{ marginBottom: '32px' }}>SIGN IN</h2>
         <div>

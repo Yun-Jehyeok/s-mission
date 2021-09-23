@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import LogoImg from './logo.png';
 
 // antd
 import { Menu, Dropdown, Button } from 'antd';
@@ -11,6 +11,7 @@ import { Logo, MenuContainer, MenuBox, NavbarContainer, Wrap } from './style';
 // component
 import LoginModal from 'components/LoginModal/LoginModal';
 import SearchInput from 'components/SearchInput';
+import { useSelector } from 'react-redux';
 
 const menu = (
   <MenuBox style={{ paddingLeft: '32px' }}>
@@ -46,10 +47,14 @@ const menu = (
 );
 
 function Navbar() {
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
   return (
     <NavbarContainer>
       <Wrap>
-        <Logo to="/">Logo Logo</Logo>
+        <Logo to="/">
+          <img src={LogoImg} style={{ width: '64px', height: '64px' }} />
+        </Logo>
         <MenuContainer>
           <div>
             <Dropdown overlay={menu}>
@@ -97,9 +102,15 @@ function Navbar() {
         </MenuContainer>
         <SearchInput />
         <LoginModal buttonType="link" />
-        <a href="/user/signup">
-          <Button type="primary">Sign Up</Button>
-        </a>
+        {isAuthenticated ? (
+          <a href="/user/mypage">
+            <Button type="primary">My Page</Button>
+          </a>
+        ) : (
+          <a href="/user/signup">
+            <Button type="primary">Sign Up</Button>
+          </a>
+        )}
       </Wrap>
     </NavbarContainer>
   );

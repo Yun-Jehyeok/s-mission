@@ -44,7 +44,7 @@ function Inner() {
       <div>
         <div>
           <NavButton type={FirstButton} onClick={() => onClickNavButton(1)}>
-            추천 강의실
+            BEST
           </NavButton>
           <NavButton type={SecondButton} onClick={() => onClickNavButton(2)}>
             DUMMY

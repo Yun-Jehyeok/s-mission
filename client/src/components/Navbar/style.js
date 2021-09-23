@@ -29,7 +29,6 @@ export const MenuBox = styled(Menu)`
 `;
 
 export const Logo = styled(Link)`
-  width: 15%;
   font-size: 32px;
   margin-top: -8px;
   text-align: start;

@@ -8,6 +8,9 @@ import store from 'store';
 
 import 'antd/dist/antd.css';
 import './index.css';
+import loadUser from 'components/auth/loadUser';
+
+loadUser();
 
 ReactDOM.render(
   <Provider store={store}>
