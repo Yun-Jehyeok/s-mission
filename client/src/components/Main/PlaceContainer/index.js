@@ -112,7 +112,7 @@ function PlaceContainer() {
     <OfficeContainer>
       <CardRow>
         <Card
-          title="충무관"
+          title="Card title"
           extra={
             <div
               onClick={showModal}
@@ -132,7 +132,7 @@ function PlaceContainer() {
           <p>Card content</p>
         </Card>
         <Card
-          title="영실관"
+          title="Card title"
           extra={
             <div
               onClick={showModal}
@@ -152,71 +152,7 @@ function PlaceContainer() {
           <p>Card content</p>
         </Card>
         <Card
-          title="용덕관"
-          extra={
-            <div
-              onClick={showModal}
-              style={{ color: '#1990ff', cursor: 'pointer' }}
-            >
-              More
-            </div>
-          }
-          style={{
-            width: 300,
-            height: '213px',
-            marginBottom: '32px',
-            borderBottom: '2px solid #1990ff',
-          }}
-        >
-          <p>Card content</p>
-          <p>Card content</p>
-          <p>Card content</p>
-        </Card>
-      </CardRow>
-
-      <CardRow>
-        <Card
-          title="광개토관"
-          extra={
-            <div
-              onClick={showModal}
-              style={{ color: '#1990ff', cursor: 'pointer' }}
-            >
-              More
-            </div>
-          }
-          style={{
-            width: 300,
-            height: '213px',
-            borderBottom: '2px solid #1990ff',
-          }}
-        >
-          <p>Card content</p>
-          <p>Card content</p>
-          <p>Card content</p>
-        </Card>
-        <Card
-          title="이당관"
-          extra={
-            <div
-              onClick={showModal}
-              style={{ color: '#1990ff', cursor: 'pointer' }}
-            >
-              More
-            </div>
-          }
-          style={{
-            width: 300,
-            height: '213px',
-            borderBottom: '2px solid #1990ff',
-          }}
-        >
-          <p>Card content</p>
-          <p>Card content</p>
-          <p>Card content</p>
-        </Card>
-        <Card
-          title="군자관"
+          title="Card title"
           extra={
             <div
               onClick={showModal}
@@ -240,7 +176,7 @@ function PlaceContainer() {
 
       <CardRow>
         <Card
-          title="집현관"
+          title="Card title"
           extra={
             <div
               onClick={showModal}
@@ -260,7 +196,7 @@ function PlaceContainer() {
           <p>Card content</p>
         </Card>
         <Card
-          title="세종관"
+          title="Card title"
           extra={
             <div
               onClick={showModal}
@@ -280,7 +216,71 @@ function PlaceContainer() {
           <p>Card content</p>
         </Card>
         <Card
-          title="율곡관"
+          title="Card title"
+          extra={
+            <div
+              onClick={showModal}
+              style={{ color: '#1990ff', cursor: 'pointer' }}
+            >
+              More
+            </div>
+          }
+          style={{
+            width: 300,
+            height: '213px',
+            marginBottom: '32px',
+            borderBottom: '2px solid #1990ff',
+          }}
+        >
+          <p>Card content</p>
+          <p>Card content</p>
+          <p>Card content</p>
+        </Card>
+      </CardRow>
+
+      <CardRow>
+        <Card
+          title="Card title"
+          extra={
+            <div
+              onClick={showModal}
+              style={{ color: '#1990ff', cursor: 'pointer' }}
+            >
+              More
+            </div>
+          }
+          style={{
+            width: 300,
+            height: '213px',
+            borderBottom: '2px solid #1990ff',
+          }}
+        >
+          <p>Card content</p>
+          <p>Card content</p>
+          <p>Card content</p>
+        </Card>
+        <Card
+          title="Card title"
+          extra={
+            <div
+              onClick={showModal}
+              style={{ color: '#1990ff', cursor: 'pointer' }}
+            >
+              More
+            </div>
+          }
+          style={{
+            width: 300,
+            height: '213px',
+            borderBottom: '2px solid #1990ff',
+          }}
+        >
+          <p>Card content</p>
+          <p>Card content</p>
+          <p>Card content</p>
+        </Card>
+        <Card
+          title="Card title"
           extra={
             <div
               onClick={showModal}
@@ -304,7 +304,7 @@ function PlaceContainer() {
 
       <CardRow>
         <Card
-          title="대양AI센터"
+          title="Card title"
           extra={
             <div
               onClick={showModal}
@@ -324,7 +324,7 @@ function PlaceContainer() {
           <p>Card content</p>
         </Card>
         <Card
-          title="다산관"
+          title="Card title"
           extra={
             <div
               onClick={showModal}
@@ -344,7 +344,7 @@ function PlaceContainer() {
           <p>Card content</p>
         </Card>
         <Card
-          title="학생회관"
+          title="Card title"
           extra={
             <div
               onClick={showModal}
@@ -374,11 +374,7 @@ function PlaceContainer() {
         <div id="modal-container">
           <div>&lt;예시입니다&gt;</div>
           <h2 style={{ textAlign: 'center' }}>충무관</h2>
-          <Table
-            columns={columns}
-            dataSource={data}
-            // pagination={{ position: ['none', 'none'] }}
-          />
+          <Table columns={columns} dataSource={data} />
         </div>
       </Modal>
     </OfficeContainer>
