@@ -26,7 +26,7 @@ function PlaceDetail() {
           <ImageGallery items={images} autoPlay />
         </LeftSide>
         <RightSide>
-          <h1>대양 AI 센터 - B201호</h1>
+          <h1>Side Project Title</h1>
           <div>
             <h3>Description</h3>
 

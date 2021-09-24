@@ -20,6 +20,9 @@ router.post('/login', (req, res) => {
   User.findOne({ email }).then((user) => {
     if (!user) return res.status(400).json({ msg: '이메일을 확인해주세요.' });
 
+    if (user.login_way === 'google')
+      return res.status(400).json({ msg: '구글 아이디로 로그인 해주세요.' });
+
     bcrypt.compare(password, user.password).then((isMatch) => {
       if (!isMatch)
         return res.status(400).json({ msg: '비밀번호를 확인해주세요.' });
@@ -56,6 +59,7 @@ router.post('/google', (req, res) => {
           name,
           email,
           password: Math.random().toString(36).slice(-8),
+          login_way: 'google',
         });
 
         bcrypt.genSalt(10, (err, salt) => {

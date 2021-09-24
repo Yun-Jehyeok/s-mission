@@ -15,6 +15,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  login_way: {
+    type: String,
+    required: true,
+    default: 'email',
+  },
   register_date: {
     type: Date,
     default: moment().format('MMMM DD, YYYY'),
