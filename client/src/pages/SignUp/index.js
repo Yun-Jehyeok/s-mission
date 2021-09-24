@@ -1,14 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerAction } from 'redux/actions/user_actions';
-import { Helmet } from 'react-helmet';
-import LogoImg from 'components/Navbar/logo.png';
 
 // antd
 import { Button, Form, Input } from 'antd';
 
 // style
 import { FormContainer, SignUpContainer, SignUpSuccess, Wrap } from './style';
+
+// component
+import LogoImg from 'components/Navbar/logo.png';
 
 function SignUp() {
   const [form, setValues] = useState({
@@ -48,9 +49,6 @@ function SignUp() {
 
   return (
     <SignUpContainer>
-      <Helmet>
-        <title>Sign Up</title>
-      </Helmet>
       <Wrap>
         {isAuthenticated ? (
           <SignUpSuccess>

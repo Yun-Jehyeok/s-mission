@@ -1,5 +1,6 @@
 import React from 'react';
 import LogoImg from './logo.png';
+import { useSelector } from 'react-redux';
 
 // antd
 import { Menu, Dropdown, Button } from 'antd';
@@ -11,7 +12,6 @@ import { Logo, MenuContainer, MenuBox, NavbarContainer, Wrap } from './style';
 // component
 import LoginModal from 'components/LoginModal/LoginModal';
 import SearchInput from 'components/SearchInput';
-import { useSelector } from 'react-redux';
 
 const menu = (
   <MenuBox style={{ paddingLeft: '32px' }}>

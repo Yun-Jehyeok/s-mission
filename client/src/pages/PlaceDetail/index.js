@@ -1,6 +1,10 @@
 import React from 'react';
-import { DetailContainer, Wrap, LeftSide, RightSide } from './style';
 import ImageGallery from 'react-image-gallery';
+
+// style
+import { DetailContainer, Wrap, LeftSide, RightSide } from './style';
+
+// antd
 import { Button } from 'antd';
 
 const images = [
@@ -44,7 +48,7 @@ function PlaceDetail() {
             </div>
 
             <div style={{ marginTop: '16px' }}>
-              <Button type="primary">예약하기</Button>
+              <Button type="primary">채팅하기?</Button>
             </div>
           </div>
         </RightSide>

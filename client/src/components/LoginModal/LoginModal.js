@@ -6,11 +6,11 @@ import {
   logoutAction,
 } from 'redux/actions/user_actions';
 import { useDispatch, useSelector } from 'react-redux';
+import GoogleLogin from 'react-google-login';
+import GoogleButton from 'react-google-button';
 
 // antd
 import { Modal, Form, Button, Input, Divider } from 'antd';
-import GoogleLogin from 'react-google-login';
-import GoogleButton from 'react-google-button';
 
 function LoginModal({ buttonType }) {
   ///////////////////////////////////////////

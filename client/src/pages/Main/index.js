@@ -1,5 +1,4 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 
 // style
 import { Background } from './style';
@@ -11,9 +10,6 @@ import PlaceContainer from 'components/Main/PlaceContainer';
 function Main() {
   return (
     <div>
-      <Helmet>
-        <title>Main</title>
-      </Helmet>
       <Background />
       <Inner />
       <PlaceContainer />
