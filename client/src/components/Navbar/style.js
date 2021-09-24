@@ -28,7 +28,7 @@ export const MenuBox = styled(Menu)`
   height: 230px;
 `;
 
-export const Logo = styled(Link)`
+export const Logo = styled.a`
   font-size: 32px;
   margin-top: -8px;
   text-align: start;

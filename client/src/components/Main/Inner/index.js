@@ -115,7 +115,11 @@ function Inner() {
               size="small"
               bordered
               dataSource={data}
-              renderItem={(item) => <List.Item>{item}</List.Item>}
+              renderItem={(item) => (
+                <a href="/user/project/1">
+                  <List.Item>{item}</List.Item>
+                </a>
+              )}
             />
           </div>
         ) : (

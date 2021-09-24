@@ -20,7 +20,13 @@ function App() {
   let Navigation =
     window.location.pathname === '/user/signup' ? '' : <Navbar />;
   let FooterContainer =
-    window.location.pathname === '/user/signup' ? '' : <Footer />;
+    window.location.pathname === '/user/signup' ? (
+      ''
+    ) : window.location.pathname === '/user/project/1' ? (
+      ''
+    ) : (
+      <Footer />
+    );
 
   return (
     <Layout style={{ width: '100%', minWidth: '1400px' }}>

@@ -52,7 +52,7 @@ function Navbar() {
   return (
     <NavbarContainer>
       <Wrap>
-        <Logo to="/">
+        <Logo href="/">
           <img src={LogoImg} style={{ width: '64px', height: '64px' }} />
         </Logo>
         <MenuContainer>
