@@ -43,3 +43,12 @@ export const FormContainer = styled.div`
     margin-bottom: 16px;
   }
 `;
+
+export const SignUpSuccess = styled.div`
+  text-align: center;
+  padding: 64px;
+
+  & > div {
+    margin-bottom: 8px;
+  }
+`;

@@ -8,7 +8,7 @@ import LogoImg from 'components/Navbar/logo.png';
 import { Button, Form, Input } from 'antd';
 
 // style
-import { FormContainer, SignUpContainer, Wrap } from './style';
+import { FormContainer, SignUpContainer, SignUpSuccess, Wrap } from './style';
 
 function SignUp() {
   const [form, setValues] = useState({
@@ -53,10 +53,10 @@ function SignUp() {
       </Helmet>
       <Wrap>
         {isAuthenticated ? (
-          <div style={{ textAlign: 'center', padding: '64px' }}>
-            <div style={{ marginBottom: '8px' }}>회원가입에 성공했습니다</div>
+          <SignUpSuccess>
+            <div>회원가입에 성공했습니다</div>
             <a href="/">홈으로 가기</a>
-          </div>
+          </SignUpSuccess>
         ) : (
           <FormContainer>
             <div>
