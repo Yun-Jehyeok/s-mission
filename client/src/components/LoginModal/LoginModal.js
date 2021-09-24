@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   googleLoginAction,
@@ -52,15 +52,19 @@ function LoginModal({ buttonType }) {
       const user = { email, password };
 
       dispatch(loginAction(user));
-      setSignInVisible(false);
     },
-    [form, dispatch],
+    [form, dispatch, isAuthenticated],
   );
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setSignInVisible(false);
+    }
+  }, [isAuthenticated]);
 
   const onLogoutClick = () => {
     if (window.confirm('로그아웃 하시겠습니까?') === true) {
       dispatch(logoutAction());
-      setSignInVisible(false);
     } else {
       return false;
     }
@@ -74,7 +78,6 @@ function LoginModal({ buttonType }) {
     const user = { email, name, tokenId };
 
     dispatch(googleLoginAction(user));
-    setSignInVisible(false);
   };
 
   const responseFail = (err) => {
