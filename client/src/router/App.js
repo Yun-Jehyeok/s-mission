@@ -23,7 +23,7 @@ function App() {
     window.location.pathname === '/user/signup' ? '' : <Footer />;
 
   return (
-    <Layout style={{ width: '100vw', minWidth: '1400px' }}>
+    <Layout style={{ width: '100%', minWidth: '1400px' }}>
       {Navigation}
       <Switch>
         <Route path="/" exact component={Main} />
