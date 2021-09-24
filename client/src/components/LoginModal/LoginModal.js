@@ -1,10 +1,16 @@
 import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { loginAction, logoutAction } from 'redux/actions/user_actions';
+import {
+  googleLoginAction,
+  loginAction,
+  logoutAction,
+} from 'redux/actions/user_actions';
 import { useDispatch, useSelector } from 'react-redux';
 
 // antd
-import { Modal, Form, Button, Input } from 'antd';
+import { Modal, Form, Button, Input, Divider } from 'antd';
+import GoogleLogin from 'react-google-login';
+import GoogleButton from 'react-google-button';
 
 function LoginModal({ buttonType }) {
   ///////////////////////////////////////////
@@ -60,6 +66,21 @@ function LoginModal({ buttonType }) {
     }
   };
 
+  // Google Login
+  const responseGoogle = (res) => {
+    const { email, name } = res.profileObj;
+    const { tokenId } = res;
+
+    const user = { email, name, tokenId };
+
+    dispatch(googleLoginAction(user));
+    setSignInVisible(false);
+  };
+
+  const responseFail = (err) => {
+    console.log(err);
+  };
+
   return (
     <div>
       {isAuthenticated ? (
@@ -69,8 +90,31 @@ function LoginModal({ buttonType }) {
           Sign In
         </Button>
       )}
-      <Modal visible={signInVisible} onCancel={handleSignInCancel} footer="">
-        <h2 style={{ marginBottom: '32px' }}>SIGN IN</h2>
+      <Modal
+        title="S-MISSION"
+        visible={signInVisible}
+        onCancel={handleSignInCancel}
+        footer=""
+      >
+        <div style={{ marginBottom: '32px', width: '100%' }}>
+          <Divider>소셜 계정으로 로그인</Divider>
+          <GoogleLogin
+            clientId="534707785395-1c3aq9gp00tfbib4rgg0eemp6ma0ddup.apps.googleusercontent.com"
+            render={(renderProps) => (
+              <GoogleButton
+                onClick={renderProps.onClick}
+                style={{ width: '100%' }}
+              >
+                Sign in with Google
+              </GoogleButton>
+            )}
+            onSuccess={responseGoogle}
+            onFailure={responseFail}
+            theme="dark"
+          />
+        </div>
+
+        <Divider>이메일로 로그인</Divider>
         <div>
           <Form onSubmit={onSubmit}>
             <div>

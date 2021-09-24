@@ -1,4 +1,5 @@
 import {
+  GOOGLE_LOGIN_REQUEST,
   LOGIN_REQUEST,
   LOGOUT_REQUEST,
   REGISTER_REQUEST,
@@ -7,6 +8,11 @@ import {
 
 export const loginAction = (user) => ({
   type: LOGIN_REQUEST,
+  payload: user,
+});
+
+export const googleLoginAction = (user) => ({
+  type: GOOGLE_LOGIN_REQUEST,
   payload: user,
 });
 
