@@ -15,6 +15,7 @@ import ProjectManager from 'pages/ProjectManager';
 // components
 import Navbar from 'components/Navbar';
 import Footer from 'components/Footer/index';
+import Test from 'pages/Test';
 
 function App() {
   let Navigation =
@@ -33,6 +34,7 @@ function App() {
       {Navigation}
       <Switch>
         <Route path="/" exact component={Main} />
+        <Route path="/test" exact component={Test} />
 
         <Route path="/user/signup" exact component={SignUp} />
         <Route path="/user/mypage/:id" exact component={MyPage} />

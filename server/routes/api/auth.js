@@ -4,7 +4,10 @@ const jwt = require('jsonwebtoken');
 const { auth } = require('../../middleware/auth');
 const config = require('../../config/index');
 
-const { JWT_SECRET } = config;
+const nodemailer = require('nodemailer');
+const ejs = require('ejs');
+
+const { JWT_SECRET, NODEMAILER_USER, NODEMAILER_PASS } = config;
 const { User } = require('../../models/user');
 
 const router = express.Router();
@@ -115,6 +118,39 @@ router.post('/google', (req, res) => {
 // LOGOUT / POST
 router.post('/logout', (req, res) => {
   res.json('LOGOUT SUCCESS');
+});
+
+// mail 인증
+// 메일이 2번 보내지는데..
+router.post('/mail', async (req, res) => {
+  var authNum = Math.random().toString().substr(2, 6);
+
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: NODEMAILER_USER,
+      pass: NODEMAILER_PASS,
+    },
+  });
+
+  var mailOptions = await transporter.sendMail({
+    from: `S-Mission`,
+    to: req.body.email,
+    subject: '회원가입을 위한 인증번호를 입력해주세요.',
+    text: authNum,
+  });
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    }
+    console.log('Finish sending email : ' + info.response);
+    res.send(authNum);
+    transporter.close();
+  });
 });
 
 // Authentication / GET
