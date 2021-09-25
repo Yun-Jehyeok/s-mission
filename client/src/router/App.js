@@ -15,7 +15,7 @@ import ProjectManager from 'pages/ProjectManager';
 // components
 import Navbar from 'components/Navbar';
 import Footer from 'components/Footer/index';
-import Test from 'pages/Test';
+import FindPassword from 'pages/FindPassword';
 
 function App() {
   let Navigation =
@@ -34,9 +34,9 @@ function App() {
       {Navigation}
       <Switch>
         <Route path="/" exact component={Main} />
-        <Route path="/test" exact component={Test} />
 
         <Route path="/user/signup" exact component={SignUp} />
+        <Route path="/user/password" exact component={FindPassword} />
         <Route path="/user/mypage/:id" exact component={MyPage} />
         <Route path="/user/project/:id" exact component={ProjectManager} />
 

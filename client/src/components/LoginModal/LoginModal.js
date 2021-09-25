@@ -153,7 +153,7 @@ function LoginModal({ buttonType }) {
             <br />
             <div style={{ textAlign: 'center', marginBottom: '7px' }}>
               <span>
-                <Link to="/findpassword" onClick={handleSignInCancel}>
+                <Link to="/user/password" onClick={handleSignInCancel}>
                   Forgot a Password?
                 </Link>
               </span>
