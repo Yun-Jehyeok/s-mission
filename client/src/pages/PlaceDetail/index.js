@@ -1,6 +1,10 @@
 import React from 'react';
-import { DetailContainer, Wrap, LeftSide, RightSide } from './style';
 import ImageGallery from 'react-image-gallery';
+
+// style
+import { DetailContainer, Wrap, LeftSide, RightSide } from './style';
+
+// antd
 import { Button } from 'antd';
 
 const images = [
@@ -26,7 +30,7 @@ function PlaceDetail() {
           <ImageGallery items={images} autoPlay />
         </LeftSide>
         <RightSide>
-          <h1>대양 AI 센터 - B201호</h1>
+          <h1>Side Project Title</h1>
           <div>
             <h3>Description</h3>
 
@@ -44,7 +48,7 @@ function PlaceDetail() {
             </div>
 
             <div style={{ marginTop: '16px' }}>
-              <Button type="primary">예약하기</Button>
+              <Button type="primary">채팅하기?</Button>
             </div>
           </div>
         </RightSide>

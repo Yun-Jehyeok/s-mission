@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 // antd
 import { Card, Divider, List } from 'antd';
@@ -14,8 +16,6 @@ import {
 
 // component
 import LoginModal from 'components/LoginModal/LoginModal';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 const { Meta } = Card;
 
@@ -115,7 +115,11 @@ function Inner() {
               size="small"
               bordered
               dataSource={data}
-              renderItem={(item) => <List.Item>{item}</List.Item>}
+              renderItem={(item) => (
+                <a href="/user/project/1">
+                  <List.Item>{item}</List.Item>
+                </a>
+              )}
             />
           </div>
         ) : (

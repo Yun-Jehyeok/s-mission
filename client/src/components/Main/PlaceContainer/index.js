@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // antd
 import { Card, Modal, Table, Tag } from 'antd';
 
 // style
 import { OfficeContainer, CardRow } from './style';
-import { Link } from 'react-router-dom';
 
 const columns = [
   {

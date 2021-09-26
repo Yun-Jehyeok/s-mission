@@ -14,8 +14,8 @@ export const AuthFalseBox = styled.div`
     margin-bottom: 0px;
   }
 
-  & > ${Modal} ${Form} ${Button} {
-    width: 100%;
+  & > ${Modal} {
+    padding-top: 0;
   }
 
   & ${Form} > div:nth-child(2) {

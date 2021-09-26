@@ -4,7 +4,10 @@ const jwt = require('jsonwebtoken');
 const { auth } = require('../../middleware/auth');
 const config = require('../../config/index');
 
-const { JWT_SECRET } = config;
+const nodemailer = require('nodemailer');
+const ejs = require('ejs');
+
+const { JWT_SECRET, NODEMAILER_USER, NODEMAILER_PASS } = config;
 const { User } = require('../../models/user');
 
 const router = express.Router();
@@ -19,6 +22,9 @@ router.post('/login', (req, res) => {
 
   User.findOne({ email }).then((user) => {
     if (!user) return res.status(400).json({ msg: '이메일을 확인해주세요.' });
+
+    if (user.login_way === 'google')
+      return res.status(400).json({ msg: '구글 아이디로 로그인 해주세요.' });
 
     bcrypt.compare(password, user.password).then((isMatch) => {
       if (!isMatch)
@@ -45,9 +51,106 @@ router.post('/login', (req, res) => {
   });
 });
 
+// GOOGLE LOGIN / POST
+router.post('/google', (req, res) => {
+  const { email, name, tokenId } = req.body;
+
+  if (tokenId) {
+    User.findOne({ email }).then((user) => {
+      if (!user) {
+        const newUser = new User({
+          name,
+          email,
+          password: Math.random().toString(36).slice(-8),
+          login_way: 'google',
+        });
+
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) return res.status(400).json({ err });
+
+            newUser.password = hash;
+
+            newUser.save().then((user) => {
+              jwt.sign(
+                { id: user.id },
+                JWT_SECRET,
+                { expiresIn: 3600 },
+                (err, token) => {
+                  if (err) return res.status(400).json({ err });
+
+                  res.json({
+                    token,
+                    user: {
+                      id: user.id,
+                      name: user.name,
+                      email: user.email,
+                    },
+                  });
+                },
+              );
+            });
+          });
+        });
+      } else {
+        jwt.sign(
+          { id: user.id },
+          JWT_SECRET,
+          { expiresIn: 3600 },
+          (err, token) => {
+            if (err) return res.status(400).json({ err });
+
+            res.json({
+              token,
+              user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+              },
+            });
+          },
+        );
+      }
+    });
+  }
+});
+
 // LOGOUT / POST
 router.post('/logout', (req, res) => {
   res.json('LOGOUT SUCCESS');
+});
+
+// mail 인증
+// 메일이 2번 보내지는데..
+router.post('/mail', async (req, res) => {
+  var authNum = Math.random().toString().substr(2, 6);
+
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: NODEMAILER_USER,
+      pass: NODEMAILER_PASS,
+    },
+  });
+
+  var mailOptions = await transporter.sendMail({
+    from: `S-Mission`,
+    to: req.body.email,
+    subject: '회원가입을 위한 인증번호를 입력해주세요.',
+    text: authNum,
+  });
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    }
+    console.log('Finish sending email : ' + info.response);
+    res.send(authNum);
+    transporter.close();
+  });
 });
 
 // Authentication / GET

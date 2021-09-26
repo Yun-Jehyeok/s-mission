@@ -1,10 +1,16 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { loginAction, logoutAction } from 'redux/actions/user_actions';
+import {
+  googleLoginAction,
+  loginAction,
+  logoutAction,
+} from 'redux/actions/user_actions';
 import { useDispatch, useSelector } from 'react-redux';
+import GoogleLogin from 'react-google-login';
+import GoogleButton from 'react-google-button';
 
 // antd
-import { Modal, Form, Button, Input } from 'antd';
+import { Modal, Form, Button, Input, Divider } from 'antd';
 
 function LoginModal({ buttonType }) {
   ///////////////////////////////////////////
@@ -46,18 +52,36 @@ function LoginModal({ buttonType }) {
       const user = { email, password };
 
       dispatch(loginAction(user));
-      setSignInVisible(false);
     },
-    [form, dispatch],
+    [form, dispatch, isAuthenticated],
   );
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setSignInVisible(false);
+    }
+  }, [isAuthenticated]);
 
   const onLogoutClick = () => {
     if (window.confirm('로그아웃 하시겠습니까?') === true) {
       dispatch(logoutAction());
-      setSignInVisible(false);
     } else {
       return false;
     }
+  };
+
+  // Google Login
+  const responseGoogle = (res) => {
+    const { email, name } = res.profileObj;
+    const { tokenId } = res;
+
+    const user = { email, name, tokenId };
+
+    dispatch(googleLoginAction(user));
+  };
+
+  const responseFail = (err) => {
+    console.log(err);
   };
 
   return (
@@ -69,8 +93,31 @@ function LoginModal({ buttonType }) {
           Sign In
         </Button>
       )}
-      <Modal visible={signInVisible} onCancel={handleSignInCancel} footer="">
-        <h2 style={{ marginBottom: '32px' }}>SIGN IN</h2>
+      <Modal
+        title="S-MISSION"
+        visible={signInVisible}
+        onCancel={handleSignInCancel}
+        footer=""
+      >
+        <div style={{ marginBottom: '32px', width: '100%' }}>
+          <Divider>소셜 계정으로 로그인</Divider>
+          <GoogleLogin
+            clientId="534707785395-1c3aq9gp00tfbib4rgg0eemp6ma0ddup.apps.googleusercontent.com"
+            render={(renderProps) => (
+              <GoogleButton
+                onClick={renderProps.onClick}
+                style={{ width: '100%' }}
+              >
+                Sign in with Google
+              </GoogleButton>
+            )}
+            onSuccess={responseGoogle}
+            onFailure={responseFail}
+            theme="dark"
+          />
+        </div>
+
+        <Divider>이메일로 로그인</Divider>
         <div>
           <Form onSubmit={onSubmit}>
             <div>
@@ -106,7 +153,7 @@ function LoginModal({ buttonType }) {
             <br />
             <div style={{ textAlign: 'center', marginBottom: '7px' }}>
               <span>
-                <Link to="/findpassword" onClick={handleSignInCancel}>
+                <Link to="/user/password" onClick={handleSignInCancel}>
                   Forgot a Password?
                 </Link>
               </span>
@@ -114,9 +161,9 @@ function LoginModal({ buttonType }) {
             <div style={{ textAlign: 'center' }}>
               <span>Not a Member?&nbsp;&nbsp;</span>
               <span>
-                <Link to="/user/signup" onClick={handleSignInCancel}>
+                <a href="/user/signup" onClick={handleSignInCancel}>
                   Sign Up
-                </Link>
+                </a>
               </span>
             </div>
           </Form>

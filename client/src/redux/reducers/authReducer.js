@@ -11,6 +11,9 @@ import {
   USER_LOADING_REQUEST,
   USER_LOADING_SUCCESS,
   USER_LOADING_FAILURE,
+  GOOGLE_LOGIN_REQUEST,
+  GOOGLE_LOGIN_SUCCESS,
+  GOOGLE_LOGIN_FAILURE,
 } from 'redux/types/user_types';
 
 const initialState = {
@@ -25,6 +28,7 @@ const initialState = {
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
+    case GOOGLE_LOGIN_REQUEST:
     case LOGOUT_REQUEST:
     case REGISTER_REQUEST:
       return {
@@ -32,6 +36,7 @@ const authReducer = (state = initialState, action) => {
         isLoading: true,
       };
     case LOGIN_SUCCESS:
+    case GOOGLE_LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
       localStorage.setItem('token', action.payload.token);
 
@@ -40,10 +45,12 @@ const authReducer = (state = initialState, action) => {
         ...action.payload,
         isAuthenticated: true,
         isLoading: false,
+        user: action.payload.user,
         userId: action.payload.user.id,
         userName: action.payload.user.name,
       };
     case LOGIN_FAILURE:
+    case GOOGLE_LOGIN_FAILURE:
     case LOGOUT_FAILURE:
     case REGISTER_FAILURE:
       localStorage.removeItem('token');
