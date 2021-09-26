@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 
 // antd
 import { Button, Input } from 'antd';
@@ -21,8 +20,6 @@ function FindPassword() {
   const [isAuth, setIsAuth] = useState(false);
   const [authNum, setAuthNum] = useState('');
 
-  const dispatch = useDispatch();
-
   const onChange = (e) => {
     setValues({
       ...form,
@@ -30,6 +27,21 @@ function FindPassword() {
     });
   };
 
+  // 존재하는 이메일인지 확인
+  const onCheckEmail = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      const { email } = form;
+
+      Axios.post('/api/auth/password/email', { email }).then((res) => {
+        setEmailAuth(res.data.msg);
+      });
+    },
+    [form],
+  );
+
+  // 인증번호 메일로 보내기
   const onSendMail = useCallback(
     (e) => {
       e.preventDefault();
@@ -43,19 +55,14 @@ function FindPassword() {
     [form],
   );
 
-  const onAuthEmail = useCallback(
-    (e) => {
-      e.preventDefault();
+  // 인증번호 확인
+  const onCheckAuthNumber = () => {
+    if (String(authNum) === form.num) {
+      setIsAuth(true);
+    }
+  };
 
-      const { email } = form;
-
-      Axios.post('/api/auth/password/email', { email }).then((res) => {
-        setEmailAuth(res.data.msg);
-      });
-    },
-    [form, dispatch],
-  );
-
+  // 비밀번호 변경
   const onChangePassword = useCallback((e) => {
     e.preventDefault();
 
@@ -65,12 +72,6 @@ function FindPassword() {
       if (res.data.msg) alert('비밀번호 변경에 성공했습니다.');
     });
   });
-
-  const onSubmit = () => {
-    if (String(authNum) === form.num) {
-      setIsAuth(true);
-    }
-  };
 
   // 1. 이메일 확인하고
   // 2. 이메일 인증하고
@@ -110,7 +111,7 @@ function FindPassword() {
                 onChange={onChange}
               />
               <Button onClick={onSendMail}>이메일 보내기</Button>
-              <Button onClick={onSubmit}>인증하기</Button>
+              <Button onClick={onCheckAuthNumber}>인증하기</Button>
             </div>
           )
         ) : (
@@ -122,7 +123,7 @@ function FindPassword() {
               placeholder="이메일을 입력해주세요."
               onChange={onChange}
             />
-            <Button onClick={onAuthEmail}>인증하기</Button>
+            <Button onClick={onCheckEmail}>인증하기</Button>
           </div>
         )}
       </Wrap>
