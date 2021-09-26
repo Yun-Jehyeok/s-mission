@@ -120,6 +120,19 @@ router.post('/logout', (req, res) => {
   res.json('LOGOUT SUCCESS');
 });
 
+router.post('/password/email', (req, res) => {
+  const { email } = req.body;
+
+  User.findOne({ email }).then((user) => {
+    if (!user) return res.status(400).json({ msg: false });
+
+    if (user.login_way === 'google')
+      return res.status(400).json({ msg: false });
+
+    return res.status(200).json({ msg: true });
+  });
+});
+
 // mail 인증
 // 메일이 2번 보내지는데..
 router.post('/mail', async (req, res) => {

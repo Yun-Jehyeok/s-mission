@@ -74,4 +74,35 @@ router.post('/register', (req, res) => {
   });
 });
 
+// Change User Password / POST
+router.post('/changepassword', (req, res) => {
+  const { email, password } = req.body;
+
+  if (!password)
+    return res.status(400).json({ msg: '비밀번호를 입력해주세요.' });
+
+  User.findOne({ email }).then((user) => {
+    if (!user) return res.status(400).json({ msg: '이메일을 확인해주세요.' });
+
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, async (err, hash) => {
+        if (err) return res.status(400).json({ err });
+
+        try {
+          await User.findByIdAndUpdate(
+            user.id,
+            { password: hash },
+            { new: true },
+          );
+
+          res.json('success');
+        } catch (e) {
+          console.log(e);
+          res.json(e);
+        }
+      });
+    });
+  });
+});
+
 module.exports = router;
