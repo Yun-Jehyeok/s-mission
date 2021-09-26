@@ -3,6 +3,7 @@ import {
   LOGIN_REQUEST,
   LOGOUT_REQUEST,
   REGISTER_REQUEST,
+  USER_EMAIL_AUTH_REQUEST,
   USER_LOADING_REQUEST,
 } from 'redux/types/user_types';
 
@@ -28,4 +29,9 @@ export const registerAction = (user) => ({
 export const loadUserAction = () => ({
   type: USER_LOADING_REQUEST,
   payload: localStorage.getItem('token'),
+});
+
+export const emailAuthAction = (email) => ({
+  type: USER_EMAIL_AUTH_REQUEST,
+  payload: email,
 });
