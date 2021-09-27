@@ -5,7 +5,14 @@ import Axios from 'axios';
 import { Button, Input } from 'antd';
 
 // style
-import { SignUpContainer, Wrap } from './style';
+import {
+  EmailAuth,
+  EmailCheck,
+  PasswordChange,
+  PasswordChangeSuccess,
+  SignUpContainer,
+  Wrap,
+} from './style';
 
 // component
 import LogoImg from 'components/Navbar/logo.png';
@@ -82,29 +89,28 @@ function FindPassword() {
   return (
     <SignUpContainer>
       <Wrap>
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <div>
           <a href="/">
-            <img src={LogoImg} style={{ width: '64px', height: '64px' }} />
+            <img src={LogoImg} />
           </a>
         </div>
         {emailAuth ? (
           isAuth ? (
             isPwChange ? (
-              <div style={{ textAlign: 'center' }}>
+              <PasswordChangeSuccess>
                 <div>비밀번호 변경에 성공했습니다</div>
                 <div>
                   <a href="/">Home</a>
                 </div>
-              </div>
+              </PasswordChangeSuccess>
             ) : (
-              <div>
+              <PasswordChange>
                 <Input
                   type="password"
                   name="password"
                   id="password"
                   placeholder="변경할 비밀번호를 입력해 주십시오."
                   onChange={onChange}
-                  style={{ marginBottom: '8px' }}
                 />
                 <Input
                   type="password"
@@ -112,67 +118,48 @@ function FindPassword() {
                   id="passwordCheck"
                   placeholder="비밀번호를 한번 더 입력해 주십시오."
                   onChange={onChange}
-                  style={{ marginBottom: '8px' }}
                 />
-                <Button
-                  onClick={onChangePassword}
-                  type="primary"
-                  style={{ width: '100%' }}
-                >
+                <Button onClick={onChangePassword} type="primary">
                   비밀번호 변경하기
                 </Button>
-              </div>
+              </PasswordChange>
             )
           ) : (
-            <div>
-              <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+            <EmailAuth>
+              <div>
                 인증번호 보내기를 클릭하신 후 해당 이메일에서 인증번호를
                 확인해주세요
               </div>
-              <Button
-                onClick={onSendMail}
-                type="primary"
-                style={{ width: '100%' }}
-              >
+              <Button onClick={onSendMail} type="primary">
                 인증번호 보내기
               </Button>
 
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  marginTop: '8px',
-                }}
-              >
+              <div>
                 <Input
                   type="text"
                   name="num"
                   id="num"
                   placeholder="인증번호를 입력해주세요."
                   onChange={onChange}
-                  style={{ marginRight: '4px' }}
                 />
                 <Button onClick={onCheckAuthNumber}>인증하기</Button>
               </div>
-            </div>
+            </EmailAuth>
           )
         ) : (
-          <div>
-            <div style={{ marginBottom: '8px' }}>
-              비밀번호를 찾고자 하는 이메일을 입력해주세요
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <EmailCheck>
+            <div>비밀번호를 찾고자 하는 이메일을 입력해주세요</div>
+            <div>
               <Input
                 type="email"
                 name="email"
                 id="email"
                 placeholder="이메일을 입력해주세요."
                 onChange={onChange}
-                style={{ marginRight: '4px' }}
               />
               <Button onClick={onCheckEmail}>다음</Button>
             </div>
-          </div>
+          </EmailCheck>
         )}
       </Wrap>
     </SignUpContainer>
