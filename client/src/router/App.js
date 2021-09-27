@@ -19,11 +19,19 @@ import FindPassword from 'pages/FindPassword';
 
 function App() {
   let Navigation =
-    window.location.pathname === '/user/signup' ? '' : <Navbar />;
+    window.location.pathname === '/user/signup' ? (
+      ''
+    ) : window.location.pathname === '/user/password' ? (
+      ''
+    ) : (
+      <Navbar />
+    );
   let FooterContainer =
     window.location.pathname === '/user/signup' ? (
       ''
     ) : window.location.pathname === '/user/project/1' ? (
+      ''
+    ) : window.location.pathname === '/user/password' ? (
       ''
     ) : (
       <Footer />

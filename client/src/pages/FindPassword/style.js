@@ -18,30 +18,8 @@ export const Wrap = styled.div`
   border-radius: 4px;
   background-color: white;
   border-bottom: 5px solid #1990ff;
-`;
 
-export const FormContainer = styled.div`
-  width: 80%;
-  padding: 5% 0;
-  margin-left: 10%;
-
-  & > div:nth-child(1) {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 32px;
-
-    & > a {
-      font-size: 32px;
-    }
-  }
-
-  & > h1 {
-    text-align: center;
-  }
-
-  & > ${Form} > ${Form.Item} {
-    margin-bottom: 16px;
-  }
+  padding: 3%;
 `;
 
 export const SignUpSuccess = styled.div`
