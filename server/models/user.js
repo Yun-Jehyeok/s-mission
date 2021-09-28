@@ -24,6 +24,12 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: moment().format('MMMM DD, YYYY'),
   },
+  projects: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'project',
+    },
+  ],
 });
 
 const User = mongoose.model('user', UserSchema);
