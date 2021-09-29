@@ -120,16 +120,27 @@ router.post('/logout', (req, res) => {
   res.json('LOGOUT SUCCESS');
 });
 
+// Check Email / POST
 router.post('/password/email', (req, res) => {
   const { email } = req.body;
 
   User.findOne({ email }).then((user) => {
-    if (!user) return res.status(400).json({ msg: false });
+    if (!user)
+      return res
+        .status(400)
+        .json({ success: false, msg: '이메일을 확인해 주세요.' });
 
     if (user.login_way === 'google')
-      return res.status(400).json({ msg: false });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          msg: '구글 계정은 비밀번호를 변경할 수 없습니다.',
+        });
 
-    return res.status(200).json({ msg: true });
+    return res
+      .status(200)
+      .json({ success: true, msg: '이메일이 인증되었습니다.' });
   });
 });
 

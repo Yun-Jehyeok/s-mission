@@ -28,6 +28,7 @@ function FindPassword() {
   const [authNum, setAuthNum] = useState('');
   const [isAuth, setIsAuth] = useState(false);
   const [isPwChange, setIsPwChange] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const onChange = (e) => {
     setValues({
@@ -44,7 +45,12 @@ function FindPassword() {
       const { email } = form;
 
       Axios.post('/api/auth/password/email', { email }).then((res) => {
-        setEmailAuth(res.data.msg);
+        if (!res.data.success) {
+          alert(res.data.msg);
+        } else {
+          alert(res.data.msg);
+          setEmailAuth(res.data.success);
+        }
       });
     },
     [form],
@@ -54,10 +60,12 @@ function FindPassword() {
   const onSendMail = useCallback(
     (e) => {
       e.preventDefault();
+      setLoading(true);
 
       const { email } = form;
 
       Axios.post('/api/auth/mail', { email }).then((res) => {
+        setLoading(false);
         alert('인증번호가 발송되었습니다.');
         setAuthNum(res.data);
       });
@@ -80,8 +88,12 @@ function FindPassword() {
     const { email, password } = form;
 
     Axios.post('/api/user/changepassword', { email, password }).then((res) => {
-      alert('비밀번호 변경에 성공했습니다.');
-      setIsPwChange(true);
+      if (!res.data.success) {
+        alert(res.data.msg);
+      } else {
+        alert(res.data.msg);
+        setIsPwChange(res.data.success);
+      }
     });
   });
 
@@ -144,6 +156,20 @@ function FindPassword() {
                 />
                 <Button onClick={onCheckAuthNumber}>인증하기</Button>
               </div>
+
+              {loading ? (
+                <div
+                  style={{
+                    textAlign: 'center',
+                    color: '#1990ff',
+                    marginTop: '16px',
+                  }}
+                >
+                  인증번호를 발송 중입니다. 잠시만 기다려주세요.
+                </div>
+              ) : (
+                ''
+              )}
             </EmailAuth>
           )
         ) : (
