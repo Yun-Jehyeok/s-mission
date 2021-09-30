@@ -125,18 +125,12 @@ router.post('/password/email', (req, res) => {
   const { email } = req.body;
 
   User.findOne({ email }).then((user) => {
-    if (!user)
-      return res
-        .status(400)
-        .json({ success: false, msg: '이메일을 확인해 주세요.' });
+    if (!user) return res.status(400).json({ msg: '이메일을 확인해주세요.' });
 
     if (user.login_way === 'google')
       return res
-        .status(400)
-        .json({
-          success: false,
-          msg: '구글 계정은 비밀번호를 변경할 수 없습니다.',
-        });
+        .status(401)
+        .json({ msg: '구글 계정은 비밀번호를 변경할 수 업습니다.' });
 
     return res
       .status(200)

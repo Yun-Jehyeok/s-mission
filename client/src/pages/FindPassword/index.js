@@ -44,14 +44,14 @@ function FindPassword() {
 
       const { email } = form;
 
-      Axios.post('/api/auth/password/email', { email }).then((res) => {
-        if (!res.data.success) {
-          alert(res.data.msg);
-        } else {
+      Axios.post('/api/auth/password/email', { email })
+        .then((res) => {
           alert(res.data.msg);
           setEmailAuth(res.data.success);
-        }
-      });
+        })
+        .catch((e) => {
+          alert(e.response.data.msg);
+        });
     },
     [form],
   );
@@ -78,6 +78,8 @@ function FindPassword() {
     if (String(authNum) === form.num) {
       alert('인증에 성공했습니다.');
       setIsAuth(true);
+    } else {
+      alert('인증번호를 확인해주세요.');
     }
   };
 
@@ -85,19 +87,23 @@ function FindPassword() {
   const onChangePassword = useCallback((e) => {
     e.preventDefault();
 
-    const { email, password } = form;
+    const { email, password, passwordCheck } = form;
 
-    Axios.post('/api/user/changepassword', { email, password }).then((res) => {
-      if (!res.data.success) {
-        alert(res.data.msg);
-      } else {
-        alert(res.data.msg);
-        setIsPwChange(res.data.success);
-      }
-    });
+    if (password !== passwordCheck) {
+      alert('비밀번호와 비밀번호 확인은 같아야 합니다.');
+    } else {
+      Axios.post('/api/user/changepassword', { email, password })
+        .then((res) => {
+          alert(res.data.msg);
+          setIsPwChange(true);
+        })
+        .catch((e) => {
+          alert(e.response.data.msg);
+          setIsPwChange(false);
+        });
+    }
   });
 
-  // 예외처리만 하면 될듯 정리랑
   return (
     <SignUpContainer>
       <Wrap>
