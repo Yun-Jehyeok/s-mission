@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createprojectAction } from 'redux/actions/project_actions';
 import { Form, Input, Button, Upload } from 'antd';
-import axios from 'axios';
 
 import { UploadOutlined } from '@ant-design/icons';
+import { PostWriteHeader, ProjectWriteContainer } from './style';
+
+const { TextArea } = Input;
 
 function ProjectWrite() {
   const normFile = (e) => {
@@ -48,23 +50,30 @@ function ProjectWrite() {
   };
 
   return (
-    <div>
+    <ProjectWriteContainer>
+      <PostWriteHeader>글 작성하기</PostWriteHeader>
       {/* 인증한 사용자만 볼 수 있음 */}
       {isAuthenticated ? (
         <Form>
           <Form.Item
             name={'title'}
-            label="project title"
             rules={[{ required: true }]}
+            style={{ marginBottom: '8px' }}
           >
-            <Input name="title" id="title" onChange={onValueChange} />
+            <Input
+              name="title"
+              id="title"
+              onChange={onValueChange}
+              placeholder="제목을 입력해 주세요."
+            />
           </Form.Item>
-          <Form.Item
-            name={'category'}
-            label="project category"
-            rules={[{ required: true }]}
-          >
-            <Input name="category" id="category" onChange={onValueChange} />
+          <Form.Item name={'category'} rules={[{ required: true }]}>
+            <Input
+              name="category"
+              id="category"
+              onChange={onValueChange}
+              placeholder="카테고리를 입력해 주세요."
+            />
           </Form.Item>
           <Form.Item
             name={'fileUrl'}
@@ -81,19 +90,23 @@ function ProjectWrite() {
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>
           </Form.Item>
-          <Form.Item
-            name={'content'}
-            label="project content"
-            rules={[{ required: true }]}
-          >
-            <Input name="contents" id="contents" onChange={onValueChange} />
+          <Form.Item name={'content'} rules={[{ required: true }]}>
+            <TextArea
+              name="contents"
+              id="contents"
+              onChange={onValueChange}
+              placeholder="내용을 입력해 주세요."
+              style={{ height: '500px', padding: '24px' }}
+            />
           </Form.Item>
-          <Button onClick={onSubmit}>글쓰기</Button>
+          <Button onClick={onSubmit} type="primary" style={{ width: '100%' }}>
+            글쓰기
+          </Button>
         </Form>
       ) : (
         <div>로그인하고 이용하세요.</div>
       )}
-    </div>
+    </ProjectWriteContainer>
   );
 }
 
