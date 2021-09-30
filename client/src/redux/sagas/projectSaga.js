@@ -49,6 +49,15 @@ function* watchcreateProject() {
   yield takeEvery(PROJECT_WRITE_REQUEST, createProject);
 }
 
+// READ project // Detail
+// const detailprojectAPI = (payload) => {
+
+// };
+
+// function* detailProject (action) {
+
+// }
+
 export default function* projectSaga() {
   yield all([fork(watchcreateProject)]);
 }

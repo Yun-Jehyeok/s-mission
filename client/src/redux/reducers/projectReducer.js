@@ -12,6 +12,8 @@ import {
 
 const initialState = {
   isAuthenticated: null,
+  isLoading: false,
+  projects: [],
   title: '',
   category: [],
   contents: '',
@@ -23,24 +25,31 @@ const initialState = {
 
 const projectReducer = (state = initialState, action) => {
   switch (action.type) {
+    case PROJECT_DETAIL_REQUEST:
     case PROJECT_WRITE_REQUEST:
       return {
         ...state,
+        isLoading: true,
       };
 
+    case PROJECT_DETAIL_SUCCESS:
     case PROJECT_WRITE_SUCCESS:
       return {
         ...state,
-        title: action.payload.title,
-        category: action.payload.category,
-        contents: action.payload.contents,
-        date: action.payload.date,
-        fileUrl: action.payload.fileUrl,
-        creator: action.payload.creator,
+        isLoading: false,
+        projects: action.payload,
+        // title: action.payload.title,
+        // category: action.payload.category,
+        // contents: action.payload.contents,
+        // date: action.payload.date,
+        // fileUrl: action.payload.fileUrl,
+        // creator: action.payload.creator,
       };
+    case PROJECT_DETAIL_FAILURE:
     case PROJECT_WRITE_FAILURE:
       return {
         ...state,
+        isLoading: false,
         errmsg: action.payload.e,
       };
     default:
