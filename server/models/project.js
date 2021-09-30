@@ -15,10 +15,12 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     default: 'https://source.unsplash.com/random/301x201',
   },
-  category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'category',
-  },
+  category: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'category',
+    },
+  ],
   date: {
     type: String,
     default: moment().format('MMMM DD, YYYY'),
