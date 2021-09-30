@@ -10,6 +10,7 @@ import SignUp from 'pages/SignUp/index';
 import PlaceDetail from 'pages/PlaceDetail';
 import MyPage from 'pages/MyPage';
 import ProjectList from 'pages/ProjectList';
+import ProjectWrite from 'pages/ProjectWrite';
 import ProjectManager from 'pages/ProjectManager';
 
 // components
@@ -49,6 +50,7 @@ function App() {
         <Route path="/user/project/:id" exact component={ProjectManager} />
 
         <Route path="/project" exact component={ProjectList} />
+        <Route path="/project/write" exact component={ProjectWrite} />
 
         <Route path="/place/:id" exact component={PlaceDetail} />
       </Switch>
