@@ -94,7 +94,7 @@ function LoginModal({ buttonType }) {
         </Button>
       )}
       <Modal
-        title="S-MISSION"
+        title="LOGO"
         visible={signInVisible}
         onCancel={handleSignInCancel}
         footer=""

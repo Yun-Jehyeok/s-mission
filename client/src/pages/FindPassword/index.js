@@ -28,6 +28,7 @@ function FindPassword() {
   const [authNum, setAuthNum] = useState('');
   const [isAuth, setIsAuth] = useState(false);
   const [isPwChange, setIsPwChange] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const onChange = (e) => {
     setValues({
@@ -43,9 +44,14 @@ function FindPassword() {
 
       const { email } = form;
 
-      Axios.post('/api/auth/password/email', { email }).then((res) => {
-        setEmailAuth(res.data.msg);
-      });
+      Axios.post('/api/auth/password/email', { email })
+        .then((res) => {
+          alert(res.data.msg);
+          setEmailAuth(res.data.success);
+        })
+        .catch((e) => {
+          alert(e.response.data.msg);
+        });
     },
     [form],
   );
@@ -54,10 +60,12 @@ function FindPassword() {
   const onSendMail = useCallback(
     (e) => {
       e.preventDefault();
+      setLoading(true);
 
       const { email } = form;
 
       Axios.post('/api/auth/mail', { email }).then((res) => {
+        setLoading(false);
         alert('인증번호가 발송되었습니다.');
         setAuthNum(res.data);
       });
@@ -70,6 +78,8 @@ function FindPassword() {
     if (String(authNum) === form.num) {
       alert('인증에 성공했습니다.');
       setIsAuth(true);
+    } else {
+      alert('인증번호를 확인해주세요.');
     }
   };
 
@@ -77,15 +87,23 @@ function FindPassword() {
   const onChangePassword = useCallback((e) => {
     e.preventDefault();
 
-    const { email, password } = form;
+    const { email, password, passwordCheck } = form;
 
-    Axios.post('/api/user/changepassword', { email, password }).then((res) => {
-      alert('비밀번호 변경에 성공했습니다.');
-      setIsPwChange(true);
-    });
+    if (password !== passwordCheck) {
+      alert('비밀번호와 비밀번호 확인은 같아야 합니다.');
+    } else {
+      Axios.post('/api/user/changepassword', { email, password })
+        .then((res) => {
+          alert(res.data.msg);
+          setIsPwChange(true);
+        })
+        .catch((e) => {
+          alert(e.response.data.msg);
+          setIsPwChange(false);
+        });
+    }
   });
 
-  // 예외처리만 하면 될듯 정리랑
   return (
     <SignUpContainer>
       <Wrap>
@@ -144,6 +162,20 @@ function FindPassword() {
                 />
                 <Button onClick={onCheckAuthNumber}>인증하기</Button>
               </div>
+
+              {loading ? (
+                <div
+                  style={{
+                    textAlign: 'center',
+                    color: '#1990ff',
+                    marginTop: '16px',
+                  }}
+                >
+                  인증번호를 발송 중입니다. 잠시만 기다려주세요.
+                </div>
+              ) : (
+                ''
+              )}
             </EmailAuth>
           )
         ) : (

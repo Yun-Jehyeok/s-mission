@@ -95,7 +95,7 @@ router.post('/changepassword', (req, res) => {
             { new: true },
           );
 
-          res.json('success');
+          return res.status(200).json({ msg: '비밀번호 변경에 성공했습니다.' });
         } catch (e) {
           console.log(e);
           res.json(e);
