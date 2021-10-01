@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { all, call, put, takeEvery, fork } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
 import {
   PROJECT_WRITE_REQUEST,
   PROJECT_WRITE_SUCCESS,
@@ -32,11 +33,12 @@ function* createProject(action) {
   try {
     const result = yield call(createProjectAPI, action.payload);
 
-    console.log(result);
     yield put({
       type: PROJECT_WRITE_SUCCESS,
       payload: result.data,
     });
+
+    yield put(push(`detail/${result.data._id}`))
   } catch (e) {
     yield put({
       type: PROJECT_WRITE_FAILURE,
@@ -50,14 +52,55 @@ function* watchcreateProject() {
 }
 
 // READ project // Detail
-// const detailprojectAPI = (payload) => {
+const detailprojectAPI = (payload) => {
+  return axios.get(`/api/project/${payload}`);
+};
 
-// };
+function* detailProject(action) {
+  try {
+    const result = yield call(detailprojectAPI, action.payload);
 
-// function* detailProject (action) {
+    yield put({
+      type:PROJECT_DETAIL_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type:PROJECT_DETAIL_FAILURE,
+      payload: e,
+    });
+  }
+}
 
-// }
+function* watchprojectDetail() {
+  yield takeEvery(PROJECT_DETAIL_REQUEST, detailProject);
+}
+
+// READ project // All
+const allprojectAPI = () => {
+  return axios.get(`/api/project`);
+}
+
+function* allProject(action) {
+  try {
+    const result = yield call(allprojectAPI, action.payload);
+    
+    yield put({
+      type:PROJECT_LOADING_SUCCESS,
+      payload: result.data,
+    });
+  } catch(e){
+    yield put({
+      type:PROJECT_LOADING_FAILURE,
+      payload: e,
+    });
+  }
+}
+
+function* watchprojectall() {
+  yield takeEvery(PROJECT_LOADING_REQUEST, allProject);
+}
 
 export default function* projectSaga() {
-  yield all([fork(watchcreateProject)]);
+  yield all([fork(watchcreateProject), fork(watchprojectDetail), fork(watchprojectall)]);
 }

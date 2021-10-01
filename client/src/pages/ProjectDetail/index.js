@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
 
 // style
@@ -25,14 +25,21 @@ const images = [
 ];
 
 function ProjectDetail(req) {
-  const { title, category, contents, creator, fileUrl, date } = useSelector(
-    (state) => state.project,
-  );
+  const { projectdetail } = useSelector((state) => state.project);
+  const { category, contents, date, fileUrl, title } = projectdetail;
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     dispatch(detailprojectAction(req.match.params.id));
   }, [dispatch, req.match.params.id]);
+
+  const categoryList = category ? category.map((cate, index)=> {
+    return (
+      <span key={index}>
+        <Button>{cate.categoryName}</Button>
+      </span>
+    );
+  }) : [];
 
   return (
     <DetailContainer>
@@ -41,21 +48,15 @@ function ProjectDetail(req) {
           <ImageGallery items={images} autoPlay />
         </LeftSide>
         <RightSide>
-          <h1>Side Project Title</h1>
+          <h1>{title}</h1>
           <div>
-            <h3>Description</h3>
-
             <div>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
+              {categoryList}
+            </div>
+
+            <h4>{date}</h4>
+            <div>
+              {contents}
             </div>
 
             <div style={{ marginTop: '16px' }}>

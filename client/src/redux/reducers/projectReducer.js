@@ -14,6 +14,7 @@ const initialState = {
   isAuthenticated: null,
   isLoading: false,
   projects: [],
+  projectdetail: [],
   title: '',
   category: [],
   contents: '',
@@ -33,6 +34,11 @@ const projectReducer = (state = initialState, action) => {
       };
 
     case PROJECT_DETAIL_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        projectdetail: action.payload,
+      }
     case PROJECT_WRITE_SUCCESS:
       return {
         ...state,
