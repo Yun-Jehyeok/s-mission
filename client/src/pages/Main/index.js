@@ -5,14 +5,14 @@ import { Background } from './style';
 
 // component
 import Inner from 'components/Main/Inner';
-import PlaceContainer from 'components/Main/PlaceContainer';
+import ProjectContainer from 'components/Main/ProjectContainer';
 
 function Main() {
   return (
     <div>
       <Background />
       <Inner />
-      <PlaceContainer />
+      <ProjectContainer />
     </div>
   );
 }

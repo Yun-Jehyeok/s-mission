@@ -7,7 +7,7 @@ import { Layout } from 'antd';
 // pages
 import Main from 'pages/Main/index';
 import SignUp from 'pages/SignUp/index';
-import PlaceDetail from 'pages/PlaceDetail';
+import ProjectDetail from 'pages/ProjectDetail';
 import MyPage from 'pages/MyPage';
 import ProjectList from 'pages/ProjectList';
 import ProjectWrite from 'pages/ProjectWrite';
@@ -52,7 +52,7 @@ function App() {
         <Route path="/project" exact component={ProjectList} />
         <Route path="/project/write" exact component={ProjectWrite} />
 
-        <Route path="/place/:id" exact component={PlaceDetail} />
+        <Route path="/project/detail/:id" exact component={ProjectDetail} />
       </Switch>
       {FooterContainer}
     </Layout>
