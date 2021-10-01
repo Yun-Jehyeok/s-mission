@@ -65,7 +65,7 @@ function Inner() {
           </NavButton>
         </div>
         <CardContainer>
-          <Link to="/place/1">
+          <Link to="/project/detail/1">
             <CardContent
               cover={
                 <img
@@ -78,7 +78,7 @@ function Inner() {
             </CardContent>
           </Link>
 
-          <Link to="/place/1">
+          <Link to="/project/detail/1">
             <CardContent
               cover={
                 <img
@@ -90,7 +90,7 @@ function Inner() {
               <Meta title="Card title" description="This is the description" />
             </CardContent>
           </Link>
-          <Link to="/place/1">
+          <Link to="/project/detail/1">
             <CardContent
               cover={
                 <img

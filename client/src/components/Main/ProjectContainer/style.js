@@ -1,3 +1,4 @@
+import { Card } from 'antd';
 import styled from 'styled-components';
 
 export const OfficeContainer = styled.div`
@@ -12,4 +13,11 @@ export const OfficeContainer = styled.div`
 export const CardRow = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 32px;
+`;
+
+export const CardContent = styled(Card)`
+  width: 300px;
+  height: 213px;
+  border-bottom: 2px solid #1990ff;
 `;

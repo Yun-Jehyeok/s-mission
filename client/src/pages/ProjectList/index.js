@@ -1,7 +1,7 @@
 import React from 'react';
 
 function ProjectList() {
-  return <div>Project List</div>;
+  return <div>List</div>;
 }
 
 export default ProjectList;
