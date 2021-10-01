@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 // antd
@@ -17,6 +17,8 @@ import ProjectManager from 'pages/ProjectManager';
 import Navbar from 'components/Navbar';
 import Footer from 'components/Footer/index';
 import FindPassword from 'pages/FindPassword';
+import Home from 'pages/Chat/page/Home/Home';
+import Chat from 'pages/Chat/page/Chat/Chat';
 
 function App() {
   let Navigation =
@@ -38,6 +40,10 @@ function App() {
       <Footer />
     );
 
+  // test
+  const [userName, setUserName] = useState();
+  const [roomName, setRoomName] = useState();
+
   return (
     <Layout style={{ width: '100%', minWidth: '1400px' }}>
       {Navigation}
@@ -53,6 +59,20 @@ function App() {
         <Route path="/project/write" exact component={ProjectWrite} />
 
         <Route path="/project/detail/:id" exact component={ProjectDetail} />
+
+        <Route path="/home" exact>
+          <Home
+            userName={userName}
+            roomName={roomName}
+            setUserName={setUserName}
+            setRoomName={setRoomName}
+          />
+        </Route>
+        <Route
+          path="/chat"
+          exact
+          render={() => <Chat userName={userName} roomName={roomName} />}
+        />
       </Switch>
       {FooterContainer}
     </Layout>
