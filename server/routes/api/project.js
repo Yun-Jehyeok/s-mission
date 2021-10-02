@@ -28,19 +28,17 @@ router.get('/', async (req, res) => {
 });
 
 // Project Create //
-router.post('/write', upload.single('fileUrl'), async (req, res) => {
+router.post('/write', auth, upload.single('fileUrl'), async (req, res) => {
   try {
-    const { title, contents, fileUrl, creator, category } = req.body;
-    // console.log('백엔드', req.user._id);
-    // 아니 auth 인증 개잘되는데 프로젝트 create만 하면 없다 그래
-    // 내가 이거 고치고만다
+    const { title, contents, fileUrl, category } = req.body;
+    console.log(req.user.id);
 
     // 새로운 프로젝트 생성
     const newProject = await Project.create({
       title,
       contents,
       fileUrl,
-      creator: creator,
+      creator: req.user.id,
       date: moment().format('MMMM DD, YYYY'),
     });
 
@@ -63,7 +61,7 @@ router.post('/write', upload.single('fileUrl'), async (req, res) => {
           projects: newProject._id, //mongoDB는 _id로 저장
         },
       });
-      await User.findByIdAndUpdate(creator, {
+      await User.findByIdAndUpdate(req.user.id, {
         $push: {
           projects: newProject._id,
         },
@@ -76,14 +74,14 @@ router.post('/write', upload.single('fileUrl'), async (req, res) => {
       await Project.findByIdAndUpdate(newProject._id, {
         category: categoryFindResult._id,
       });
-      await User.findByIdAndUpdate(creator, {
+      await User.findByIdAndUpdate(req.user.id, {
         $push: {
           projects: newProject._id,
         },
       });
     }
 
-    return res.redirect(`/api/project/${newProject._id}`);
+    res.redirect(`/api/project/${newProject._id}`);
   } catch (e) {
     console.log(e);
   }
@@ -102,6 +100,68 @@ router.get('/:id', async (req, res, next) => {
   } catch (e) {
     console.error(e);
     next(e);
+  }
+});
+
+// Project Update //
+// 수정 페이지
+router.get('/:id/edit', async (req, res, next) => {
+  try {
+    const project = await Project.findById(req.params.id)
+      .populate('creator')
+      .populate({ path: 'category', select: 'categoryName' });
+
+    res.json(project);
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+// 수정 action
+router.post('/:id/update', async (req, res, next) => {
+  const { title, contents, fileUrl, id, category } = req.body;
+
+  try {
+    const update_project = await Post.findByIdAndUpdate(
+      id,
+      {
+        title,
+        contents,
+        fileUrl,
+        category,
+        date: moment().format('MMMM DD, YYYY'),
+      },
+      { new: true },
+    );
+    res.redirect(`/api/project/${update_project._id}`);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+// Project Delete //
+router.delete('/:id/delete', auth, async (req, res) => {
+  try {
+    await Project.deleteMany({ _id: req.params.id });
+    const edit_category = await Category.findOneAndUpdate(
+      { projects: req.params.id },
+      { $pull: { projects: req.params.id } },
+      { new: true },
+    );
+    await User.findByIdAndUpdate(req.user.id, {
+      $pull: {
+        projects: req.params.id,
+      },
+    });
+
+    if (edit_category.projects.length === 0) {
+      await Category.deleteMany({ _id: edit_category });
+    }
+
+    return res.json({ success: true });
+  } catch (e) {
+    console.log(e);
+    return res.json({ error: e });
   }
 });
 
