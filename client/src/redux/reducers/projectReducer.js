@@ -8,6 +8,15 @@ import {
   PROJECT_LOADING_REQUEST,
   PROJECT_LOADING_SUCCESS,
   PROJECT_LOADING_FAILURE,
+  PROJECT_EDITPAGE_REQUEST,
+  PROJECT_EDITPAGE_SUCCESS,
+  PROJECT_EDITPAGE_FAILURE,
+  PROJECT_UPDATE_REQUEST,
+  PROJECT_UPDATE_SUCCESS,
+  PROJECT_UPDATE_FAILURE,
+  PROJECT_DELETE_REQUEST,
+  PROJECT_DELETE_SUCCESS,
+  PROJECT_DELETE_FAILURE,
 } from 'redux/types/project_types';
 
 const initialState = {
@@ -15,6 +24,7 @@ const initialState = {
   isLoading: false,
   projects: [],
   projectdetail: [],
+  is_project: false,
   title: '',
   category: [],
   contents: '',
@@ -26,32 +36,41 @@ const initialState = {
 
 const projectReducer = (state = initialState, action) => {
   switch (action.type) {
+    case PROJECT_EDITPAGE_REQUEST:
     case PROJECT_DETAIL_REQUEST:
     case PROJECT_WRITE_REQUEST:
+    case PROJECT_UPDATE_REQUEST:
       return {
         ...state,
         isLoading: true,
       };
 
+    case PROJECT_EDITPAGE_SUCCESS:
     case PROJECT_DETAIL_SUCCESS:
       return {
         ...state,
         isLoading: false,
+        is_project: true, // 프로젝트가 존재
         projectdetail: action.payload,
-      }
+        creator: action.payload.creator,
+      };
+    case PROJECT_UPDATE_SUCCESS:
     case PROJECT_WRITE_SUCCESS:
       return {
         ...state,
         isLoading: false,
         projects: action.payload,
-        // title: action.payload.title,
-        // category: action.payload.category,
-        // contents: action.payload.contents,
-        // date: action.payload.date,
-        // fileUrl: action.payload.fileUrl,
-        // creator: action.payload.creator,
       };
+
     case PROJECT_DETAIL_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        is_project: false,
+      };
+
+    case PROJECT_UPDATE_FAILURE:
+    case PROJECT_EDITPAGE_FAILURE:
     case PROJECT_WRITE_FAILURE:
       return {
         ...state,

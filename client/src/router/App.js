@@ -11,6 +11,7 @@ import ProjectDetail from 'pages/ProjectDetail';
 import MyPage from 'pages/MyPage';
 import ProjectList from 'pages/ProjectList';
 import ProjectWrite from 'pages/ProjectWrite';
+import ProjectEdit from 'pages/ProjectEdit';
 import ProjectManager from 'pages/ProjectManager';
 
 // components
@@ -53,6 +54,7 @@ function App() {
         <Route path="/project/write" exact component={ProjectWrite} />
 
         <Route path="/project/detail/:id" exact component={ProjectDetail} />
+        <Route path="/project/edit/:id" exact component={ProjectEdit} />
       </Switch>
       {FooterContainer}
     </Layout>

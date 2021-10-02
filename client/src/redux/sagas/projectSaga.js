@@ -11,6 +11,15 @@ import {
   PROJECT_LOADING_REQUEST,
   PROJECT_LOADING_SUCCESS,
   PROJECT_LOADING_FAILURE,
+  PROJECT_EDITPAGE_REQUEST,
+  PROJECT_EDITPAGE_SUCCESS,
+  PROJECT_EDITPAGE_FAILURE,
+  PROJECT_UPDATE_REQUEST,
+  PROJECT_UPDATE_SUCCESS,
+  PROJECT_UPDATE_FAILURE,
+  PROJECT_DELETE_REQUEST,
+  PROJECT_DELETE_SUCCESS,
+  PROJECT_DELETE_FAILURE,
 } from 'redux/types/project_types';
 
 // CREATE project
@@ -21,7 +30,7 @@ const createProjectAPI = (payload) => {
     }, // 파일때문에 form-data 사용
   };
 
-  const token = payload.token;
+  const token = payload.get('token');
   if (token) {
     config.headers['x-auth-token'] = token;
   }
@@ -38,7 +47,7 @@ function* createProject(action) {
       payload: result.data,
     });
 
-    yield put(push(`detail/${result.data._id}`))
+    yield put(push(`detail/${result.data._id}`));
   } catch (e) {
     yield put({
       type: PROJECT_WRITE_FAILURE,
@@ -61,12 +70,12 @@ function* detailProject(action) {
     const result = yield call(detailprojectAPI, action.payload);
 
     yield put({
-      type:PROJECT_DETAIL_SUCCESS,
+      type: PROJECT_DETAIL_SUCCESS,
       payload: result.data,
     });
   } catch (e) {
     yield put({
-      type:PROJECT_DETAIL_FAILURE,
+      type: PROJECT_DETAIL_FAILURE,
       payload: e,
     });
   }
@@ -79,19 +88,19 @@ function* watchprojectDetail() {
 // READ project // All
 const allprojectAPI = () => {
   return axios.get(`/api/project`);
-}
+};
 
 function* allProject(action) {
   try {
     const result = yield call(allprojectAPI, action.payload);
-    
+
     yield put({
-      type:PROJECT_LOADING_SUCCESS,
+      type: PROJECT_LOADING_SUCCESS,
       payload: result.data,
     });
-  } catch(e){
+  } catch (e) {
     yield put({
-      type:PROJECT_LOADING_FAILURE,
+      type: PROJECT_LOADING_FAILURE,
       payload: e,
     });
   }
@@ -101,6 +110,96 @@ function* watchprojectall() {
   yield takeEvery(PROJECT_LOADING_REQUEST, allProject);
 }
 
+// UPDATE project // 수정 페이지
+const editprojectAPI = (payload) => {
+  return axios.get(`/api/project/${payload}/edit`);
+};
+
+function* editProject(action) {
+  try {
+    const result = yield call(editprojectAPI, action.payload);
+
+    yield put({
+      type: PROJECT_EDITPAGE_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: PROJECT_EDITPAGE_FAILURE,
+      payload: e,
+    });
+  }
+}
+
+// UPDATE project // 수정 action
+const updateprojectAPI = (payload) => {
+  return axios.get(`/api/project/${payload}/update`);
+};
+
+function* updateProject(action) {
+  try {
+    const result = yield call(updateprojectAPI, action.payload);
+
+    yield put({
+      type: PROJECT_UPDATE_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: PROJECT_UPDATE_FAILURE,
+      payload: e,
+    });
+  }
+}
+
+function* watchupdateproject() {
+  yield takeEvery(PROJECT_EDITPAGE_REQUEST, editProject);
+  yield takeEvery(PROJECT_UPDATE_REQUEST, updateProject);
+}
+
+// DELETE project
+const deleteprojectAPI = (payload) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const token = payload.token;
+  if (token) {
+    config.headers['x-auth-token'] = token;
+  }
+  console.log(payload);
+  return axios.delete(`${payload.projectID}/delete`, config);
+};
+
+function* deleteproject(action) {
+  try {
+    console.log(action);
+    const result = yield call(deleteprojectAPI, action.payload);
+
+    yield put({
+      type: PROJECT_DELETE_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: PROJECT_DELETE_FAILURE,
+      payload: e,
+    });
+  }
+}
+
+function* watchdeleteProject() {
+  yield takeEvery(PROJECT_DELETE_REQUEST, deleteproject);
+}
+
 export default function* projectSaga() {
-  yield all([fork(watchcreateProject), fork(watchprojectDetail), fork(watchprojectall)]);
+  yield all([
+    fork(watchcreateProject),
+    fork(watchprojectDetail),
+    fork(watchprojectall),
+    fork(watchupdateproject),
+    fork(watchdeleteProject),
+  ]);
 }
