@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createprojectAction } from 'redux/actions/project_actions';
+import {
+  createprojectAction,
+  editprojectAction,
+  updateprojectAction,
+} from 'redux/actions/project_actions';
 import { Form, Input, Button, Upload } from 'antd';
 
 import axios from 'axios';
@@ -10,7 +14,7 @@ import { PostWriteHeader, ProjectWriteContainer } from './style';
 
 const { TextArea } = Input;
 
-function ProjectWrite() {
+function ProjectEdit(req) {
   const normFile = (e) => {
     console.log('Upload event:', e);
     if (Array.isArray(e)) {
@@ -33,8 +37,12 @@ function ProjectWrite() {
     });
   };
 
-  const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  useLayoutEffect(() => {
+    dispatch(editprojectAction(req.match.params.id));
+  }, [req.match.params.id]);
+
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const onSubmit = async (e) => {
     await e.preventDefault();
@@ -52,7 +60,7 @@ function ProjectWrite() {
 
   return (
     <ProjectWriteContainer>
-      <PostWriteHeader>글 작성하기</PostWriteHeader>
+      <PostWriteHeader>글 수정하기</PostWriteHeader>
       {/* 인증한 사용자만 볼 수 있음 */}
       {isAuthenticated ? (
         <Form>
@@ -86,7 +94,7 @@ function ProjectWrite() {
               name="fileUrl"
               action="/upload.do"
               listType="picture"
-              fileList={[ form.fileUrl ]}
+              fileList={[form.fileUrl]}
             >
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>
@@ -111,4 +119,4 @@ function ProjectWrite() {
   );
 }
 
-export default ProjectWrite;
+export default ProjectEdit;
