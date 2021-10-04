@@ -74,11 +74,6 @@ function ProjectDetail(req) {
     </div>
   );
 
-  const contentText = (contents) => {
-    const text = contents.replace(/(<([^>]+)>)/gi, '');
-    return text;
-  };
-
   return (
     <DetailContainer>
       <Wrap>
@@ -94,7 +89,7 @@ function ProjectDetail(req) {
 
                 <h4>{date}</h4>
                 <h4>{creator.name}</h4>
-                <div>{contentText(contents)}</div>
+                <div dangerouslySetInnerHTML={{ __html: contents }}></div>
 
                 {userId === creator._id ? EditDelete_Button : <></>}
 
