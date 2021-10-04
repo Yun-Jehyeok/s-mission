@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
+import ChatImg from './chat.png';
 
 // style
 import { DetailContainer, Wrap, LeftSide, RightSide } from './style';
@@ -8,6 +9,7 @@ import { DetailContainer, Wrap, LeftSide, RightSide } from './style';
 import { Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { detailprojectAction } from 'redux/actions/project_actions';
+import { WechatOutlined } from '@ant-design/icons';
 
 const images = [
   {
@@ -57,13 +59,18 @@ function ProjectDetail(req) {
               publishing software like Aldus PageMaker including versions of
               Lorem Ipsum.
             </div>
-
-            <div style={{ marginTop: '16px' }}>
-              <Button type="primary">채팅하기?</Button>
-            </div>
           </div>
         </RightSide>
       </Wrap>
+      <div
+        style={{
+          position: 'fixed',
+          right: '5%',
+          bottom: '10%',
+        }}
+      >
+        <img src={ChatImg} style={{ width: '74px', height: '74px' }} />
+      </div>
     </DetailContainer>
   );
 }
