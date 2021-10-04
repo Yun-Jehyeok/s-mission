@@ -6,6 +6,7 @@ import { DetailContainer, Wrap, LeftSide, RightSide } from './style';
 
 // antd
 import { Button } from 'antd';
+import { withRouter } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   detailprojectAction,
@@ -52,12 +53,17 @@ function ProjectDetail(req) {
       })
     : [];
 
-  const onDeleteClick = () => {
-    const token = localStorage.getItem('token');
-    const projectID = req.match.params.id;
-    const body = { token, projectID };
-    console.log(body);
-    deleteprojectAction(body);
+  const onDeleteClick = (e) => {
+    e.preventDefault();
+
+    var result = window.confirm('글을 삭제하시겠습니까?');
+    if (result) {
+      const token = localStorage.getItem('token');
+      const projectID = req.match.params.id;
+      const body = { token, projectID };
+      dispatch(deleteprojectAction(body));
+      req.history.push('1');
+    }
   };
 
   // 글 수정, 삭제
@@ -83,7 +89,7 @@ function ProjectDetail(req) {
 
                 <h4>{date}</h4>
                 <h4>{creator.name}</h4>
-                <div>{contents}</div>
+                <div dangerouslySetInnerHTML={{ __html: contents }}></div>
 
                 {userId === creator._id ? EditDelete_Button : <></>}
 
@@ -101,4 +107,4 @@ function ProjectDetail(req) {
   );
 }
 
-export default ProjectDetail;
+export default withRouter(ProjectDetail);

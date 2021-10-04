@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect, createRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createprojectAction } from 'redux/actions/project_actions';
 import { Form, Input, Button, Upload } from 'antd';
 
 import axios from 'axios';
+
+// Editor
+import '@toast-ui/editor/dist/toastui-editor.css';
+import { Editor } from '@toast-ui/react-editor';
 
 import { UploadOutlined } from '@ant-design/icons';
 import { PostWriteHeader, ProjectWriteContainer } from './style';
@@ -33,12 +37,21 @@ function ProjectWrite() {
     });
   };
 
+  const onEditorChange = () => {
+    const val = editorRef.current.getInstance().getHTML();
+    setForm({
+      ...form,
+      contents: val,
+    });
+  };
+
   const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const editorRef = createRef();
 
   const onSubmit = async (e) => {
     await e.preventDefault();
-    const { title, contents, fileUrl, category } = form;
+    const { title, fileUrl, contents, category } = form;
     const token = localStorage.getItem('token');
     const formData = new FormData();
     formData.append('title', title);
@@ -49,6 +62,8 @@ function ProjectWrite() {
 
     dispatch(createprojectAction(formData));
   };
+
+  useLayoutEffect(() => {}, [dispatch]);
 
   return (
     <ProjectWriteContainer>
@@ -86,20 +101,19 @@ function ProjectWrite() {
               name="fileUrl"
               action="/upload.do"
               listType="picture"
-              fileList={[ form.fileUrl ]}
+              fileList={[form.fileUrl]}
             >
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>
           </Form.Item>
-          <Form.Item name={'content'} rules={[{ required: true }]}>
-            <TextArea
-              name="contents"
-              id="contents"
-              onChange={onValueChange}
-              placeholder="내용을 입력해 주세요."
-              style={{ height: '500px', padding: '24px' }}
-            />
-          </Form.Item>
+          <Editor
+            previewStyle="vertical"
+            height="400px"
+            useCommandShortcut={true}
+            initialEditType="wysiwyg"
+            ref={editorRef}
+            onChange={onEditorChange}
+          />
           <Button onClick={onSubmit} type="primary" style={{ width: '100%' }}>
             글쓰기
           </Button>
