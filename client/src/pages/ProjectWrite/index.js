@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createprojectAction } from 'redux/actions/project_actions';
 import { Form, Input, Button, Upload } from 'antd';
@@ -50,6 +50,8 @@ function ProjectWrite() {
     dispatch(createprojectAction(formData));
   };
 
+  useLayoutEffect(() => {}, [dispatch]);
+
   return (
     <ProjectWriteContainer>
       <PostWriteHeader>글 작성하기</PostWriteHeader>
@@ -86,7 +88,7 @@ function ProjectWrite() {
               name="fileUrl"
               action="/upload.do"
               listType="picture"
-              fileList={[ form.fileUrl ]}
+              fileList={[form.fileUrl]}
             >
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>
