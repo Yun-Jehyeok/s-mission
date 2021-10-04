@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
 import ChatImg from './chat.png';
 
@@ -7,10 +7,16 @@ import { DetailContainer, Wrap, LeftSide, RightSide } from './style';
 
 // antd
 import { Button } from 'antd';
+import { withRouter } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { detailprojectAction } from 'redux/actions/project_actions';
-import { WechatOutlined } from '@ant-design/icons';
 
+import {
+  detailprojectAction,
+  editprojectAction,
+  deleteprojectAction,
+} from 'redux/actions/project_actions';
+
+// 이미지 변경해야함
 const images = [
   {
     original: 'https://picsum.photos/id/1018/1000/600/',
@@ -27,40 +33,77 @@ const images = [
 ];
 
 function ProjectDetail(req) {
-  const { title, category, contents, creator, fileUrl, date } = useSelector(
+  const { projectdetail, creator, is_project } = useSelector(
     (state) => state.project,
   );
+  const { userId } = useSelector((state) => state.auth);
+
+  const { category, contents, date, fileUrl, title } = projectdetail;
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     dispatch(detailprojectAction(req.match.params.id));
   }, [dispatch, req.match.params.id]);
+
+  const categoryList = category
+    ? category.map((cate, index) => {
+        return (
+          <span key={index}>
+            <Button>{cate.categoryName}</Button>
+          </span>
+        );
+      })
+    : [];
+
+  const onDeleteClick = (e) => {
+    e.preventDefault();
+
+    var result = window.confirm('글을 삭제하시겠습니까?');
+    if (result) {
+      const token = localStorage.getItem('token');
+      const projectID = req.match.params.id;
+      const body = { token, projectID };
+      dispatch(deleteprojectAction(body));
+      req.history.push('1');
+    }
+  };
+
+  // 글 수정, 삭제
+  const EditDelete_Button = (
+    <div>
+      <Button>글 수정하기</Button>
+      <Button onClick={onDeleteClick}>글 삭제하기</Button>
+    </div>
+  );
 
   return (
     <DetailContainer>
       <Wrap>
-        <LeftSide>
-          <ImageGallery items={images} autoPlay />
-        </LeftSide>
-        <RightSide>
-          <h1>Side Project Title</h1>
-          <div>
-            <h3>Description</h3>
+        {is_project ? (
+          <>
+            <LeftSide>
+              <ImageGallery items={images} autoPlay />
+            </LeftSide>
+            <RightSide>
+              <h1>{title}</h1>
+              <div>
+                <div>{categoryList}</div>
 
-            <div>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-            </div>
-          </div>
-        </RightSide>
+                <h4>{date}</h4>
+                <h4>{creator.name}</h4>
+                <div dangerouslySetInnerHTML={{ __html: contents }}></div>
+
+                {userId === creator._id ? EditDelete_Button : <></>}
+
+                <div style={{ marginTop: '16px' }}>
+                  <Button type="primary">채팅하기?</Button>
+                </div>
+              </div>
+            </RightSide>
+          </>
+        ) : (
+          <div>프로젝트가 존재하지 않습니다.</div>
+        )}
       </Wrap>
       <div
         style={{
@@ -75,4 +118,4 @@ function ProjectDetail(req) {
   );
 }
 
-export default ProjectDetail;
+export default withRouter(ProjectDetail);
