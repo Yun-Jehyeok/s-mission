@@ -3,7 +3,19 @@ import ImageGallery from 'react-image-gallery';
 import ChatImg from './chat.png';
 
 // style
-import { DetailContainer, Wrap, LeftSide, RightSide } from './style';
+import {
+  DetailContainer,
+  Wrap,
+  LeftSide,
+  RightSide,
+  Title,
+  CategoryDateContainer,
+  ContentContainer,
+  CommentContainer,
+  FileContainer,
+  ChatImgContainer,
+  EditDeleteContainer,
+} from './style';
 
 // antd
 import { Button } from 'antd';
@@ -46,14 +58,14 @@ function ProjectDetail(req) {
   }, [dispatch, req.match.params.id]);
 
   const categoryList = category
-    ? category.map((cate, index) => {
+    ? category.map((item, index) => {
         return (
           <span key={index}>
-            <Button type="primary">{cate.categoryName}</Button>
+            <Button type="primary">{item.categoryName}</Button>
           </span>
         );
       })
-    : [];
+    : '';
 
   const onDeleteClick = (e) => {
     e.preventDefault();
@@ -70,14 +82,12 @@ function ProjectDetail(req) {
 
   // 글 수정, 삭제
   const EditDelete_Button = (
-    <div
-      style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}
-    >
-      <Button style={{ marginRight: '8px' }}>글 수정하기</Button>
+    <EditDeleteContainer>
+      <Button>글 수정하기</Button>
       <Button onClick={onDeleteClick} type="danger">
         글 삭제하기
       </Button>
-    </div>
+    </EditDeleteContainer>
   );
 
   return (
@@ -86,51 +96,33 @@ function ProjectDetail(req) {
         {is_project ? (
           <>
             <LeftSide>
-              <div
-                style={{
-                  textAlign: 'center',
-                  fontWeight: 'bolder',
-                  fontSize: '28px',
-                }}
-              >
-                {title}
-              </div>
+              <Title>{title}</Title>
               <div>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    marginTop: '32px',
-                    marginBottom: '16px',
-                  }}
-                >
+                <CategoryDateContainer>
                   <div>{categoryList}</div>
-
-                  <div style={{ color: '#C7CAD2', lineHeight: '32px' }}>
-                    {date}
-                  </div>
-                </div>
+                  <div>{date}</div>
+                </CategoryDateContainer>
 
                 {/* <h4>{creator.name}</h4> */}
-                <div
-                  style={{
-                    width: '100%',
-                    borderTop: '1px solid #dbdbdb',
-                    paddingTop: '32px',
-                  }}
-                >
+                <ContentContainer>
                   <div dangerouslySetInnerHTML={{ __html: contents }}></div>
-                </div>
+                </ContentContainer>
+                <CommentContainer>
+                  <h2>
+                    <b>COMMENTS</b>
+                  </h2>
+                  <input placeholder="댓글을 작성해주세요." />
+                </CommentContainer>
               </div>
             </LeftSide>
             <RightSide>
               <ImageGallery items={images} autoPlay />
-              <div style={{ color: '#1990ff', marginTop: '32px' }}>
+              <FileContainer>
                 <div>파일이 들어갈 공간입니다.</div>
                 <div>파일이 들어갈 공간입니다.</div>
                 <div>파일이 들어갈 공간입니다.</div>
                 <div>파일이 들어갈 공간입니다.</div>
-              </div>
+              </FileContainer>
               {userId === creator._id ? EditDelete_Button : <></>}
             </RightSide>
           </>
@@ -138,15 +130,9 @@ function ProjectDetail(req) {
           <div>프로젝트가 존재하지 않습니다.</div>
         )}
       </Wrap>
-      <div
-        style={{
-          position: 'fixed',
-          right: '5%',
-          bottom: '10%',
-        }}
-      >
-        <img src={ChatImg} style={{ width: '74px', height: '74px' }} />
-      </div>
+      <ChatImgContainer>
+        <img src={ChatImg} />
+      </ChatImgContainer>
     </DetailContainer>
   );
 }

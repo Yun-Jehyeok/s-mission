@@ -65,7 +65,7 @@ function Inner() {
           </NavButton>
         </div>
         <CardContainer>
-          <Link to="/project/detail/1">
+          <Link to="/project/detail/615c04c456843d99fcc591a4">
             <CardContent
               cover={
                 <img
