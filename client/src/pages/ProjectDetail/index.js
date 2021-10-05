@@ -49,7 +49,7 @@ function ProjectDetail(req) {
     ? category.map((cate, index) => {
         return (
           <span key={index}>
-            <Button>{cate.categoryName}</Button>
+            <Button type="primary">{cate.categoryName}</Button>
           </span>
         );
       })
@@ -70,9 +70,13 @@ function ProjectDetail(req) {
 
   // 글 수정, 삭제
   const EditDelete_Button = (
-    <div>
-      <Button>글 수정하기</Button>
-      <Button onClick={onDeleteClick}>글 삭제하기</Button>
+    <div
+      style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}
+    >
+      <Button style={{ marginRight: '8px' }}>글 수정하기</Button>
+      <Button onClick={onDeleteClick} type="danger">
+        글 삭제하기
+      </Button>
     </div>
   );
 
@@ -82,23 +86,52 @@ function ProjectDetail(req) {
         {is_project ? (
           <>
             <LeftSide>
-              <ImageGallery items={images} autoPlay />
-            </LeftSide>
-            <RightSide>
-              <h1>{title}</h1>
+              <div
+                style={{
+                  textAlign: 'center',
+                  fontWeight: 'bolder',
+                  fontSize: '28px',
+                }}
+              >
+                {title}
+              </div>
               <div>
-                <div>{categoryList}</div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginTop: '32px',
+                    marginBottom: '16px',
+                  }}
+                >
+                  <div>{categoryList}</div>
 
-                <h4>{date}</h4>
-                <h4>{creator.name}</h4>
-                <div dangerouslySetInnerHTML={{ __html: contents }}></div>
+                  <div style={{ color: '#C7CAD2', lineHeight: '32px' }}>
+                    {date}
+                  </div>
+                </div>
 
-                {userId === creator._id ? EditDelete_Button : <></>}
-
-                <div style={{ marginTop: '16px' }}>
-                  <Button type="primary">채팅하기?</Button>
+                {/* <h4>{creator.name}</h4> */}
+                <div
+                  style={{
+                    width: '100%',
+                    borderTop: '1px solid #dbdbdb',
+                    paddingTop: '32px',
+                  }}
+                >
+                  <div dangerouslySetInnerHTML={{ __html: contents }}></div>
                 </div>
               </div>
+            </LeftSide>
+            <RightSide>
+              <ImageGallery items={images} autoPlay />
+              <div style={{ color: '#1990ff', marginTop: '32px' }}>
+                <div>파일이 들어갈 공간입니다.</div>
+                <div>파일이 들어갈 공간입니다.</div>
+                <div>파일이 들어갈 공간입니다.</div>
+                <div>파일이 들어갈 공간입니다.</div>
+              </div>
+              {userId === creator._id ? EditDelete_Button : <></>}
             </RightSide>
           </>
         ) : (

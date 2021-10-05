@@ -19,9 +19,9 @@ export const Wrap = styled.div`
 `;
 
 export const LeftSide = styled.div`
-  width: 48%;
+  width: 55%;
 `;
 
 export const RightSide = styled.div`
-  width: 48%;
+  width: 41%;
 `;
