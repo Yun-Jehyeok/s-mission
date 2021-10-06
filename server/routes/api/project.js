@@ -8,11 +8,29 @@ const router = express.Router();
 const moment = require('moment');
 const dotenv = require('dotenv');
 const multer = require('multer');
-const upload = multer({ dest: './upload' });
 
 const { isNullOrUndefined } = require('util');
 
 dotenv.config();
+
+// previewImg, imgIncontent upload //
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}_${file.originalname}`);
+  },
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    if (ext !== '.jpg' || ext !== '.png' || ext !== '.jpeg') {
+      return cb(res.status(400).end('only jpg, png, jpeg are allowed'), false);
+    }
+    cb(null, true);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 // Project All //
 router.get('/', async (req, res) => {
@@ -28,19 +46,23 @@ router.get('/', async (req, res) => {
 });
 
 // Project Create //
-router.post('/write', auth, upload.single('fileUrl'), async (req, res) => {
+router.post('/write', auth, upload.single('image'), async (req, res) => {
   try {
-    const { title, contents, fileUrl, category } = req.body;
-    console.log(req.user.id);
+    const { title, contents, category, previewImg, imgInContent } = req.body;
+    let preview_img = '/image/' + previewImg;
+    let img_incontent = '/image/' + imgInContent;
 
     // 새로운 프로젝트 생성
     const newProject = await Project.create({
       title,
       contents,
-      fileUrl,
+      preview_img,
+      img_incontent,
       creator: req.user.id,
       date: moment().format('MMMM DD, YYYY'),
     });
+    
+    console.log(newProject);
 
     const categoryFindResult = await Category.findOne({
       categoryName: category,
