@@ -26,11 +26,11 @@ import {
 const createProjectAPI = (payload) => {
   const config = {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      'Content-Type': 'application/json',
     }, // 파일때문에 form-data 사용
   };
 
-  const token = payload.get('token');
+  const token = payload.token;
   if (token) {
     config.headers['x-auth-token'] = token;
   }

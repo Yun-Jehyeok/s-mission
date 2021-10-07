@@ -16,7 +16,7 @@ dotenv.config();
 // previewImg, imgIncontent upload //
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    cb(null, 'upload/');
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}_${file.originalname}`);
@@ -30,7 +30,7 @@ var storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage }).single('file');
 
 // Project All //
 router.get('/', async (req, res) => {
@@ -45,19 +45,31 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Project Create //
-router.post('/write', auth, upload.single('image'), async (req, res) => {
+// Upload Image //
+router.post('/uploadimage', (req, res) =>{
   try {
-    const { title, contents, category, previewImg, imgInContent } = req.body;
-    let preview_img = '/image/' + previewImg;
-    let img_incontent = '/image/' + imgInContent;
+    upload(req, res, (err) => {
+      return res.json({
+        success: true,
+        image: res.req.file.path, // upload/${imagename}
+        filename: res.req.file.filename,
+      });
+    })
+  } catch(e){
+    res.json({ success: false, e });
+  }
+});
+
+// Project Create //
+router.post('/write', auth, async (req, res) => {
+  try {
+    const { title, contents, category, previewImg } = req.body;
 
     // 새로운 프로젝트 생성
     const newProject = await Project.create({
       title,
       contents,
-      preview_img,
-      img_incontent,
+      previewImg,
       creator: req.user.id,
       date: moment().format('MMMM DD, YYYY'),
     });

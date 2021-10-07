@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createprojectAction } from 'redux/actions/project_actions';
 import { Form, Input, Button, Upload } from 'antd';
 
-import axios from 'axios';
+import Axios from 'axios';
 
 // Editor
 import '@toast-ui/editor/dist/toastui-editor.css';
@@ -15,21 +15,15 @@ import { PostWriteHeader, ProjectWriteContainer } from './style';
 const { TextArea } = Input;
 
 function ProjectWrite() {
-  const normFile = (e) => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
 
   const [form, setForm] = useState({
     title: '',
     contents: '',
-    fileUrl: '',
+    previewImg: [],
     category: [],
   });
 
+  // Change //
   const onValueChange = (e) => {
     setForm({
       ...form,
@@ -45,22 +39,42 @@ function ProjectWrite() {
     });
   };
 
+  const normFile = (e) => {
+    console.log('Upload event:', e);
+    let fileName = e.file.name;
+    Axios.post('api/project/uploadImage', fileName).then((res) => {
+      console.log(res.data);
+      if (res.data.success) {
+        console.log(res.data.image);
+        setForm({
+          ...form, // 
+          previewImg: [ ...form.previewImg, res.data.image ],
+        })
+      } else {
+        console.log(res.data.e);
+      }
+    });
+    if (Array.isArray(e)) {
+      return e;
+    }
+    // let formData = new FormData();
+    // formData.append('previewImg', e[0]);
+    return e && e.fileList;
+  };
+
   const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const editorRef = createRef();
 
   const onSubmit = async (e) => {
     await e.preventDefault();
-    const { title, fileUrl, contents, category } = form;
+    const { title, previewImg, contents, category } = form;
     const token = localStorage.getItem('token');
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('contents', contents);
-    formData.append('fileUrl', fileUrl);
-    formData.append('category', category);
-    formData.append('token', token);
+    let data = {
+      title, contents, previewImg, category, token,
+    }
 
-    dispatch(createprojectAction(formData));
+    dispatch(createprojectAction(data));
   };
 
   useLayoutEffect(() => {}, [dispatch]);
@@ -92,16 +106,16 @@ function ProjectWrite() {
             />
           </Form.Item>
           <Form.Item
-            name={'fileUrl'}
+            name={'previewImg'}
             label="project file"
             valuePropName="fileList"
             getValueFromEvent={normFile}
           >
             <Upload
-              name="fileUrl"
+              name="previewImg"
               action="/upload.do"
               listType="picture"
-              fileList={[form.fileUrl]}
+              fileList={[form.previewImg]}
             >
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>

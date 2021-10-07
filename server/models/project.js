@@ -12,8 +12,8 @@ const ProjectSchema = new mongoose.Schema({
     required: true,
   },
   previewImg : {
-    type: String,
-    default: '',
+    type: Array,
+    default: [],
   },
   files: {
     type: Array,
