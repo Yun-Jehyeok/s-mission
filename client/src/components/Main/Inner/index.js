@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // antd
-import { Card, Divider, List } from 'antd';
+import { Button, Card, Divider } from 'antd';
 
 // style
 import {
@@ -18,14 +18,6 @@ import {
 import LoginModal from 'components/LoginModal/LoginModal';
 
 const { Meta } = Card;
-
-const data = [
-  '1st Side Project',
-  '2nd Side Project',
-  '3rd Side Project',
-  '4th Side Project',
-  '5th Side Project',
-];
 
 function Inner() {
   const [FirstButton, setFirstButton] = useState('primary');
@@ -48,7 +40,7 @@ function Inner() {
     }
   };
 
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, userName } = useSelector((state) => state.auth);
 
   return (
     <InnerContainer>
@@ -109,18 +101,22 @@ function Inner() {
         {isAuthenticated ? (
           <div style={{ paddingLeft: '32px' }}>
             <Divider orientation="center" style={{ marginTop: '0' }}>
-              My Side Projects
+              User Info
             </Divider>
-            <List
-              size="small"
-              bordered
-              dataSource={data}
-              renderItem={(item) => (
-                <a href="/user/project/1">
-                  <List.Item>{item}</List.Item>
-                </a>
-              )}
+            <img
+              src="https://placeimg.com/150/150/person"
+              style={{ borderRadius: '70%', marginBottom: '14px' }}
             />
+            <h3 style={{ fontWeight: 'bolder' }}>{userName}</h3>
+            <div>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry ...
+            </div>
+            <Link to="/project/write">
+              <Button type="primary" style={{ width: '100%' }}>
+                글쓰기
+              </Button>
+            </Link>
           </div>
         ) : (
           <div style={{ paddingTop: '133px' }}>

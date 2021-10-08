@@ -5,6 +5,9 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_FAILURE,
   LOGOUT_SUCCESS,
+  CLOSE_ACCOUNT_REQUEST,
+  CLOSE_ACCOUNT_SUCCESS,
+  CLOSE_ACCOUNT_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
@@ -56,11 +59,10 @@ const authReducer = (state = initialState, action) => {
       localStorage.removeItem('token');
 
       return {
-        ...state,
-        ...action.payload,
         token: null,
         user: null,
         userId: null,
+        userName: null,
         isAuthenticated: false,
         isLoading: false,
       };
@@ -72,7 +74,30 @@ const authReducer = (state = initialState, action) => {
         token: null,
         user: null,
         userId: null,
+        userName: null,
         isAuthenticated: false,
+        isLoading: false,
+      };
+
+    case CLOSE_ACCOUNT_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case CLOSE_ACCOUNT_SUCCESS:
+      localStorage.removeItem('token');
+
+      return {
+        token: null,
+        user: null,
+        userId: null,
+        userName: null,
+        isAuthenticated: false,
+        isLoading: false,
+      };
+    case CLOSE_ACCOUNT_FAILURE:
+      return {
+        ...state,
         isLoading: false,
       };
 

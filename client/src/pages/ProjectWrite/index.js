@@ -29,7 +29,6 @@ function ProjectWrite() {
     fileUrl: '',
     category: [],
   });
-
   const onValueChange = (e) => {
     setForm({
       ...form,

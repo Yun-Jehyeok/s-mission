@@ -2,6 +2,7 @@ import {
   GOOGLE_LOGIN_REQUEST,
   LOGIN_REQUEST,
   LOGOUT_REQUEST,
+  CLOSE_ACCOUNT_REQUEST,
   REGISTER_REQUEST,
   USER_EMAIL_AUTH_REQUEST,
   USER_LOADING_REQUEST,
@@ -19,6 +20,11 @@ export const googleLoginAction = (user) => ({
 
 export const logoutAction = () => ({
   type: LOGOUT_REQUEST,
+});
+
+export const closeAccountAction = (userId) => ({
+  type: CLOSE_ACCOUNT_REQUEST,
+  payload: userId,
 });
 
 export const registerAction = (user) => ({

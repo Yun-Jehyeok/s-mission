@@ -31,6 +31,7 @@ const createProjectAPI = (payload) => {
   };
 
   const token = payload.get('token');
+
   if (token) {
     config.headers['x-auth-token'] = token;
   }

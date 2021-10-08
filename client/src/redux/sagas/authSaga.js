@@ -7,6 +7,9 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE,
+  CLOSE_ACCOUNT_REQUEST,
+  CLOSE_ACCOUNT_SUCCESS,
+  CLOSE_ACCOUNT_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
@@ -99,6 +102,39 @@ function* watchlogout() {
   yield takeEvery(LOGOUT_REQUEST, logout);
 }
 
+// CLOSE ACCOUNT
+const closeAccountAPI = (userId) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  return axios.delete('/api/auth/closeaccount', userId, config);
+};
+
+function* closeAccount(action) {
+  try {
+    const result = yield call(closeAccountAPI, action.payload);
+
+    yield put({
+      type: CLOSE_ACCOUNT_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    alert(`${e.response.data.msg}`);
+
+    yield put({
+      type: CLOSE_ACCOUNT_FAILURE,
+      payload: e.response,
+    });
+  }
+}
+
+function* watchCloseAccount() {
+  yield takeEvery(CLOSE_ACCOUNT_REQUEST, closeAccount);
+}
+
 // Register
 const registerUserAPI = (data) => {
   const config = {
@@ -171,6 +207,7 @@ export default function* authSaga() {
   yield all([
     fork(watchLoginUser),
     fork(watchlogout),
+    fork(watchCloseAccount),
     fork(watchregisterUser),
     fork(watchuserLoading),
     fork(watchGoogleLoginUser),
