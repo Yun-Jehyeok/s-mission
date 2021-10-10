@@ -31,6 +31,7 @@ const createProjectAPI = (payload) => {
   };
 
   const token = payload.get('token');
+
   if (token) {
     config.headers['x-auth-token'] = token;
   }
@@ -169,13 +170,11 @@ const deleteprojectAPI = (payload) => {
   if (token) {
     config.headers['x-auth-token'] = token;
   }
-  console.log(payload);
-  return axios.delete(`${payload.projectID}/delete`, config);
+  return axios.delete(`/api/project/${payload.projectID}/delete`, config);
 };
 
 function* deleteproject(action) {
   try {
-    console.log(action);
     const result = yield call(deleteprojectAPI, action.payload);
 
     yield put({

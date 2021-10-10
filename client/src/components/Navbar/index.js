@@ -47,7 +47,7 @@ const menu = (
 );
 
 function Navbar() {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, userId } = useSelector((state) => state.auth);
 
   return (
     <NavbarContainer>
@@ -103,7 +103,7 @@ function Navbar() {
         <SearchInput />
         <LoginModal buttonType="default" />
         {isAuthenticated ? (
-          <a href="/user/mypage">
+          <a href={`/user/mypage/${userId}`}>
             <Button type="primary">My Page</Button>
           </a>
         ) : (

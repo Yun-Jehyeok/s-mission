@@ -32,7 +32,6 @@ router.post('/write', auth, upload.single('fileUrl'), async (req, res) => {
   try {
     const { title, contents, fileUrl, category } = req.body;
     console.log(req.user.id);
-
     // 새로운 프로젝트 생성
     const newProject = await Project.create({
       title,

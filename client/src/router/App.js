@@ -7,19 +7,20 @@ import { Layout } from 'antd';
 // pages
 import Main from 'pages/Main/index';
 import SignUp from 'pages/SignUp/index';
+import CloseAccount from 'pages/CloseAccount';
 import ProjectDetail from 'pages/ProjectDetail';
 import MyPage from 'pages/MyPage';
 import ProjectList from 'pages/ProjectList';
 import ProjectWrite from 'pages/ProjectWrite';
 import ProjectEdit from 'pages/ProjectEdit';
 import ProjectManager from 'pages/ProjectManager';
+import FindPassword from 'pages/FindPassword';
+import Home from 'pages/Chat/page/Home/Home';
+import Chat from 'pages/Chat/page/Chat/Chat';
 
 // components
 import Navbar from 'components/Navbar';
 import Footer from 'components/Footer/index';
-import FindPassword from 'pages/FindPassword';
-import Home from 'pages/Chat/page/Home/Home';
-import Chat from 'pages/Chat/page/Chat/Chat';
 
 function App() {
   let Navigation =
@@ -53,6 +54,8 @@ function App() {
 
         <Route path="/user/signup" exact component={SignUp} />
         <Route path="/user/password" exact component={FindPassword} />
+        <Route path="/user/closeaccount/:id" exact component={CloseAccount} />
+
         <Route path="/user/mypage/:id" exact component={MyPage} />
         <Route path="/user/project/:id" exact component={ProjectManager} />
 
