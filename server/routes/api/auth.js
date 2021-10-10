@@ -122,10 +122,10 @@ router.post('/logout', (req, res) => {
 });
 
 // CLOSE ACCOUNT / DELETE
-router.delete('/closeaccount', async (req, res) => {
+router.delete('/closeaccount/:id', async (req, res) => {
   try {
-    await User.deleteOne({ _id: req.body.userId });
-    await Project.deleteMany({ creator: req.body.userId });
+    await User.deleteOne({ _id: req.params.id });
+    await Project.deleteMany({ creator: req.params.id });
 
     return res.status(200).json({ success: true });
   } catch (e) {

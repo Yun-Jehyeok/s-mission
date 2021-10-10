@@ -110,7 +110,7 @@ const closeAccountAPI = (userId) => {
     },
   };
 
-  return axios.delete('/api/auth/closeaccount', userId, config);
+  return axios.delete(`/api/auth/closeaccount/${userId}`, config);
 };
 
 function* closeAccount(action) {
@@ -122,8 +122,6 @@ function* closeAccount(action) {
       payload: result.data,
     });
   } catch (e) {
-    alert(`${e.response.data.msg}`);
-
     yield put({
       type: CLOSE_ACCOUNT_FAILURE,
       payload: e.response,
