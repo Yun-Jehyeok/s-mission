@@ -30,8 +30,8 @@ const createProjectAPI = (payload) => {
       'Content-Type': 'application/json',
     },
   };
-
   const token = payload.token;
+
   if (token) {
     config.headers['x-auth-token'] = token;
   }

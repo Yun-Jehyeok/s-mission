@@ -189,7 +189,9 @@ function FindPassword() {
                 placeholder="이메일을 입력해주세요."
                 onChange={onChange}
               />
-              <Button onClick={onCheckEmail}>다음</Button>
+              <Button onClick={onCheckEmail} type="primary">
+                다음
+              </Button>
             </div>
           </EmailCheck>
         )}

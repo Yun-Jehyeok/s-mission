@@ -9,12 +9,13 @@ import store from 'store';
 import 'antd/dist/antd.css';
 import './index.css';
 import loadUser from 'components/auth/loadUser';
+import { history } from 'store';
 
 loadUser();
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
+    <BrowserRouter history={history}>
       <App />
     </BrowserRouter>
   </Provider>,

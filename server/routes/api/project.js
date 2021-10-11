@@ -61,7 +61,6 @@ router.post('/uploadimage', upload.single('file'), (req, res) =>{
 router.post('/write', auth, async (req, res) => {
   try {
     const { title, contents, category, previewImg } = req.body;
-
     // 새로운 프로젝트 생성
     const newProject = await Project.create({
       title,
