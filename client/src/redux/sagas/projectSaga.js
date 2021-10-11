@@ -26,8 +26,9 @@ import {
 const createProjectAPI = (payload) => {
   const config = {
     headers: {
+      withCredentials: true,
       'Content-Type': 'application/json',
-    }, // 파일때문에 form-data 사용
+    },
   };
 
   const token = payload.token;
