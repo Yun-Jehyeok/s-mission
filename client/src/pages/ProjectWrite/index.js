@@ -3,32 +3,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createprojectAction } from 'redux/actions/project_actions';
 import { Form, Input, Button, Upload } from 'antd';
 
-import axios from 'axios';
+import Axios from 'axios';
 
 // Editor
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 
-import { UploadOutlined } from '@ant-design/icons';
 import { PostWriteHeader, ProjectWriteContainer } from './style';
+
+import Fileupload from './Fileupload';
 
 const { TextArea } = Input;
 
 function ProjectWrite() {
-  const normFile = (e) => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
 
   const [form, setForm] = useState({
     title: '',
     contents: '',
-    fileUrl: '',
+    previewImg: [],
     category: [],
   });
+
+  // Change //
   const onValueChange = (e) => {
     setForm({
       ...form,
@@ -44,22 +40,25 @@ function ProjectWrite() {
     });
   };
 
+  const onImageChange = (image) => {
+    setForm({
+      ...form,
+      previewImg: image
+    });
+  }
+
   const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const editorRef = createRef();
 
   const onSubmit = async (e) => {
-    await e.preventDefault();
-    const { title, fileUrl, contents, category } = form;
+    const { title, previewImg, contents, category } = form;
     const token = localStorage.getItem('token');
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('contents', contents);
-    formData.append('fileUrl', fileUrl);
-    formData.append('category', category);
-    formData.append('token', token);
+    let data = {
+      title, contents, previewImg, category, token,
+    }
 
-    dispatch(createprojectAction(formData));
+    dispatch(createprojectAction(data));
   };
 
   useLayoutEffect(() => {}, [dispatch]);
@@ -69,7 +68,7 @@ function ProjectWrite() {
       <PostWriteHeader>글 작성하기</PostWriteHeader>
       {/* 인증한 사용자만 볼 수 있음 */}
       {isAuthenticated ? (
-        <Form>
+        <Form onFinish={onSubmit}>
           <Form.Item
             name={'title'}
             rules={[{ required: true }]}
@@ -90,21 +89,7 @@ function ProjectWrite() {
               placeholder="카테고리를 입력해 주세요."
             />
           </Form.Item>
-          <Form.Item
-            name={'fileUrl'}
-            label="project file"
-            valuePropName="fileList"
-            getValueFromEvent={normFile}
-          >
-            <Upload
-              name="fileUrl"
-              action="/upload.do"
-              listType="picture"
-              fileList={[form.fileUrl]}
-            >
-              <Button icon={<UploadOutlined />}>Click to upload</Button>
-            </Upload>
-          </Form.Item>
+          <Fileupload onUploadFunction={onImageChange}/>
           <Editor
             previewStyle="vertical"
             height="400px"
@@ -113,9 +98,11 @@ function ProjectWrite() {
             ref={editorRef}
             onChange={onEditorChange}
           />
-          <Button onClick={onSubmit} type="primary" style={{ width: '100%' }}>
-            글쓰기
-          </Button>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+              글쓰기
+            </Button>
+          </Form.Item>
         </Form>
       ) : (
         <div>로그인하고 이용하세요.</div>

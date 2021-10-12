@@ -11,9 +11,17 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  fileUrl: {
-    type: String,
-    default: 'https://source.unsplash.com/random/301x201',
+  previewImg : {
+    type: Array,
+    default: [],
+  },
+  files: {
+    type: Array,
+    default: [],
+  },
+  imgInContent: {
+    type: Array,
+    default: [],
   },
   category: [
     {
