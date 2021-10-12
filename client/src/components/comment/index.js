@@ -4,8 +4,9 @@ import {
   COMMENT_LOADING_REQUEST,
   COMMENT_UPLOADING_REQUEST,
 } from '../../redux/types/project_types';
+import { Comment_Button } from './style';
 
-function Comments({ id, userId, userName, projectNAme }) {
+function Comments({ id, userId, userName, projectId }) {
   const dispatch = useDispatch();
   const [form, setValues] = useState({
     contents: '',
@@ -54,9 +55,9 @@ function Comments({ id, userId, userName, projectNAme }) {
         placeholder="Comment"
       />
 
-      <Button color="primary" block>
+      <Comment_Button color="primary" block>
         Submit
-      </Button>
+      </Comment_Button>
     </>
   );
 }
