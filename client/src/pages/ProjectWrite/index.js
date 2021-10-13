@@ -13,8 +13,6 @@ import { PostWriteHeader, ProjectWriteContainer } from './style';
 
 import Fileupload from './Fileupload';
 
-const { TextArea } = Input;
-
 function ProjectWrite() {
 
   const [form, setForm] = useState({
@@ -39,6 +37,10 @@ function ProjectWrite() {
       contents: val,
     });
   };
+
+  const onCategoryChange = (e) => {
+
+  }
 
   const onImageChange = (image) => {
     setForm({

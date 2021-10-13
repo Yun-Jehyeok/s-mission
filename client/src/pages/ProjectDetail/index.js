@@ -24,7 +24,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   detailprojectAction,
-  editprojectAction,
   deleteprojectAction,
 } from 'redux/actions/project_actions';
 
@@ -67,6 +66,13 @@ function ProjectDetail(req) {
       })
     : '';
 
+  const onEditClick = (e) => {
+    e.preventDefault();
+
+    const projectID = req.match.params.id;
+    window.location.pathname=`/project/edit/${projectID}`
+  };
+
   const onDeleteClick = (e) => {
     e.preventDefault();
 
@@ -83,7 +89,7 @@ function ProjectDetail(req) {
   // 글 수정, 삭제
   const EditDelete_Button = (
     <EditDeleteContainer>
-      <Button>글 수정하기</Button>
+      <Button onClick={onEditClick}>글 수정하기</Button>
       <Button onClick={onDeleteClick} type="danger">
         글 삭제하기
       </Button>

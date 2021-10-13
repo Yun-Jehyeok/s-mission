@@ -69,8 +69,6 @@ router.post('/write', auth, async (req, res) => {
       creator: req.user.id,
       date: moment().format('MMMM DD, YYYY'),
     });
-    
-    console.log(newProject);
 
     const categoryFindResult = await Category.findOne({
       categoryName: category,
@@ -97,12 +95,12 @@ router.post('/write', auth, async (req, res) => {
         },
       });
     } else {
-      // 카테고리가 없으면 실행
+      // 카테고리가 존재하면 실행
       await Category.findByIdAndUpdate(categoryFindResult._id, {
         $push: { projects: newProject._id },
       });
       await Project.findByIdAndUpdate(newProject._id, {
-        category: categoryFindResult._id,
+        $push: { category: categoryFindResult._id },
       });
       await User.findByIdAndUpdate(req.user.id, {
         $push: {
