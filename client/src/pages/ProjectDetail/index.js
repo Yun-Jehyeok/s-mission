@@ -1,27 +1,12 @@
 import React, { useLayoutEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
-import ChatImg from './chat.png';
 
 // style
-import {
-  DetailContainer,
-  Wrap,
-  LeftSide,
-  RightSide,
-  Title,
-  CategoryDateContainer,
-  ContentContainer,
-  CommentContainer,
-  FileContainer,
-  ChatImgContainer,
-  EditDeleteContainer,
-} from './style';
+import { DetailContainer, Wrap, LeftSide, RightSide } from './style';
 
 // antd
 import { Button } from 'antd';
-import { withRouter } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-
 import {
   detailprojectAction,
   deleteprojectAction,
@@ -57,10 +42,10 @@ function ProjectDetail(req) {
   }, [dispatch, req.match.params.id]);
 
   const categoryList = category
-    ? category.map((item, index) => {
+    ? category.map((cate, index) => {
         return (
           <span key={index}>
-            <Button type="primary">{item.categoryName}</Button>
+            <Button>{cate.categoryName}</Button>
           </span>
         );
       })
@@ -83,17 +68,12 @@ function ProjectDetail(req) {
     window.location.pathname = `/project/edit/${projectID}`;
   };
 
-  const onDeleteClick = (e) => {
-    e.preventDefault();
-
-    var result = window.confirm('글을 삭제하시겠습니까?');
-    if (result) {
-      const token = localStorage.getItem('token');
-      const projectID = req.match.params.id;
-      const body = { token, projectID };
-      dispatch(deleteprojectAction(body));
-      req.history.push('1');
-    }
+  const onDeleteClick = () => {
+    const token = localStorage.getItem('token');
+    const projectID = req.match.params.id;
+    const body = { token, projectID };
+    console.log(body);
+    deleteprojectAction(body);
   };
 
   // 글 수정, 삭제
@@ -112,23 +92,22 @@ function ProjectDetail(req) {
         {is_project ? (
           <>
             <LeftSide>
-              <Title>{title}</Title>
+              <ImageGallery items={images} autoPlay />
+            </LeftSide>
+            <RightSide>
+              <h1>{title}</h1>
               <div>
-                <CategoryDateContainer>
-                  <div>{categoryList}</div>
-                  <div>{date}</div>
-                </CategoryDateContainer>
+                <div>{categoryList}</div>
 
-                {/* <h4>{creator.name}</h4> */}
-                <ContentContainer>
-                  <div dangerouslySetInnerHTML={{ __html: contents }}></div>
-                </ContentContainer>
-                <CommentContainer>
-                  <h2>
-                    <b>COMMENTS</b>
-                  </h2>
-                  <input placeholder="댓글을 작성해주세요." />
-                </CommentContainer>
+                <h4>{date}</h4>
+                <h4>{creator.name}</h4>
+                <div>{contents}</div>
+
+                {userId === creator._id ? EditDelete_Button : <></>}
+
+                <div style={{ marginTop: '16px' }}>
+                  <Button type="primary">채팅하기?</Button>
+                </div>
               </div>
             </LeftSide>
             <RightSide>
@@ -146,11 +125,8 @@ function ProjectDetail(req) {
           <div>프로젝트가 존재하지 않습니다.</div>
         )}
       </Wrap>
-      <ChatImgContainer>
-        <img src={ChatImg} />
-      </ChatImgContainer>
     </DetailContainer>
   );
 }
 
-export default withRouter(ProjectDetail);
+export default ProjectDetail;
