@@ -18,8 +18,7 @@ import { PostWriteHeader, ProjectWriteContainer } from './style';
 function ProjectEdit(req) {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const { projectdetail } = useSelector(state => state.project);
-  const { category, contents, creator, title } = projectdetail;
+  const { title, contents } = useSelector(state => state.project);
 
   const normFile = (e) => {
     console.log('Upload event:', e);
@@ -75,7 +74,7 @@ function ProjectEdit(req) {
   return (
     <ProjectWriteContainer>
       <PostWriteHeader>글 수정하기</PostWriteHeader>
-      {console.log(projectdetail)}
+      {console.log(title)}
       {/* 인증한 사용자만 볼 수 있음 */}
       {isAuthenticated ? (
         <Form>
@@ -89,7 +88,7 @@ function ProjectEdit(req) {
               id="title"
               onChange={onValueChange}
               placeholder="제목을 입력해 주세요."
-              defaultValue={form.title}
+              initialvalues={title}
             />
           </Form.Item>
           <Form.Item name={'category'} rules={[{ required: true }]}>
@@ -122,7 +121,7 @@ function ProjectEdit(req) {
             initialEditType="wysiwyg"
             ref={editorRef}
             onChange={onEditorChange}
-            initialValue={form.contents}
+            initialValue={contents}
           />
           <Button onClick={onSubmit} type="primary" style={{ width: '100%' }}>
             수정하기

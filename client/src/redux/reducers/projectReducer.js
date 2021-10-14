@@ -14,9 +14,6 @@ import {
   PROJECT_UPDATE_REQUEST,
   PROJECT_UPDATE_SUCCESS,
   PROJECT_UPDATE_FAILURE,
-  PROJECT_DELETE_REQUEST,
-  PROJECT_DELETE_SUCCESS,
-  PROJECT_DELETE_FAILURE,
 } from 'redux/types/project_types';
 
 const initialState = {
@@ -46,6 +43,13 @@ const projectReducer = (state = initialState, action) => {
       };
 
     case PROJECT_EDITPAGE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        is_project: true,
+        title: action.payload.title,
+        contents: action.payload.contents,
+      };
     case PROJECT_DETAIL_SUCCESS:
       return {
         ...state,
@@ -53,6 +57,7 @@ const projectReducer = (state = initialState, action) => {
         is_project: true, // 프로젝트가 존재
         projectdetail: action.payload,
         creator: action.payload.creator,
+        category: action.payload.category,
       };
     case PROJECT_UPDATE_SUCCESS:
     case PROJECT_WRITE_SUCCESS:

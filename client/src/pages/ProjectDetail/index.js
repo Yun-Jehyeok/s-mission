@@ -44,12 +44,12 @@ const images = [
 ];
 
 function ProjectDetail(req) {
-  const { projectdetail, creator, is_project } = useSelector(
+  const { projectdetail, creator, is_project, category } = useSelector(
     (state) => state.project,
   );
   const { userId } = useSelector((state) => state.auth);
 
-  const { category, contents, date, fileUrl, title } = projectdetail;
+  const { contents, date, previewImg, title } = projectdetail;
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
@@ -66,11 +66,21 @@ function ProjectDetail(req) {
       })
     : '';
 
+  const imageList = previewImg
+    ? previewImg.map((item, index) => {
+        return (
+          <div key={index}>
+            <img src={`http://localhost:7000/${item}`} />
+          </div>
+        );
+      })
+    : '';
+
   const onEditClick = (e) => {
     e.preventDefault();
 
     const projectID = req.match.params.id;
-    window.location.pathname=`/project/edit/${projectID}`
+    window.location.pathname = `/project/edit/${projectID}`;
   };
 
   const onDeleteClick = (e) => {
@@ -124,7 +134,7 @@ function ProjectDetail(req) {
             <RightSide>
               <ImageGallery items={images} autoPlay />
               <FileContainer>
-                <div>파일이 들어갈 공간입니다.</div>
+                {imageList}
                 <div>파일이 들어갈 공간입니다.</div>
                 <div>파일이 들어갈 공간입니다.</div>
                 <div>파일이 들어갈 공간입니다.</div>
