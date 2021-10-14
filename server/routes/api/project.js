@@ -46,13 +46,13 @@ router.get('/', async (req, res) => {
 });
 
 // Upload Image //
-router.post('/uploadimage', upload.single('file'), (req, res) =>{
+router.post('/uploadimage', upload.single('file'), (req, res) => {
   try {
     return res.json({
       success: true,
       image: res.req.file.path,
     });
-  } catch(e){
+  } catch (e) {
     res.json({ success: false, e });
   }
 });
@@ -69,46 +69,51 @@ router.post('/write', auth, async (req, res) => {
       creator: req.user.id,
       date: moment().format('MMMM DD, YYYY'),
     });
-    
-    console.log(newProject);
+    var cate = category.split(',');
+    var cateList = [];
+    for (var i in cate) {
+      cateList = [...cateList, cate[i].trim()];
+    }
 
-    const categoryFindResult = await Category.findOne({
-      categoryName: category,
-    });
+    for (var i in cateList) {
+      const categoryFindResult = await Category.findOne({
+        categoryName: cateList[i],
+      });
 
-    // 카테고리 만들면 실행
-    if (isNullOrUndefined(categoryFindResult)) {
-      const newCategory = await Category.create({
-        categoryName: category,
-      });
-      await Project.findByIdAndUpdate(newProject._id, {
-        $push: {
-          category: newCategory._id,
-        },
-      });
-      await Category.findByIdAndUpdate(newCategory._id, {
-        $push: {
-          projects: newProject._id, //mongoDB는 _id로 저장
-        },
-      });
-      await User.findByIdAndUpdate(req.user.id, {
-        $push: {
-          projects: newProject._id,
-        },
-      });
-    } else {
-      // 카테고리가 없으면 실행
-      await Category.findByIdAndUpdate(categoryFindResult._id, {
-        $push: { projects: newProject._id },
-      });
-      await Project.findByIdAndUpdate(newProject._id, {
-        category: categoryFindResult._id,
-      });
-      await User.findByIdAndUpdate(req.user.id, {
-        $push: {
-          projects: newProject._id,
-        },
-      });
+      // 카테고리 만들면 실행
+      if (isNullOrUndefined(categoryFindResult)) {
+        const newCategory = await Category.create({
+          categoryName: cateList[i],
+        });
+        await Project.findByIdAndUpdate(newProject._id, {
+          $push: {
+            category: newCategory._id,
+          },
+        });
+        await Category.findByIdAndUpdate(newCategory._id, {
+          $push: {
+            projects: newProject._id, //mongoDB는 _id로 저장
+          },
+        });
+        await User.findByIdAndUpdate(req.user.id, {
+          $push: {
+            projects: newProject._id,
+          },
+        });
+      } else {
+        // 카테고리가 존재하면 실행
+        await Category.findByIdAndUpdate(categoryFindResult._id, {
+          $push: { projects: newProject._id },
+        });
+        await Project.findByIdAndUpdate(newProject._id, {
+          $push: { category: categoryFindResult._id },
+        });
+        await User.findByIdAndUpdate(req.user.id, {
+          $push: {
+            projects: newProject._id,
+          },
+        });
+      }
     }
 
     res.redirect(`/api/project/${newProject._id}`);

@@ -48,7 +48,7 @@ function* createProject(action) {
       payload: result.data,
     });
 
-    yield put(push(`detail/${result.data._id}`));
+    window.location.pathname=`project/detail/${result.data._id}`;
   } catch (e) {
     yield put({
       type: PROJECT_WRITE_FAILURE,

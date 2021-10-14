@@ -11,17 +11,14 @@ import { Editor } from '@toast-ui/react-editor';
 
 import { PostWriteHeader, ProjectWriteContainer } from './style';
 
-import Fileupload from './Fileupload';
-
-const { TextArea } = Input;
+import Imageupload from './Imageupload';
 
 function ProjectWrite() {
-
   const [form, setForm] = useState({
     title: '',
     contents: '',
     previewImg: [],
-    category: [],
+    category: '',
   });
 
   // Change //
@@ -43,9 +40,9 @@ function ProjectWrite() {
   const onImageChange = (image) => {
     setForm({
       ...form,
-      previewImg: image
+      previewImg: image,
     });
-  }
+  };
 
   const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -55,8 +52,12 @@ function ProjectWrite() {
     const { title, previewImg, contents, category } = form;
     const token = localStorage.getItem('token');
     let data = {
-      title, contents, previewImg, category, token,
-    }
+      title,
+      contents,
+      previewImg,
+      category,
+      token,
+    };
 
     dispatch(createprojectAction(data));
   };
@@ -89,7 +90,10 @@ function ProjectWrite() {
               placeholder="카테고리를 입력해 주세요."
             />
           </Form.Item>
-          <Fileupload onUploadFunction={onImageChange}/>
+          <Form.Item name={'previewImg'} label="미리보기 이미지">
+            <Imageupload onUploadFunction={onImageChange} />
+            <span>* 최대 3장까지 업로드 가능</span>
+          </Form.Item>
           <Editor
             previewStyle="vertical"
             height="400px"

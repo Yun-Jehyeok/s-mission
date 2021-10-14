@@ -1,7 +1,6 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, createRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  createprojectAction,
   editprojectAction,
   updateprojectAction,
 } from 'redux/actions/project_actions';
@@ -9,12 +8,18 @@ import { Form, Input, Button, Upload } from 'antd';
 
 import axios from 'axios';
 
+// Editor
+import '@toast-ui/editor/dist/toastui-editor.css';
+import { Editor } from '@toast-ui/react-editor';
+
 import { UploadOutlined } from '@ant-design/icons';
 import { PostWriteHeader, ProjectWriteContainer } from './style';
 
-const { TextArea } = Input;
-
 function ProjectEdit(req) {
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  const { title, contents } = useSelector(state => state.project);
+
   const normFile = (e) => {
     console.log('Upload event:', e);
     if (Array.isArray(e)) {
@@ -24,8 +29,8 @@ function ProjectEdit(req) {
   };
 
   const [form, setForm] = useState({
-    title: '',
-    contents: '',
+    title: `${title}`,
+    contents: `${contents}`,
     fileUrl: '',
     category: [],
   });
@@ -37,12 +42,20 @@ function ProjectEdit(req) {
     });
   };
 
+  const editorRef = createRef();
+
+  const onEditorChange = () => {
+    const val = editorRef.current.getInstance().getHTML();
+    setForm({
+      ...form,
+      contents: val,
+    });
+  };
+
   const dispatch = useDispatch();
   useLayoutEffect(() => {
     dispatch(editprojectAction(req.match.params.id));
   }, [req.match.params.id]);
-
-  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const onSubmit = async (e) => {
     await e.preventDefault();
@@ -55,12 +68,13 @@ function ProjectEdit(req) {
     formData.append('category', category);
     formData.append('token', token);
 
-    dispatch(createprojectAction(formData));
+    dispatch(updateprojectAction(formData));
   };
 
   return (
     <ProjectWriteContainer>
       <PostWriteHeader>글 수정하기</PostWriteHeader>
+      {console.log(title)}
       {/* 인증한 사용자만 볼 수 있음 */}
       {isAuthenticated ? (
         <Form>
@@ -74,6 +88,7 @@ function ProjectEdit(req) {
               id="title"
               onChange={onValueChange}
               placeholder="제목을 입력해 주세요."
+              initialvalues={title}
             />
           </Form.Item>
           <Form.Item name={'category'} rules={[{ required: true }]}>
@@ -99,17 +114,17 @@ function ProjectEdit(req) {
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>
           </Form.Item>
-          <Form.Item name={'content'} rules={[{ required: true }]}>
-            <TextArea
-              name="contents"
-              id="contents"
-              onChange={onValueChange}
-              placeholder="내용을 입력해 주세요."
-              style={{ height: '500px', padding: '24px' }}
-            />
-          </Form.Item>
+          <Editor
+            previewStyle="vertical"
+            height="400px"
+            useCommandShortcut={true}
+            initialEditType="wysiwyg"
+            ref={editorRef}
+            onChange={onEditorChange}
+            initialValue={contents}
+          />
           <Button onClick={onSubmit} type="primary" style={{ width: '100%' }}>
-            글쓰기
+            수정하기
           </Button>
         </Form>
       ) : (

@@ -9,7 +9,6 @@ import { Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   detailprojectAction,
-  editprojectAction,
   deleteprojectAction,
 } from 'redux/actions/project_actions';
 
@@ -30,12 +29,12 @@ const images = [
 ];
 
 function ProjectDetail(req) {
-  const { projectdetail, creator, is_project } = useSelector(
+  const { projectdetail, creator, is_project, category } = useSelector(
     (state) => state.project,
   );
   const { userId } = useSelector((state) => state.auth);
 
-  const { category, contents, date, fileUrl, title } = projectdetail;
+  const { contents, date, previewImg, title } = projectdetail;
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
@@ -50,7 +49,24 @@ function ProjectDetail(req) {
           </span>
         );
       })
-    : [];
+    : '';
+
+  const imageList = previewImg
+    ? previewImg.map((item, index) => {
+        return (
+          <div key={index}>
+            <img src={`http://localhost:7000/${item}`} />
+          </div>
+        );
+      })
+    : '';
+
+  const onEditClick = (e) => {
+    e.preventDefault();
+
+    const projectID = req.match.params.id;
+    window.location.pathname = `/project/edit/${projectID}`;
+  };
 
   const onDeleteClick = () => {
     const token = localStorage.getItem('token');
@@ -62,10 +78,12 @@ function ProjectDetail(req) {
 
   // 글 수정, 삭제
   const EditDelete_Button = (
-    <div>
-      <Button>글 수정하기</Button>
-      <Button onClick={onDeleteClick}>글 삭제하기</Button>
-    </div>
+    <EditDeleteContainer>
+      <Button onClick={onEditClick}>글 수정하기</Button>
+      <Button onClick={onDeleteClick} type="danger">
+        글 삭제하기
+      </Button>
+    </EditDeleteContainer>
   );
 
   return (
@@ -91,6 +109,16 @@ function ProjectDetail(req) {
                   <Button type="primary">채팅하기?</Button>
                 </div>
               </div>
+            </LeftSide>
+            <RightSide>
+              <ImageGallery items={images} autoPlay />
+              <FileContainer>
+                {imageList}
+                <div>파일이 들어갈 공간입니다.</div>
+                <div>파일이 들어갈 공간입니다.</div>
+                <div>파일이 들어갈 공간입니다.</div>
+              </FileContainer>
+              {userId === creator._id ? EditDelete_Button : <></>}
             </RightSide>
           </>
         ) : (
