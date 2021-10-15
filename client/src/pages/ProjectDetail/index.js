@@ -2,7 +2,18 @@ import React, { useLayoutEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
 
 // style
-import { DetailContainer, Wrap, LeftSide, RightSide } from './style';
+import {
+  DetailContainer,
+  Wrap,
+  LeftSide,
+  RightSide,
+  EditDeleteContainer,
+  Title,
+  CategoryDateContainer,
+  ContentContainer,
+  CommentContainer,
+  FileContainer,
+} from './style';
 
 // antd
 import { Button } from 'antd';
@@ -92,28 +103,28 @@ function ProjectDetail(req) {
         {is_project ? (
           <>
             <LeftSide>
-              <ImageGallery items={images} autoPlay />
-            </LeftSide>
-            <RightSide>
-              <h1>{title}</h1>
+              <Title>{title}</Title>
               <div>
-                <div>{categoryList}</div>
-
-                <h4>{date}</h4>
-                <h4>{creator.name}</h4>
-                <div>{contents}</div>
-
-                {userId === creator._id ? EditDelete_Button : <></>}
-
-                <div style={{ marginTop: '16px' }}>
-                  <Button type="primary">채팅하기?</Button>
-                </div>
+                <CategoryDateContainer>
+                  <div>{categoryList}</div>
+                  <div>{date}</div>
+                </CategoryDateContainer>
+                {/* <h4>{creator.name}</h4> */}
+                <ContentContainer>
+                  <div dangerouslySetInnerHTML={{ __html: contents }}></div>
+                </ContentContainer>
+                <CommentContainer>
+                  <h2>
+                    <b>COMMENTS</b>
+                  </h2>
+                  <input placeholder="댓글을 작성해주세요." />
+                </CommentContainer>
               </div>
             </LeftSide>
             <RightSide>
               <ImageGallery items={images} autoPlay />
               <FileContainer>
-                {imageList}
+                <div>파일이 들어갈 공간입니다.</div>
                 <div>파일이 들어갈 공간입니다.</div>
                 <div>파일이 들어갈 공간입니다.</div>
                 <div>파일이 들어갈 공간입니다.</div>
