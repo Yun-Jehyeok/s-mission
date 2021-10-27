@@ -7,13 +7,11 @@ const cors = require('cors');
 const morgan = require('morgan');
 const socketIO = require('socket.io');
 const http = require('http');
-
 const app = express();
 const { MONGO_URI, PORT } = config;
 
 app.use(hpp());
 app.use(helmet());
-
 app.use(
   cors({
     origin: true,
@@ -23,7 +21,6 @@ app.use(
 
 app.use(morgan('dev'));
 app.use(express.json());
-
 app.use('/uploads', express.static('uploads'));
 
 mongoose
@@ -43,7 +40,6 @@ app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/project', require('./routes/api/project'));
 
 ///////////////// socket.io /////////////////
-
 const server = http.createServer(app);
 const io = socketIO(server, {
   cors: {
@@ -64,7 +60,6 @@ io.on('connection', (socket) => {
     socket.on('onSend', (messageItem) => {
       io.to(room).emit('onReceive', messageItem);
     });
-
     socket.on('disconnect', () => {
       socket.leave(room);
       io.to(room).emit('onDisconnect', `${user} 님이 퇴장하셨습니다.`);
