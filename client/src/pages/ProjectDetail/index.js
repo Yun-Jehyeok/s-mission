@@ -88,7 +88,6 @@ function ProjectDetail(req) {
     const token = localStorage.getItem('token');
     const projectID = req.match.params.id;
     const body = { token, projectID };
-    console.log(body);
     deleteprojectAction(body);
   };
 
