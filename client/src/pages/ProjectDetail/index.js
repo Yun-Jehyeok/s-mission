@@ -56,7 +56,12 @@ function ProjectDetail(req) {
     ? category.map((cate, index) => {
         return (
           <span key={index}>
-            <Button>{cate.categoryName}</Button>
+            <Button
+              type="primary"
+              style={{ width: '70px', marginRight: '4px' }}
+            >
+              {cate.categoryName}
+            </Button>
           </span>
         );
       })
