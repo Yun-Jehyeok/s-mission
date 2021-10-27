@@ -33,6 +33,7 @@ const initialState = {
 
 const projectReducer = (state = initialState, action) => {
   switch (action.type) {
+    case PROJECT_LOADING_REQUEST:
     case PROJECT_EDITPAGE_REQUEST:
     case PROJECT_DETAIL_REQUEST:
     case PROJECT_WRITE_REQUEST:
@@ -59,6 +60,7 @@ const projectReducer = (state = initialState, action) => {
         creator: action.payload.creator,
         category: action.payload.category,
       };
+    
     case PROJECT_UPDATE_SUCCESS:
     case PROJECT_WRITE_SUCCESS:
       return {
@@ -68,6 +70,7 @@ const projectReducer = (state = initialState, action) => {
       };
 
     case PROJECT_DETAIL_FAILURE:
+    case PROJECT_LOADING_FAILURE:
       return {
         ...state,
         isLoading: false,
@@ -82,6 +85,13 @@ const projectReducer = (state = initialState, action) => {
         isLoading: false,
         errmsg: action.payload.e,
       };
+    
+    case PROJECT_LOADING_SUCCESS:
+      return {
+        ...state,
+        projects: action.payload.projectFindResult,
+        is_project: true,
+      }
     default:
       return state;
   }

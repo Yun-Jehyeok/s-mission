@@ -31,3 +31,8 @@ export const deleteprojectAction = (data) => ({
   type: PROJECT_DELETE_REQUEST,
   payload: data,
 });
+
+export const readprojectAction = (data) => ({
+  type: PROJECT_LOADING_REQUEST,
+  payload: data,
+});

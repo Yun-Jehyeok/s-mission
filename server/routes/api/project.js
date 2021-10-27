@@ -35,9 +35,10 @@ const upload = multer({ storage: storage });
 // Project All //
 router.get('/', async (req, res) => {
   try {
-    const projectFindResult = await Project.find();
-    const categoryFindResult = await Category.find();
-    const result = { projectFindResult, categoryFindResult };
+    const projectFindResult = await Project.find().populate({
+      path: 'creator',
+    });
+    const result = { projectFindResult };
     res.json(result);
   } catch (e) {
     console.log(e);

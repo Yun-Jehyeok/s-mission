@@ -7,7 +7,7 @@ export const OfficeContainer = styled.div`
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  margin-top: -5%;
+  margin-top: 5%;
 `;
 
 export const CardRow = styled.div`
