@@ -1,5 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
+import ChatImg from './chat.png';
 
 // style
 import {
@@ -13,6 +14,7 @@ import {
   ContentContainer,
   CommentContainer,
   FileContainer,
+  ChatImgContainer,
 } from './style';
 
 // antd
@@ -22,6 +24,7 @@ import {
   detailprojectAction,
   deleteprojectAction,
 } from 'redux/actions/project_actions';
+import { Link } from 'react-router-dom';
 
 // 이미지 변경해야함
 const images = [
@@ -141,6 +144,11 @@ function ProjectDetail(req) {
           <div>프로젝트가 존재하지 않습니다.</div>
         )}
       </Wrap>
+      <ChatImgContainer>
+        <Link to="/chat">
+          <img src={ChatImg} style={{ width: '74px', height: '74px' }} />
+        </Link>
+      </ChatImgContainer>
     </DetailContainer>
   );
 }

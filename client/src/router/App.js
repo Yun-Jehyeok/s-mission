@@ -21,6 +21,7 @@ import Chat from 'pages/Chat/page/Chat/Chat';
 // components
 import Navbar from 'components/Navbar';
 import Footer from 'components/Footer/index';
+import ChatPage from 'pages/ChatPage';
 
 function App() {
   let Navigation =
@@ -51,6 +52,8 @@ function App() {
       {Navigation}
       <Switch>
         <Route path="/" exact component={Main} />
+
+        <Route path="/chat" exact component={ChatPage} />
 
         <Route path="/user/signup" exact component={SignUp} />
         <Route path="/user/password" exact component={FindPassword} />
