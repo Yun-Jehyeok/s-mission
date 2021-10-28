@@ -15,8 +15,6 @@ import ProjectWrite from 'pages/ProjectWrite';
 import ProjectEdit from 'pages/ProjectEdit';
 import ProjectManager from 'pages/ProjectManager';
 import FindPassword from 'pages/FindPassword';
-import Home from 'pages/Chat/page/Home/Home';
-import Chat from 'pages/Chat/page/Chat/Chat';
 
 // components
 import Navbar from 'components/Navbar';
@@ -67,20 +65,6 @@ function App() {
 
         <Route path="/project/detail/:id" exact component={ProjectDetail} />
         <Route path="/project/edit/:id" exact component={ProjectEdit} />
-
-        <Route path="/home" exact>
-          <Home
-            userName={userName}
-            roomName={roomName}
-            setUserName={setUserName}
-            setRoomName={setRoomName}
-          />
-        </Route>
-        <Route
-          path="/chat"
-          exact
-          render={() => <Chat userName={userName} roomName={roomName} />}
-        />
       </Switch>
       {FooterContainer}
     </Layout>
