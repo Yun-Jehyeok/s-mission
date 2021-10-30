@@ -15,12 +15,11 @@ import ProjectWrite from 'pages/ProjectWrite';
 import ProjectEdit from 'pages/ProjectEdit';
 import ProjectManager from 'pages/ProjectManager';
 import FindPassword from 'pages/FindPassword';
-import Home from 'pages/Chat/page/Home/Home';
-import Chat from 'pages/Chat/page/Chat/Chat';
 
 // components
 import Navbar from 'components/Navbar';
 import Footer from 'components/Footer/index';
+import ChatPage from 'pages/ChatPage';
 
 function App() {
   let Navigation =
@@ -42,15 +41,13 @@ function App() {
       <Footer />
     );
 
-  // test
-  const [userName, setUserName] = useState();
-  const [roomName, setRoomName] = useState();
-
   return (
     <Layout style={{ width: '100%', minWidth: '1400px' }}>
       {Navigation}
       <Switch>
         <Route path="/" exact component={Main} />
+
+        <Route path="/chat" exact component={ChatPage} />
 
         <Route path="/user/signup" exact component={SignUp} />
         <Route path="/user/password" exact component={FindPassword} />
@@ -64,20 +61,6 @@ function App() {
 
         <Route path="/project/detail/:id" exact component={ProjectDetail} />
         <Route path="/project/edit/:id" exact component={ProjectEdit} />
-
-        <Route path="/home" exact>
-          <Home
-            userName={userName}
-            roomName={roomName}
-            setUserName={setUserName}
-            setRoomName={setRoomName}
-          />
-        </Route>
-        <Route
-          path="/chat"
-          exact
-          render={() => <Chat userName={userName} roomName={roomName} />}
-        />
       </Switch>
       {FooterContainer}
     </Layout>

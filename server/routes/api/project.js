@@ -30,7 +30,7 @@ var storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+var upload = multer({ storage: storage }).single('file');
 
 // Project All //
 router.get('/', async (req, res) => {
@@ -47,15 +47,16 @@ router.get('/', async (req, res) => {
 });
 
 // Upload Image //
-router.post('/uploadimage', upload.single('file'), (req, res) => {
-  try {
+router.post('/uploadimage', (req, res) => {
+  upload(req, res, (err) => {
+    if (err) return res.json({ success: false, err });
+
     return res.json({
       success: true,
       image: res.req.file.path,
+      filename: res.req.file.filename,
     });
-  } catch (e) {
-    res.json({ success: false, e });
-  }
+  });
 });
 
 // Project Create //

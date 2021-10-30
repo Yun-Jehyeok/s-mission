@@ -82,9 +82,4 @@ export const ChatImgContainer = styled.div`
   position: fixed;
   right: 5%;
   bottom: 10%;
-
-  & > img {
-    width: 74px;
-    height: 74px;
-  }
 `;

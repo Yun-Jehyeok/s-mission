@@ -1,5 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
+import ChatImg from './chat.png';
 
 // style
 import {
@@ -13,6 +14,7 @@ import {
   ContentContainer,
   CommentContainer,
   FileContainer,
+  ChatImgContainer,
 } from './style';
 
 // antd
@@ -22,22 +24,10 @@ import {
   detailprojectAction,
   deleteprojectAction,
 } from 'redux/actions/project_actions';
+import { Link } from 'react-router-dom';
 
 // 이미지 변경해야함
-const images = [
-  {
-    original: 'https://picsum.photos/id/1018/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1018/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1015/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1015/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1019/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1019/250/150/',
-  },
-];
+const images = [];
 
 function ProjectDetail(req) {
   const { projectdetail, creator, is_project, category } = useSelector(
@@ -69,32 +59,31 @@ function ProjectDetail(req) {
 
   const imageList = previewImg
     ? previewImg.map((item, index) => {
-        return (
-          <div key={index}>
-            <img src={`http://localhost:7000/${item}`} />
-          </div>
-        );
+        images.push({
+          original: `http://localhost:7000/${item}`,
+          thumbnail: `http://localhost:7000/${item}`,
+        });
       })
     : '';
 
-  const onEditClick = (e) => {
+  const onDeleteClick = (e) => {
     e.preventDefault();
-
-    const projectID = req.match.params.id;
-    window.location.pathname = `/project/edit/${projectID}`;
-  };
-
-  const onDeleteClick = () => {
-    const token = localStorage.getItem('token');
-    const projectID = req.match.params.id;
-    const body = { token, projectID };
-    deleteprojectAction(body);
+    var result = window.confirm('글을 삭제하시겠습니까?');
+    if (result) {
+      const token = localStorage.getItem('token');
+      const projectID = req.match.params.id;
+      const body = { token, projectID };
+      dispatch(deleteprojectAction(body));
+      req.history.push('1');
+    }
   };
 
   // 글 수정, 삭제
   const EditDelete_Button = (
     <EditDeleteContainer>
-      <Button onClick={onEditClick}>글 수정하기</Button>
+      <Link to={`/project/edit/${req.match.params.id}`}>
+        <Button>글 수정하기</Button>
+      </Link>
       <Button onClick={onDeleteClick} type="danger">
         글 삭제하기
       </Button>
@@ -126,7 +115,15 @@ function ProjectDetail(req) {
               </div>
             </LeftSide>
             <RightSide>
-              <ImageGallery items={images} autoPlay />
+              {previewImg ? (
+                previewImg.length > 0 ? (
+                  <ImageGallery items={images} autoPlay />
+                ) : (
+                  ''
+                )
+              ) : (
+                ''
+              )}
               <FileContainer>
                 <div>파일이 들어갈 공간입니다.</div>
                 <div>파일이 들어갈 공간입니다.</div>
@@ -140,6 +137,11 @@ function ProjectDetail(req) {
           <div>프로젝트가 존재하지 않습니다.</div>
         )}
       </Wrap>
+      <ChatImgContainer>
+        <Link to="/chat">
+          <img src={ChatImg} style={{ width: '74px', height: '74px' }} />
+        </Link>
+      </ChatImgContainer>
     </DetailContainer>
   );
 }

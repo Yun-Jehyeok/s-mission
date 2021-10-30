@@ -5,15 +5,20 @@ const hpp = require('hpp');
 const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
-const socketIO = require('socket.io');
-const http = require('http');
-
 const app = express();
+
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, { cors: { origin: '*' } });
+
+const { Chat } = require('./models/chat');
+
 const { MONGO_URI, PORT } = config;
 
 app.use(hpp());
 app.use(helmet());
-
 app.use(
   cors({
     origin: true,
@@ -24,9 +29,13 @@ app.use(
 app.use(morgan('dev'));
 app.use(express.json());
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cookieParser());
+
 app.use('/uploads', express.static('uploads'));
 
-mongoose
+const connect = mongoose
   .connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -41,36 +50,37 @@ mongoose
 app.use('/api/user', require('./routes/api/user'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/project', require('./routes/api/project'));
+app.use('/api/chat', require('./routes/api/chat'));
 
 ///////////////// socket.io /////////////////
 
-const server = http.createServer(app);
-const io = socketIO(server, {
-  cors: {
-    origin: '*',
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['*'],
-    credentials: true,
-  },
-});
-
 io.on('connection', (socket) => {
-  // join : 채팅 참여 이벤트
-  socket.on('join', ({ roomName: room, userName: user }) => {
-    socket.join(room);
-    io.to(room).emit('onConnect', `${user} 님이 입장했습니다.`);
-    // send : 클라이언트가 메시지 보내는 이벤트
-    // item: {name: String, msg: String, timeStamp: String}
-    socket.on('onSend', (messageItem) => {
-      io.to(room).emit('onReceive', messageItem);
-    });
+  socket.on('Input Chat Message', (msg) => {
+    connect.then((db) => {
+      try {
+        let chat = new Chat({
+          message: msg.chatMessage,
+          sender: msg.userId,
+          type: msg.type,
+        });
 
-    socket.on('disconnect', () => {
-      socket.leave(room);
-      io.to(room).emit('onDisconnect', `${user} 님이 퇴장하셨습니다.`);
+        chat.save((err, doc) => {
+          if (err) return res.status(400).json({ success: false, err });
+
+          Chat.find({ _id: doc._id })
+            .populate('sender')
+            .exec((err, doc) => {
+              return io.emit('Output Chat Message', doc);
+            });
+        });
+      } catch (e) {
+        console.error(e);
+      }
     });
   });
 });
+
+/////////////////////////////////////////////
 
 server.listen(PORT, () => {
   console.log(`Server started on ${PORT} port`);

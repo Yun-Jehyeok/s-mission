@@ -34,7 +34,7 @@ export const FooterBody = styled.div`
       width: 87px;
       font-weight: bold;
     }
-    & > div:nth-child(2) {
+    & a {
       color: #777;
     }
   }
