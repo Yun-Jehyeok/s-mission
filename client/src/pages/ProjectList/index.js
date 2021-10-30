@@ -18,10 +18,12 @@ function ProjectList() {
       var content = project.contents.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "");
       return(
         <Col key={index}>
-          <CardContent title={project.title}>
-            <p>{project.creator.name}</p>
-            <p>{content.slice(0, 10)+ ' ...'}</p>
-          </CardContent>
+          <a href={`project/detail/${project._id}`}>
+            <CardContent title={project.title}>
+              <p>{project.creator.name}</p>
+              <p>{content.slice(0, 10)+ ' ...'}</p>
+            </CardContent>
+          </a>
         </Col>
       );
     })
