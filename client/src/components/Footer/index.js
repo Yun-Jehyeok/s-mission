@@ -9,6 +9,25 @@ import {
   FooterWrap,
 } from './style';
 
+const userList = (
+  <div>
+    <span>
+      <a href="http://github.com/Yun-Jehyeok" target="_blank" rel="noreferrer">
+        윤제혁
+      </a>
+    </span>
+    <BeforeSpan>
+      <a href="https://github.com/han-dae" target="_blank" rel="noreferrer">
+        한대찬
+      </a>
+    </BeforeSpan>
+    <BeforeSpan>
+      <a href="https://github.com/Seulg2027" target="_blank" rel="noreferrer">
+        이슬기
+      </a>
+    </BeforeSpan>
+  </div>
+);
 function Footer() {
   return (
     <FooterContainer>
@@ -16,30 +35,15 @@ function Footer() {
         <FooterBody>
           <div>
             <div>Creator</div>
-            <div>
-              <span>Creator1</span>
-              <BeforeSpan>Creator2</BeforeSpan>
-              <BeforeSpan>Creator3</BeforeSpan>
-              <BeforeSpan>Creator4</BeforeSpan>
-            </div>
+            {userList}
           </div>
           <div>
             <div>Partner</div>
-            <div>
-              <span>Partner1</span>
-              <BeforeSpan>Partner2</BeforeSpan>
-              <BeforeSpan>Partner3</BeforeSpan>
-              <BeforeSpan>Partner4</BeforeSpan>
-            </div>
+            {userList}
           </div>
           <div>
             <div>Developer</div>
-            <div>
-              <span>Developer1</span>
-              <BeforeSpan>Developer2</BeforeSpan>
-              <BeforeSpan>Developer3</BeforeSpan>
-              <BeforeSpan>Developer4</BeforeSpan>
-            </div>
+            {userList}
           </div>
         </FooterBody>
         <FooterBottom>

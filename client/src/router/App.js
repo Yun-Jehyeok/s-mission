@@ -41,10 +41,6 @@ function App() {
       <Footer />
     );
 
-  // test
-  const [userName, setUserName] = useState();
-  const [roomName, setRoomName] = useState();
-
   return (
     <Layout style={{ width: '100%', minWidth: '1400px' }}>
       {Navigation}

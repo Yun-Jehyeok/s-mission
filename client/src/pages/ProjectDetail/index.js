@@ -27,20 +27,7 @@ import {
 import { Link } from 'react-router-dom';
 
 // 이미지 변경해야함
-const images = [
-  {
-    original: 'https://picsum.photos/id/1018/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1018/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1015/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1015/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1019/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1019/250/150/',
-  },
-];
+const images = [];
 
 function ProjectDetail(req) {
   const { projectdetail, creator, is_project, category } = useSelector(
@@ -72,11 +59,10 @@ function ProjectDetail(req) {
 
   const imageList = previewImg
     ? previewImg.map((item, index) => {
-        return (
-          <div key={index}>
-            <img src={`http://localhost:7000/${item}`} />
-          </div>
-        );
+        images.push({
+          original: `http://localhost:7000/${item}`,
+          thumbnail: `http://localhost:7000/${item}`,
+        });
       })
     : '';
 
@@ -129,7 +115,15 @@ function ProjectDetail(req) {
               </div>
             </LeftSide>
             <RightSide>
-              <ImageGallery items={images} autoPlay />
+              {previewImg ? (
+                previewImg.length > 0 ? (
+                  <ImageGallery items={images} autoPlay />
+                ) : (
+                  ''
+                )
+              ) : (
+                ''
+              )}
               <FileContainer>
                 <div>파일이 들어갈 공간입니다.</div>
                 <div>파일이 들어갈 공간입니다.</div>
