@@ -12,6 +12,7 @@ import {
   editprojectAction,
   deleteprojectAction,
 } from 'redux/actions/project_actions';
+import { Comments } from 'components/comment/Comments';
 
 // 이미지 변경해야함
 const images = [
@@ -96,6 +97,7 @@ function ProjectDetail(req) {
         ) : (
           <div>프로젝트가 존재하지 않습니다.</div>
         )}
+        <Comments userId={'2'} id={'5'} projectID={'52'} userName={'dsa'} />
       </Wrap>
     </DetailContainer>
   );
