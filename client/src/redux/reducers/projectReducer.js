@@ -50,6 +50,7 @@ const projectReducer = (state = initialState, action) => {
         is_project: true,
         title: action.payload.title,
         contents: action.payload.contents,
+        category: action.payload.category,
       };
     case PROJECT_DETAIL_SUCCESS:
       return {

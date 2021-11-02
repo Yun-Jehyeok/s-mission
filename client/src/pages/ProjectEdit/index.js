@@ -18,7 +18,7 @@ import { PostWriteHeader, ProjectWriteContainer } from './style';
 function ProjectEdit(req) {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const { title, contents } = useSelector(state => state.project);
+  const { title, contents, category } = useSelector(state => state.project);
 
   const normFile = (e) => {
     console.log('Upload event:', e);
@@ -28,11 +28,18 @@ function ProjectEdit(req) {
     return e && e.fileList;
   };
 
+  var categoriesName = "";
+  var result = "";
+  for (var i in category) {
+    if (category[i].categoryName === undefined || null) continue;
+    result = result + categoriesName.concat(category[i].categoryName + ", ");
+  }
+
   const [form, setForm] = useState({
     title: `${title}`,
     contents: `${contents}`,
     fileUrl: '',
-    category: [],
+    category: `${result}`,
   });
 
   const onValueChange = (e) => {
@@ -55,7 +62,7 @@ function ProjectEdit(req) {
   const dispatch = useDispatch();
   useLayoutEffect(() => {
     dispatch(editprojectAction(req.match.params.id));
-  }, [req.match.params.id]);
+  }, [req.match.params.id, dispatch]);
 
   const onSubmit = async (e) => {
     await e.preventDefault();
@@ -74,8 +81,8 @@ function ProjectEdit(req) {
   return (
     <ProjectWriteContainer>
       <PostWriteHeader>글 수정하기</PostWriteHeader>
-      {console.log(title)}
       {/* 인증한 사용자만 볼 수 있음 */}
+      {console.log(result)}
       {isAuthenticated ? (
         <Form>
           <Form.Item
@@ -87,8 +94,7 @@ function ProjectEdit(req) {
               name="title"
               id="title"
               onChange={onValueChange}
-              placeholder="제목을 입력해 주세요."
-              initialvalues={title}
+              defaultValue={form.title?form.title:0}
             />
           </Form.Item>
           <Form.Item name={'category'} rules={[{ required: true }]}>
@@ -96,7 +102,7 @@ function ProjectEdit(req) {
               name="category"
               id="category"
               onChange={onValueChange}
-              placeholder="카테고리를 입력해 주세요."
+              defaultValue={form.category}
             />
           </Form.Item>
           <Form.Item
@@ -121,7 +127,7 @@ function ProjectEdit(req) {
             initialEditType="wysiwyg"
             ref={editorRef}
             onChange={onEditorChange}
-            initialValue={contents}
+            initialValue={form.contents}
           />
           <Button onClick={onSubmit} type="primary" style={{ width: '100%' }}>
             수정하기

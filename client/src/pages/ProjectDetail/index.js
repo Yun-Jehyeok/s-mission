@@ -65,24 +65,24 @@ function ProjectDetail(req) {
       })
     : '';
 
-  const onEditClick = (e) => {
+  const onDeleteClick = (e) => {
     e.preventDefault();
-
-    const projectID = req.match.params.id;
-    window.location.pathname = `/project/edit/${projectID}`;
-  };
-
-  const onDeleteClick = () => {
-    const token = localStorage.getItem('token');
-    const projectID = req.match.params.id;
-    const body = { token, projectID };
-    deleteprojectAction(body);
+    var result = window.confirm('글을 삭제하시겠습니까?');
+    if (result) {
+      const token = localStorage.getItem('token');
+      const projectID = req.match.params.id;
+      const body = { token, projectID };
+      dispatch(deleteprojectAction(body));
+      req.history.push('1');
+    }
   };
 
   // 글 수정, 삭제
   const EditDelete_Button = (
     <EditDeleteContainer>
-      <Button onClick={onEditClick}>글 수정하기</Button>
+      <Link to={`/project/edit/${req.match.params.id}`}>
+        <Button>글 수정하기</Button>
+      </Link>
       <Button onClick={onDeleteClick} type="danger">
         글 삭제하기
       </Button>
