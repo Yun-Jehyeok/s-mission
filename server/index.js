@@ -8,7 +8,6 @@ const morgan = require('morgan');
 const app = express();
 
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, { cors: { origin: '*' } });
@@ -31,7 +30,6 @@ app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cookieParser());
 
 app.use('/uploads', express.static('uploads'));
 
