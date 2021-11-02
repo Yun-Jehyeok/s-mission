@@ -7,17 +7,12 @@ export const OfficeContainer = styled.div`
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  margin-top: -5%;
-`;
-
-export const CardRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 32px;
+  margin-top: 5%;
 `;
 
 export const CardContent = styled(Card)`
-  width: 300px;
+  width: 100%;
   height: 213px;
+  margin-bottom: 32px;
   border-bottom: 2px solid #1990ff;
 `;

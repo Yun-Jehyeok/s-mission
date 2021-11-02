@@ -19,10 +19,6 @@ const ProjectSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  imgInContent: {
-    type: Array,
-    default: [],
-  },
   category: [
     {
       type: mongoose.Schema.Types.ObjectId,

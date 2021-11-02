@@ -18,7 +18,7 @@ const CommentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },
-  reply: [
+  /*reply: [
     {
       contents: {
         type: String,
@@ -30,10 +30,10 @@ const CommentSchema = new mongoose.Schema({
       },
       creator: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
+        ref: 'user',*
       },
     },
-  ],
+  ],*/
 });
 
 const Comment = mongoose.model('comment', CommentSchema);

@@ -1,72 +1,98 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
+import ChatImg from './chat.png';
 
 // style
-import { DetailContainer, Wrap, LeftSide, RightSide } from './style';
+import {
+  DetailContainer,
+  Wrap,
+  LeftSide,
+  RightSide,
+  EditDeleteContainer,
+  Title,
+  CategoryDateContainer,
+  ContentContainer,
+  CommentContainer,
+  FileContainer,
+  ChatImgContainer,
+} from './style';
 
 // antd
 import { Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   detailprojectAction,
-  editprojectAction,
   deleteprojectAction,
 } from 'redux/actions/project_actions';
-import { Comments } from 'components/comment/Comments';
+import Comments from 'components/comment/Comments';
+import { Link } from 'react-router-dom';
+import { loadcommentAction } from 'redux/actions/comment_actions';
 
-// 이미지 변경해야함
-const images = [
-  {
-    original: 'https://picsum.photos/id/1018/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1018/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1015/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1015/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1019/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1019/250/150/',
-  },
-];
+const images = [];
 
 function ProjectDetail(req) {
-  const { projectdetail, creator, is_project } = useSelector(
+  const { projectdetail, creator, is_project, category } = useSelector(
     (state) => state.project,
   );
-  const { userId } = useSelector((state) => state.auth);
+  const { userId, userName } = useSelector((state) => state.auth);
 
-  const { category, contents, date, fileUrl, title } = projectdetail;
+  const { contents, date, previewImg, title } = projectdetail;
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     dispatch(detailprojectAction(req.match.params.id));
   }, [dispatch, req.match.params.id]);
 
+  useEffect(() => {
+    dispatch(loadcommentAction(req.match.params.id));
+  }, [dispatch, req.match.params.id]);
+
   const categoryList = category
     ? category.map((cate, index) => {
         return (
           <span key={index}>
-            <Button>{cate.categoryName}</Button>
+            <Button
+              type="primary"
+              style={{ width: '70px', marginRight: '4px' }}
+            >
+              {cate.categoryName}
+            </Button>
           </span>
         );
       })
-    : [];
+    : '';
 
-  const onDeleteClick = () => {
-    const token = localStorage.getItem('token');
-    const projectID = req.match.params.id;
-    const body = { token, projectID };
-    console.log(body);
-    deleteprojectAction(body);
+  const imageList = previewImg
+    ? previewImg.map((item, index) => {
+        images.push({
+          original: `http://localhost:7000/${item}`,
+          thumbnail: `http://localhost:7000/${item}`,
+        });
+      })
+    : '';
+
+  const onDeleteClick = (e) => {
+    e.preventDefault();
+    var result = window.confirm('글을 삭제하시겠습니까?');
+    if (result) {
+      const token = localStorage.getItem('token');
+      const projectID = req.match.params.id;
+      const body = { token, projectID };
+      dispatch(deleteprojectAction(body));
+      req.history.push('1');
+    }
   };
 
   // 글 수정, 삭제
   const EditDelete_Button = (
-    <div>
-      <Button>글 수정하기</Button>
-      <Button onClick={onDeleteClick}>글 삭제하기</Button>
-    </div>
+    <EditDeleteContainer>
+      <Link to={`/project/edit/${req.match.params.id}`}>
+        <Button>글 수정하기</Button>
+      </Link>
+      <Button onClick={onDeleteClick} type="danger">
+        글 삭제하기
+      </Button>
+    </EditDeleteContainer>
   );
 
   return (
@@ -75,30 +101,57 @@ function ProjectDetail(req) {
         {is_project ? (
           <>
             <LeftSide>
-              <ImageGallery items={images} autoPlay />
+              <Title>{title}</Title>
+              <div>
+                <CategoryDateContainer>
+                  <div>{categoryList}</div>
+                  <div>{date}</div>
+                </CategoryDateContainer>
+                {/* <h4>{creator.name}</h4> */}
+                <ContentContainer>
+                  <div dangerouslySetInnerHTML={{ __html: contents }}></div>
+                </ContentContainer>
+                <CommentContainer>
+                  <h2>
+                    <b>COMMENTS</b>
+                  </h2>
+                  <input placeholder="댓글을 작성해주세요." />
+                </CommentContainer>
+              </div>
             </LeftSide>
             <RightSide>
-              <h1>{title}</h1>
-              <div>
-                <div>{categoryList}</div>
-
-                <h4>{date}</h4>
-                <h4>{creator.name}</h4>
-                <div>{contents}</div>
-
-                {userId === creator._id ? EditDelete_Button : <></>}
-
-                <div style={{ marginTop: '16px' }}>
-                  <Button type="primary">채팅하기?</Button>
-                </div>
-              </div>
+              {previewImg ? (
+                previewImg.length > 0 ? (
+                  <ImageGallery items={images} autoPlay />
+                ) : (
+                  ''
+                )
+              ) : (
+                ''
+              )}
+              <FileContainer>
+                <div>파일이 들어갈 공간입니다.</div>
+                <div>파일이 들어갈 공간입니다.</div>
+                <div>파일이 들어갈 공간입니다.</div>
+                <div>파일이 들어갈 공간입니다.</div>
+              </FileContainer>
+              {userId === creator._id ? EditDelete_Button : <></>}
             </RightSide>
           </>
         ) : (
           <div>프로젝트가 존재하지 않습니다.</div>
         )}
-        <Comments userId={'2'} id={'5'} projectID={'52'} userName={'dsa'} />
+        <Comments
+          userId={userId}
+          id={req.match.params.id}
+          userName={userName}
+        />
       </Wrap>
+      <ChatImgContainer>
+        <Link to="/chat">
+          <img src={ChatImg} style={{ width: '74px', height: '74px' }} />
+        </Link>
+      </ChatImgContainer>
     </DetailContainer>
   );
 }

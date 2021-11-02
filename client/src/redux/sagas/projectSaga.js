@@ -48,7 +48,7 @@ function* createProject(action) {
       payload: result.data,
     });
 
-    yield put(push(`detail/${result.data._id}`));
+    window.location.pathname=`project/detail/${result.data._id}`;
   } catch (e) {
     yield put({
       type: PROJECT_WRITE_FAILURE,
@@ -132,6 +132,10 @@ function* editProject(action) {
   }
 }
 
+function* watcheditproject() {
+  yield takeEvery(PROJECT_EDITPAGE_REQUEST, editProject);
+}
+
 // UPDATE project // 수정 action
 const updateprojectAPI = (payload) => {
   return axios.get(`/api/project/${payload}/update`);
@@ -154,7 +158,6 @@ function* updateProject(action) {
 }
 
 function* watchupdateproject() {
-  yield takeEvery(PROJECT_EDITPAGE_REQUEST, editProject);
   yield takeEvery(PROJECT_UPDATE_REQUEST, updateProject);
 }
 
@@ -198,6 +201,7 @@ export default function* projectSaga() {
     fork(watchcreateProject),
     fork(watchprojectDetail),
     fork(watchprojectall),
+    fork(watcheditproject),
     fork(watchupdateproject),
     fork(watchdeleteProject),
   ]);
