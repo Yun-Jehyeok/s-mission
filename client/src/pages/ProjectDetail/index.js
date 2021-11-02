@@ -26,7 +26,6 @@ import {
 } from 'redux/actions/project_actions';
 import { Link } from 'react-router-dom';
 
-// 이미지 변경해야함
 const images = [];
 
 function ProjectDetail(req) {
