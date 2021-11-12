@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
 import ChatImg from './chat.png';
 
@@ -24,7 +24,9 @@ import {
   detailprojectAction,
   deleteprojectAction,
 } from 'redux/actions/project_actions';
+import Comments from 'components/comment/Comments';
 import { Link } from 'react-router-dom';
+import { loadcommentAction } from 'redux/actions/comment_actions';
 
 const images = [];
 
@@ -32,13 +34,17 @@ function ProjectDetail(req) {
   const { projectdetail, creator, is_project, category } = useSelector(
     (state) => state.project,
   );
-  const { userId } = useSelector((state) => state.auth);
+  const { userId, userName } = useSelector((state) => state.auth);
 
   const { contents, date, previewImg, title } = projectdetail;
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     dispatch(detailprojectAction(req.match.params.id));
+  }, [dispatch, req.match.params.id]);
+
+  useEffect(() => {
+    dispatch(loadcommentAction(req.match.params.id));
   }, [dispatch, req.match.params.id]);
 
   const categoryList = category
@@ -135,6 +141,11 @@ function ProjectDetail(req) {
         ) : (
           <div>프로젝트가 존재하지 않습니다.</div>
         )}
+        <Comments
+          userId={userId}
+          id={req.match.params.id}
+          userName={userName}
+        />
       </Wrap>
       <ChatImgContainer>
         <Link to="/chat">
