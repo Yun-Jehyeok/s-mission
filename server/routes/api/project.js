@@ -159,7 +159,7 @@ router.post('/:id/update', async (req, res, next) => {
   const { title, contents, fileUrl, id, category } = req.body;
 
   try {
-    const update_project = await Post.findByIdAndUpdate(
+    const update_project = await Project.findByIdAndUpdate(
       id,
       {
         title,

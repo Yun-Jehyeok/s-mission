@@ -18,7 +18,7 @@ import { PostWriteHeader, ProjectWriteContainer } from './style';
 function ProjectEdit(req) {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const { title, contents, category } = useSelector(state => state.project);
+  const { title, contents, category } = useSelector((state) => state.project);
 
   const normFile = (e) => {
     console.log('Upload event:', e);
@@ -28,18 +28,18 @@ function ProjectEdit(req) {
     return e && e.fileList;
   };
 
-  var categoriesName = "";
-  var result = "";
+  var categoriesName = '';
+  var result = '';
   for (var i in category) {
     if (category[i].categoryName === undefined || null) continue;
-    result = result + categoriesName.concat(category[i].categoryName + ", ");
+    result = result + categoriesName.concat(category[i].categoryName + ', ');
   }
 
   const [form, setForm] = useState({
     title: `${title}`,
     contents: `${contents}`,
     fileUrl: '',
-    category: `${result}`,
+    category: result,
   });
 
   const onValueChange = (e) => {
@@ -66,23 +66,24 @@ function ProjectEdit(req) {
 
   const onSubmit = async (e) => {
     await e.preventDefault();
-    const { title, contents, fileUrl, category } = form;
+    const { title, previewImg, contents, category } = form;
     const token = localStorage.getItem('token');
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('contents', contents);
-    formData.append('fileUrl', fileUrl);
-    formData.append('category', category);
-    formData.append('token', token);
+    let data = {
+      title,
+      contents,
+      previewImg,
+      category,
+      token,
+    };
+    console.log(token);
 
-    dispatch(updateprojectAction(formData));
+    dispatch(updateprojectAction(data));
   };
 
   return (
     <ProjectWriteContainer>
       <PostWriteHeader>글 수정하기</PostWriteHeader>
       {/* 인증한 사용자만 볼 수 있음 */}
-      {console.log(result)}
       {isAuthenticated ? (
         <Form>
           <Form.Item
@@ -94,7 +95,7 @@ function ProjectEdit(req) {
               name="title"
               id="title"
               onChange={onValueChange}
-              defaultValue={form.title?form.title:0}
+              defaultValue={form.title ? form.title : 0}
             />
           </Form.Item>
           <Form.Item name={'category'} rules={[{ required: true }]}>
