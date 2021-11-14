@@ -201,6 +201,39 @@ router.delete('/:id/delete', auth, async (req, res) => {
     return res.json({ error: e });
   }
 });
+
+// Views Load //
+router.get('/:id/views', async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    const result = project.views;
+
+    res.json({ views: result });
+  } catch (e) {
+    res.json(e);
+  }
+});
+
+router.post('/:id/views', async (req, res) => {
+  const userID = req.body.userID;
+  try {
+    const project = await Project.findById(req.params.id);
+    const result = project.views + 1;
+
+    await Project.findByIdAndUpdate(req.params.id, {
+      views: result,
+    });
+
+    await User.findByIdAndUpdate(userID, {
+      views: project,
+    });
+
+    res.json({ success: true, views: result });
+  } catch (e) {
+    res.json({ fail: e });
+  }
+});
+
 //
 router.get('/:id/comments', async (req, res) => {
   try {

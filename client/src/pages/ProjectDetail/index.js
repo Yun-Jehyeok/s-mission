@@ -16,13 +16,15 @@ import {
   FileContainer,
   ChatImgContainer,
 } from './style';
-
-// antd
 import { Button } from 'antd';
+
+//
 import { useDispatch, useSelector } from 'react-redux';
 import {
   detailprojectAction,
   deleteprojectAction,
+  loadviewAction,
+  upviewAction,
 } from 'redux/actions/project_actions';
 import Comments from 'components/comment/Comments';
 import { Link } from 'react-router-dom';
@@ -31,7 +33,7 @@ import { loadcommentAction } from 'redux/actions/comment_actions';
 const images = [];
 
 function ProjectDetail(req) {
-  const { projectdetail, creator, is_project, category } = useSelector(
+  const { projectdetail, creator, is_project, category, views } = useSelector(
     (state) => state.project,
   );
   const { userId, userName } = useSelector((state) => state.auth);
@@ -39,8 +41,15 @@ function ProjectDetail(req) {
   const { contents, date, previewImg, title } = projectdetail;
   const dispatch = useDispatch();
 
+  const data = {
+    userID: userId,
+    projectID: req.match.params.id,
+  };
+
   useLayoutEffect(() => {
     dispatch(detailprojectAction(req.match.params.id));
+    dispatch(loadviewAction(data));
+    dispatch(upviewAction(data));
   }, [dispatch, req.match.params.id]);
 
   useEffect(() => {
@@ -109,6 +118,7 @@ function ProjectDetail(req) {
                 </CategoryDateContainer>
                 {/* <h4>{creator.name}</h4> */}
                 <ContentContainer>
+                  조회수 : {views}
                   <div dangerouslySetInnerHTML={{ __html: contents }}></div>
                 </ContentContainer>
                 <CommentContainer>

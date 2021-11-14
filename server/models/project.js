@@ -11,7 +11,7 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  previewImg : {
+  previewImg: {
     type: Array,
     default: [],
   },
@@ -32,6 +32,10 @@ const ProjectSchema = new mongoose.Schema({
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
+  },
+  views: {
+    type: Number,
+    default: 0,
   },
 });
 
