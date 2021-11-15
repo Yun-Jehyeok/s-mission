@@ -19,12 +19,10 @@ const ProjectSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  category: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'category',
-    },
-  ],
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'category',
+  },
   date: {
     type: String,
     default: moment().format('MMMM DD, YYYY'),

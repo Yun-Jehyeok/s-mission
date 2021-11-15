@@ -56,21 +56,6 @@ function ProjectDetail(req) {
     dispatch(loadcommentAction(req.match.params.id));
   }, [dispatch, req.match.params.id]);
 
-  const categoryList = category
-    ? category.map((cate, index) => {
-        return (
-          <span key={index}>
-            <Button
-              type="primary"
-              style={{ width: '70px', marginRight: '4px' }}
-            >
-              {cate.categoryName}
-            </Button>
-          </span>
-        );
-      })
-    : '';
-
   const imageList = previewImg
     ? previewImg.map((item, index) => {
         images.push({
@@ -113,7 +98,14 @@ function ProjectDetail(req) {
               <Title>{title}</Title>
               <div>
                 <CategoryDateContainer>
-                  <div>{categoryList}</div>
+                  <div>
+                    <Button
+                      type="primary"
+                      style={{ width: '70px', marginRight: '4px' }}
+                    >
+                      {category.categoryName}
+                    </Button>
+                  </div>
                   <div>{date}</div>
                 </CategoryDateContainer>
                 {/* <h4>{creator.name}</h4> */}
