@@ -28,18 +28,11 @@ function ProjectEdit(req) {
     return e && e.fileList;
   };
 
-  var categoriesName = '';
-  var result = '';
-  for (var i in category) {
-    if (category[i].categoryName === undefined || null) continue;
-    result = result + categoriesName.concat(category[i].categoryName + ', ');
-  }
-
   const [form, setForm] = useState({
     title: `${title}`,
     contents: `${contents}`,
     fileUrl: '',
-    category: result,
+    category: '',
   });
 
   const onValueChange = (e) => {

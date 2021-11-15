@@ -46,6 +46,41 @@ const menu = (
   </MenuBox>
 );
 
+const categoryMenu = (
+  <MenuBox style={{ paddingLeft: '32px' }}>
+    <Menu.Item>
+      <a target="_blank" rel="noopener noreferrer" href="/project">
+        Web
+      </a>
+    </Menu.Item>
+    <Menu.Item>
+      <a target="_blank" rel="noopener noreferrer" href="/project">
+        Android
+      </a>
+    </Menu.Item>
+    <Menu.Item>
+      <a target="_blank" rel="noopener noreferrer" href="/project">
+        ios
+      </a>
+    </Menu.Item>
+    <Menu.Item>
+      <a target="_blank" rel="noopener noreferrer" href="/project">
+        빅데이터
+      </a>
+    </Menu.Item>
+    <Menu.Item>
+      <a target="_blank" rel="noopener noreferrer" href="/project">
+        인공지능
+      </a>
+    </Menu.Item>
+    <Menu.Item>
+      <a target="_blank" rel="noopener noreferrer" href="/project">
+        디자인
+      </a>
+    </Menu.Item>
+  </MenuBox>
+);
+
 function Navbar() {
   const { isAuthenticated, userId } = useSelector((state) => state.auth);
 
@@ -57,12 +92,12 @@ function Navbar() {
         </Logo>
         <MenuContainer>
           <div>
-            <Dropdown overlay={menu}>
+            <Dropdown overlay={categoryMenu}>
               <a
                 className="ant-dropdown-link"
                 onClick={(e) => e.preventDefault()}
               >
-                MENU <DownOutlined />
+                카테고리 <DownOutlined />
               </a>
             </Dropdown>
           </div>

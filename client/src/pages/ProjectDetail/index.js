@@ -40,21 +40,22 @@ function ProjectDetail(req) {
 
   const { contents, date, previewImg, title } = projectdetail;
   const dispatch = useDispatch();
+  const projectID = req.match.params.id;
 
   const data = {
     userID: userId,
-    projectID: req.match.params.id,
+    projectID: projectID,
   };
 
   useLayoutEffect(() => {
-    dispatch(detailprojectAction(req.match.params.id));
+    dispatch(detailprojectAction(projectID));
     dispatch(loadviewAction(data));
     dispatch(upviewAction(data));
-  }, [dispatch, req.match.params.id]);
+  }, [dispatch, projectID]);
 
   useEffect(() => {
-    dispatch(loadcommentAction(req.match.params.id));
-  }, [dispatch, req.match.params.id]);
+    dispatch(loadcommentAction(projectID));
+  }, [dispatch, projectID]);
 
   const imageList = previewImg
     ? previewImg.map((item, index) => {
@@ -70,7 +71,6 @@ function ProjectDetail(req) {
     var result = window.confirm('글을 삭제하시겠습니까?');
     if (result) {
       const token = localStorage.getItem('token');
-      const projectID = req.match.params.id;
       const body = { token, projectID };
       dispatch(deleteprojectAction(body));
       req.history.push('1');
@@ -80,7 +80,7 @@ function ProjectDetail(req) {
   // 글 수정, 삭제
   const EditDelete_Button = (
     <EditDeleteContainer>
-      <Link to={`/project/edit/${req.match.params.id}`}>
+      <Link to={`/project/edit/${projectID}`}>
         <Button>글 수정하기</Button>
       </Link>
       <Button onClick={onDeleteClick} type="danger">
@@ -112,6 +112,11 @@ function ProjectDetail(req) {
                 <ContentContainer>
                   조회수 : {views}
                   <div dangerouslySetInnerHTML={{ __html: contents }}></div>
+                  <div>
+                    <Button onClick={() => (window.location.href = '/project')}>
+                      목록
+                    </Button>
+                  </div>
                 </ContentContainer>
                 <CommentContainer>
                   <h2>
