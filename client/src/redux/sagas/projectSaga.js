@@ -22,6 +22,12 @@ import {
   CATEGORY_FIND_REQUEST,
   CATEGORY_FIND_SUCCESS,
   CATEGORY_FIND_FAILURE,
+  PROJECT_LOADVIEW_REQUEST,
+  PROJECT_LOADVIEW_SUCCESS,
+  PROJECT_LOADVIEW_FAILURE,
+  PROJECT_UPVIEW_REQUEST,
+  PROJECT_UPVIEW_SUCCESS,
+  PROJECT_UPVIEW_FAILURE,
 } from 'redux/types/project_types';
 
 // CREATE project
@@ -140,7 +146,18 @@ function* watcheditproject() {
 
 // UPDATE project // 수정 action
 const updateprojectAPI = (payload) => {
-  return axios.get(`/api/project/${payload}/update`);
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  const token = payload.token;
+
+  if (token) {
+    config.headers['x-auth-token'] = token;
+  }
+
+  return axios.post(`/api/project/${payload}/update`, payload, config);
 };
 
 function* updateProject(action) {
@@ -223,8 +240,64 @@ function* watchCategoryFind() {
   yield takeEvery(CATEGORY_FIND_REQUEST, CategoryFind);
 }
 
+// LOAD VIEW
+const loadviewprojectAPI = (payload) => {
+  return axios.get(`/api/project/${payload.projectID}/views`);
+};
+
+function* loadviewProject(action) {
+  try {
+    const result = yield call(loadviewprojectAPI, action.payload);
+
+    yield put({
+      type: PROJECT_LOADVIEW_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: PROJECT_LOADVIEW_FAILURE,
+      payload: e,
+    });
+  }
+}
+
+function* watchprojectloadview() {
+  yield takeEvery(PROJECT_LOADVIEW_REQUEST, loadviewProject);
+}
+
+// UP VIEW
+const upviewprojectAPI = (payload) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  return axios.post(`/api/project/${payload.projectID}/views`, payload, config);
+};
+
+function* upviewproject(action) {
+  try {
+    const result = yield call(upviewprojectAPI, action.payload);
+
+    yield put({
+      type: PROJECT_UPVIEW_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: PROJECT_UPVIEW_FAILURE,
+      payload: e,
+    });
+  }
+}
+
+function* watchprojectupview() {
+  yield takeEvery(PROJECT_UPVIEW_REQUEST, upviewproject);
+}
+
 export default function* projectSaga() {
   yield all([
+    // project CRUD
     fork(watchcreateProject),
     fork(watchprojectDetail),
     fork(watchprojectall),
@@ -232,5 +305,8 @@ export default function* projectSaga() {
     fork(watchupdateproject),
     fork(watchdeleteProject),
     fork(watchCategoryFind),
+    // view
+    fork(watchprojectloadview),
+    fork(watchprojectupview),
   ]);
 }

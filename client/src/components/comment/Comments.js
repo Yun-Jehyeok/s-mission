@@ -1,12 +1,14 @@
+import { Input } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { createcommentAction } from 'redux/actions/comment_actions';
 import {
   COMMENT_LOADING_REQUEST,
   COMMENT_UPLOADING_REQUEST,
-} from '../../redux/types/project_types';
+} from 'redux/types/project_types';
 import { Comment_Button } from './style';
 
-function Comments({ id, userId, userName, projectId }) {
+function Comments({ id, userId, userName }) {
   const dispatch = useDispatch();
   const [form, setValues] = useState({
     contents: '',
@@ -26,10 +28,7 @@ function Comments({ id, userId, userName, projectId }) {
     const token = localStorage.getItem('token');
     const body = { contents, token, id, userId, userName };
 
-    dispatch({
-      type: COMMENT_UPLOADING_REQUEST,
-      payload: body,
-    });
+    dispatch(createcommentAction(body));
 
     resetValue.current.value = '';
     setValues('');
@@ -54,8 +53,7 @@ function Comments({ id, userId, userName, projectId }) {
         onChange={onChange}
         placeholder="Comment"
       />
-
-      <Comment_Button color="primary" block>
+      <Comment_Button color="primary" block onSubmit={onSubmit}>
         Submit
       </Comment_Button>
     </>

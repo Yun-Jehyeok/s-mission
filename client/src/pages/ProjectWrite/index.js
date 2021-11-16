@@ -1,7 +1,7 @@
 import React, { useState, useLayoutEffect, createRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Form, Input, Button, Select } from 'antd';
 import { createprojectAction } from 'redux/actions/project_actions';
-import { Form, Input, Button } from 'antd';
 
 // Editor
 import '@toast-ui/editor/dist/toastui-editor.css';
@@ -10,6 +10,7 @@ import { Editor } from '@toast-ui/react-editor';
 import { PostWriteHeader, ProjectWriteContainer } from './style';
 
 import Imageupload from './Imageupload';
+const { Option } = Select;
 
 function ProjectWrite() {
   const [form, setForm] = useState({
@@ -24,6 +25,13 @@ function ProjectWrite() {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
+    });
+  };
+
+  const onSelectChange = (v) => {
+    setForm({
+      ...form,
+      category: v,
     });
   };
 
@@ -81,12 +89,19 @@ function ProjectWrite() {
             />
           </Form.Item>
           <Form.Item name={'category'} rules={[{ required: true }]}>
-            <Input
+            <Select
               name="category"
-              id="category"
-              onChange={onValueChange}
-              placeholder="카테고리를 입력해 주세요."
-            />
+              style={{ width: 200 }}
+              onChange={onSelectChange}
+              placeholder="카테고리를 선택하세요"
+            >
+              <Option value="web">Web</Option>
+              <Option value="android">Android</Option>
+              <Option value="ios">IOS</Option>
+              <Option value="data">빅데이터</Option>
+              <Option value="ML">인공지능</Option>
+              <Option value="design">Design</Option>
+            </Select>
           </Form.Item>
           <Form.Item name={'previewImg'} label="미리보기 이미지">
             <Imageupload onUploadFunction={onImageChange} />

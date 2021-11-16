@@ -26,18 +26,11 @@ function ProjectEdit(req) {
     return e && e.fileList;
   };
 
-  var categoriesName = '';
-  var result = '';
-  for (var i in category) {
-    if (category[i].categoryName === undefined || null) continue;
-    result = result + categoriesName.concat(category[i].categoryName + ', ');
-  }
-
   const [form, setForm] = useState({
     title: `${title}`,
     contents: `${contents}`,
     fileUrl: '',
-    category: `${result}`,
+    category: '',
   });
 
   const onValueChange = (e) => {
@@ -64,23 +57,24 @@ function ProjectEdit(req) {
 
   const onSubmit = async (e) => {
     await e.preventDefault();
-    const { title, contents, fileUrl, category } = form;
+    const { title, previewImg, contents, category } = form;
     const token = localStorage.getItem('token');
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('contents', contents);
-    formData.append('fileUrl', fileUrl);
-    formData.append('category', category);
-    formData.append('token', token);
+    let data = {
+      title,
+      contents,
+      previewImg,
+      category,
+      token,
+    };
+    console.log(token);
 
-    dispatch(updateprojectAction(formData));
+    dispatch(updateprojectAction(data));
   };
 
   return (
     <ProjectWriteContainer>
       <PostWriteHeader>글 수정하기</PostWriteHeader>
       {/* 인증한 사용자만 볼 수 있음 */}
-      {console.log(result)}
       {isAuthenticated ? (
         <Form>
           <Form.Item
