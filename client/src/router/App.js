@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 // antd
@@ -15,11 +15,11 @@ import ProjectWrite from 'pages/ProjectWrite';
 import ProjectEdit from 'pages/ProjectEdit';
 import ProjectManager from 'pages/ProjectManager';
 import FindPassword from 'pages/FindPassword';
+import CategoryFindResult from 'pages/CategoryFindResult';
 
 // components
 import Navbar from 'components/Navbar';
 import Footer from 'components/Footer/index';
-import ChatPage from 'pages/ChatPage';
 
 function App() {
   let Navigation =
@@ -47,8 +47,6 @@ function App() {
       <Switch>
         <Route path="/" exact component={Main} />
 
-        <Route path="/chat" exact component={ChatPage} />
-
         <Route path="/user/signup" exact component={SignUp} />
         <Route path="/user/password" exact component={FindPassword} />
         <Route path="/user/closeaccount/:id" exact component={CloseAccount} />
@@ -61,6 +59,11 @@ function App() {
 
         <Route path="/project/detail/:id" exact component={ProjectDetail} />
         <Route path="/project/edit/:id" exact component={ProjectEdit} />
+        <Route
+          path="/project/category/:categoryName"
+          exact
+          component={CategoryFindResult}
+        />
       </Switch>
       {FooterContainer}
     </Layout>

@@ -1,21 +1,25 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Col, Row } from 'antd';
-import { OfficeContainer, CardContent } from './style';
-import { readprojectAction } from 'redux/actions/project_actions';
-import { Link } from 'react-router-dom';
+import { CategoryContainer, CardContent } from './style';
+import { Link, useParams } from 'react-router-dom';
+import { CATEGORY_FIND_REQUEST } from 'redux/types/project_types';
 
-function ProjectList() {
-  const { projects } = useSelector((state) => state.project);
-
+function CategoryFindResult() {
   const dispatch = useDispatch();
-  useLayoutEffect(() => {
-    dispatch(readprojectAction(0));
-  }, [dispatch]);
+  let { categoryName } = useParams();
+  const { categoryFindResult } = useSelector((state) => state.project);
 
-  const projectCard = projects
-    ? projects.map((project, index) => {
+  useEffect(() => {
+    dispatch({
+      type: CATEGORY_FIND_REQUEST,
+      payload: categoryName,
+    });
+  }, [dispatch, categoryName]);
+
+  const projectCard = categoryFindResult.projects
+    ? categoryFindResult.projects.map((project, index) => {
         var content = project.contents.replace(
           /<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/gi,
           '',
@@ -38,10 +42,10 @@ function ProjectList() {
     : '';
 
   return (
-    <OfficeContainer>
+    <CategoryContainer>
       <Row>{projectCard}</Row>
-    </OfficeContainer>
+    </CategoryContainer>
   );
 }
 
-export default ProjectList;
+export default CategoryFindResult;

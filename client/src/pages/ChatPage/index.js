@@ -1,5 +1,5 @@
 import { Input, Button } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   ChatBox,
   ChatContainer,
@@ -10,8 +10,6 @@ import {
 } from './style';
 
 function ChatPage() {
-  const [chatMessage, setChatMessage] = useState('');
-
   return (
     <ChatContainer>
       <Wrap>

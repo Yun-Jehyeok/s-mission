@@ -26,6 +26,7 @@ const initialState = {
   user: '',
   userId: '',
   userName: '',
+  closeAccount: false,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -94,6 +95,7 @@ const authReducer = (state = initialState, action) => {
         userName: null,
         isAuthenticated: false,
         isLoading: false,
+        closeAccount: true,
       };
     case CLOSE_ACCOUNT_FAILURE:
       return {
@@ -105,6 +107,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: true,
+        closeAccount: false,
       };
     case USER_LOADING_SUCCESS:
       return {

@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import {
   googleLoginAction,
   loginAction,
@@ -53,7 +52,7 @@ function LoginModal({ buttonType }) {
 
       dispatch(loginAction(user));
     },
-    [form, dispatch, isAuthenticated],
+    [form, dispatch],
   );
 
   useEffect(() => {
@@ -153,9 +152,9 @@ function LoginModal({ buttonType }) {
             <br />
             <div style={{ textAlign: 'center', marginBottom: '7px' }}>
               <span>
-                <Link to="/user/password" onClick={handleSignInCancel}>
+                <a href="/user/password" onClick={handleSignInCancel}>
                   Forgot a Password?
-                </Link>
+                </a>
               </span>
             </div>
             <div style={{ textAlign: 'center' }}>

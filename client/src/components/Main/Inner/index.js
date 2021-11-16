@@ -49,12 +49,6 @@ function Inner() {
           <NavButton type={FirstButton} onClick={() => onClickNavButton(1)}>
             BEST
           </NavButton>
-          <NavButton type={SecondButton} onClick={() => onClickNavButton(2)}>
-            DUMMY
-          </NavButton>
-          <NavButton type={ThirdButton} onClick={() => onClickNavButton(3)}>
-            DUMMY
-          </NavButton>
         </div>
         <CardContainer>
           <Link to="/project/detail/615fca82cf391c178518b855">
@@ -106,6 +100,7 @@ function Inner() {
             <img
               src="https://placeimg.com/150/150/person"
               style={{ borderRadius: '70%', marginBottom: '14px' }}
+              alt="selfImage"
             />
             <h3 style={{ fontWeight: 'bolder' }}>{userName}</h3>
             <div>

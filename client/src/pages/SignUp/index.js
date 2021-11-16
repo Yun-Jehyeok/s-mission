@@ -59,7 +59,11 @@ function SignUp() {
           <FormContainer>
             <div>
               <a href="/">
-                <img src={LogoImg} style={{ width: '64px', height: '64px' }} />
+                <img
+                  src={LogoImg}
+                  style={{ width: '64px', height: '64px' }}
+                  alt="logo"
+                />
               </a>
             </div>
             <Form onSubmit={onSubmit}>

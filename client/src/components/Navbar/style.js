@@ -1,5 +1,4 @@
 import { Menu } from 'antd';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const NavbarContainer = styled.div`
@@ -35,7 +34,7 @@ export const Logo = styled.a`
 `;
 
 export const MenuContainer = styled.div`
-  width: 30%;
+  width: 25%;
   display: flex;
   justify-content: flex-start;
   padding-top: 8px;

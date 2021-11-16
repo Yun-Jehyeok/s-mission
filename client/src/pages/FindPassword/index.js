@@ -109,7 +109,7 @@ function FindPassword() {
       <Wrap>
         <div>
           <a href="/">
-            <img src={LogoImg} />
+            <img src={LogoImg} alt="logo" />
           </a>
         </div>
         {emailAuth ? (

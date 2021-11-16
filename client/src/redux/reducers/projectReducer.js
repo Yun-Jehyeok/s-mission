@@ -14,6 +14,9 @@ import {
   PROJECT_UPDATE_REQUEST,
   PROJECT_UPDATE_SUCCESS,
   PROJECT_UPDATE_FAILURE,
+  CATEGORY_FIND_REQUEST,
+  CATEGORY_FIND_SUCCESS,
+  CATEGORY_FIND_FAILURE,
 } from 'redux/types/project_types';
 
 const initialState = {
@@ -29,6 +32,7 @@ const initialState = {
   fileUrl: '',
   date: '',
   errmsg: '',
+  categoryFindResult: '',
 };
 
 const projectReducer = (state = initialState, action) => {
@@ -61,7 +65,7 @@ const projectReducer = (state = initialState, action) => {
         creator: action.payload.creator,
         category: action.payload.category,
       };
-    
+
     case PROJECT_UPDATE_SUCCESS:
     case PROJECT_WRITE_SUCCESS:
       return {
@@ -86,13 +90,34 @@ const projectReducer = (state = initialState, action) => {
         isLoading: false,
         errmsg: action.payload.e,
       };
-    
+
     case PROJECT_LOADING_SUCCESS:
       return {
         ...state,
         projects: action.payload.projectFindResult,
         is_project: true,
-      }
+      };
+
+    // Find category
+    case CATEGORY_FIND_REQUEST:
+      return {
+        ...state,
+        projects: [],
+        loading: true,
+      };
+    case CATEGORY_FIND_SUCCESS:
+      return {
+        ...state,
+        categoryFindResult: action.payload,
+        loading: false,
+      };
+    case CATEGORY_FIND_FAILURE:
+      return {
+        ...state,
+        categoryFindResult: action.payload,
+        loading: false,
+      };
+
     default:
       return state;
   }

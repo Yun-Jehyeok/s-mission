@@ -202,4 +202,23 @@ router.delete('/:id/delete', auth, async (req, res) => {
   }
 });
 
+// Find Category
+router.get('/category/:categoryName', async (req, res, next) => {
+  try {
+    const result = await Category.findOne(
+      {
+        categoryName: {
+          $regex: req.params.categoryName,
+          $options: 'i',
+        },
+      },
+      'projects',
+    ).populate({ path: 'projects' });
+
+    res.send(result);
+  } catch (e) {
+    next(e);
+  }
+});
+
 module.exports = router;

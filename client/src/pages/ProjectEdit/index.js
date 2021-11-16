@@ -6,8 +6,6 @@ import {
 } from 'redux/actions/project_actions';
 import { Form, Input, Button, Upload } from 'antd';
 
-import axios from 'axios';
-
 // Editor
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
@@ -18,7 +16,7 @@ import { PostWriteHeader, ProjectWriteContainer } from './style';
 function ProjectEdit(req) {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const { title, contents, category } = useSelector(state => state.project);
+  const { title, contents, category } = useSelector((state) => state.project);
 
   const normFile = (e) => {
     console.log('Upload event:', e);
@@ -28,11 +26,11 @@ function ProjectEdit(req) {
     return e && e.fileList;
   };
 
-  var categoriesName = "";
-  var result = "";
+  var categoriesName = '';
+  var result = '';
   for (var i in category) {
     if (category[i].categoryName === undefined || null) continue;
-    result = result + categoriesName.concat(category[i].categoryName + ", ");
+    result = result + categoriesName.concat(category[i].categoryName + ', ');
   }
 
   const [form, setForm] = useState({
@@ -94,7 +92,7 @@ function ProjectEdit(req) {
               name="title"
               id="title"
               onChange={onValueChange}
-              defaultValue={form.title?form.title:0}
+              defaultValue={form.title ? form.title : 0}
             />
           </Form.Item>
           <Form.Item name={'category'} rules={[{ required: true }]}>

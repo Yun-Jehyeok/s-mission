@@ -3,48 +3,15 @@ import LogoImg from './logo.png';
 import { useSelector } from 'react-redux';
 
 // antd
-import { Menu, Dropdown, Button } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 
 // style
-import { Logo, MenuContainer, MenuBox, NavbarContainer, Wrap } from './style';
+import { Logo, MenuContainer, NavbarContainer, Wrap } from './style';
 
 // component
 import LoginModal from 'components/LoginModal/LoginModal';
 import SearchInput from 'components/SearchInput';
-
-const menu = (
-  <MenuBox style={{ paddingLeft: '32px' }}>
-    <Menu.Item style={{ marginTop: '32px' }}>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.antgroup.com"
-      >
-        1st menu item
-      </a>
-    </Menu.Item>
-    <Menu.Item icon={<DownOutlined />} disabled>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.aliyun.com"
-      >
-        2nd menu item (disabled)
-      </a>
-    </Menu.Item>
-    <Menu.Item disabled>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.luohanacademy.com"
-      >
-        3rd menu item (disabled)
-      </a>
-    </Menu.Item>
-    <Menu.Item danger>a danger item</Menu.Item>
-  </MenuBox>
-);
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   const { isAuthenticated, userId } = useSelector((state) => state.auth);
@@ -53,51 +20,24 @@ function Navbar() {
     <NavbarContainer>
       <Wrap>
         <Logo href="/">
-          <img src={LogoImg} style={{ width: '64px', height: '64px' }} />
+          <img
+            src={LogoImg}
+            style={{ width: '64px', height: '64px' }}
+            alt="logo"
+          />
         </Logo>
         <MenuContainer>
           <div>
-            <Dropdown overlay={menu}>
-              <a
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                MENU <DownOutlined />
-              </a>
-            </Dropdown>
+            <Link to="/project/category/web">WEB</Link>
           </div>
-
           <div>
-            <Dropdown overlay={menu}>
-              <a
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                MENU <DownOutlined />
-              </a>
-            </Dropdown>
+            <Link to="/project/category/app">APP</Link>
           </div>
-
           <div>
-            <Dropdown overlay={menu}>
-              <a
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                MENU <DownOutlined />
-              </a>
-            </Dropdown>
+            <Link to="/project/category/ai">AI</Link>
           </div>
-
           <div>
-            <Dropdown overlay={menu}>
-              <a
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                MENU <DownOutlined />
-              </a>
-            </Dropdown>
+            <Link to="/project/category/design">DESIGN</Link>
           </div>
         </MenuContainer>
         <SearchInput />

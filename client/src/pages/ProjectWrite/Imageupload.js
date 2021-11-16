@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Axios from 'axios';
 
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Upload } from 'antd';
+import { Button } from 'antd';
 import Dropzone from 'react-dropzone';
 
 function Imageupload(props) {
@@ -63,7 +63,7 @@ function Imageupload(props) {
         {Images.map((image, index) => (
           <div key={index}>
             {/* 요기가 이상... */}
-            <img src={`http://localhost:7000/${image}`} />
+            <img src={`http://localhost:7000/${image}`} alt="preview" />
           </div>
         ))}
       </div>

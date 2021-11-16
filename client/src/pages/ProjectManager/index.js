@@ -59,14 +59,17 @@ function ProjectManager() {
           <img
             src="http://placeimg.com/24/24/people"
             style={{ borderRadius: '70%', marginRight: '6px' }}
+            alt="people"
           />
           <img
             src="http://placeimg.com/24/24/people"
             style={{ borderRadius: '70%', marginRight: '6px' }}
+            alt="people"
           />
           <img
             src="http://placeimg.com/24/24/people"
             style={{ borderRadius: '70%' }}
+            alt="people"
           />
         </div>
       </div>

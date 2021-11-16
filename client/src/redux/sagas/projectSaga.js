@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { all, call, put, takeEvery, fork } from 'redux-saga/effects';
-import { push } from 'connected-react-router';
 import {
   PROJECT_WRITE_REQUEST,
   PROJECT_WRITE_SUCCESS,
@@ -20,6 +19,9 @@ import {
   PROJECT_DELETE_REQUEST,
   PROJECT_DELETE_SUCCESS,
   PROJECT_DELETE_FAILURE,
+  CATEGORY_FIND_REQUEST,
+  CATEGORY_FIND_SUCCESS,
+  CATEGORY_FIND_FAILURE,
 } from 'redux/types/project_types';
 
 // CREATE project
@@ -48,7 +50,7 @@ function* createProject(action) {
       payload: result.data,
     });
 
-    window.location.pathname=`project/detail/${result.data._id}`;
+    window.location.pathname = `project/detail/${result.data._id}`;
   } catch (e) {
     yield put({
       type: PROJECT_WRITE_FAILURE,
@@ -196,6 +198,31 @@ function* watchdeleteProject() {
   yield takeEvery(PROJECT_DELETE_REQUEST, deleteproject);
 }
 
+// Find Category
+const CategoryFindAPI = (payload) => {
+  return axios.get(`/api/project/category/${encodeURIComponent(payload)}`);
+};
+
+function* CategoryFind(action) {
+  try {
+    const result = yield call(CategoryFindAPI, action.payload);
+
+    yield put({
+      type: CATEGORY_FIND_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: CATEGORY_FIND_FAILURE,
+      payload: e,
+    });
+  }
+}
+
+function* watchCategoryFind() {
+  yield takeEvery(CATEGORY_FIND_REQUEST, CategoryFind);
+}
+
 export default function* projectSaga() {
   yield all([
     fork(watchcreateProject),
@@ -204,5 +231,6 @@ export default function* projectSaga() {
     fork(watcheditproject),
     fork(watchupdateproject),
     fork(watchdeleteProject),
+    fork(watchCategoryFind),
   ]);
 }

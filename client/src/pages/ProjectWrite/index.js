@@ -1,9 +1,7 @@
 import React, { useState, useLayoutEffect, createRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createprojectAction } from 'redux/actions/project_actions';
-import { Form, Input, Button, Upload } from 'antd';
-
-import Axios from 'axios';
+import { Form, Input, Button } from 'antd';
 
 // Editor
 import '@toast-ui/editor/dist/toastui-editor.css';

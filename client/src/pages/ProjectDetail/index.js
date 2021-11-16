@@ -57,7 +57,7 @@ function ProjectDetail(req) {
     : '';
 
   const imageList = previewImg
-    ? previewImg.map((item, index) => {
+    ? previewImg.map((item) => {
         images.push({
           original: `http://localhost:7000/${item}`,
           thumbnail: `http://localhost:7000/${item}`,
@@ -80,7 +80,10 @@ function ProjectDetail(req) {
   // 글 수정, 삭제
   const EditDelete_Button = (
     <EditDeleteContainer>
-      <Link to={`/project/edit/${req.match.params.id}`}>
+      <Link
+        to={`/project/edit/${req.match.params.id}`}
+        style={{ marginRight: '8px' }}
+      >
         <Button>글 수정하기</Button>
       </Link>
       <Button onClick={onDeleteClick} type="danger">
@@ -138,7 +141,11 @@ function ProjectDetail(req) {
       </Wrap>
       <ChatImgContainer>
         <Link to="/chat">
-          <img src={ChatImg} style={{ width: '74px', height: '74px' }} />
+          <img
+            src={ChatImg}
+            style={{ width: '74px', height: '74px' }}
+            alt="chat"
+          />
         </Link>
       </ChatImgContainer>
     </DetailContainer>
