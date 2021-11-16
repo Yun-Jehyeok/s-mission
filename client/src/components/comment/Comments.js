@@ -2,10 +2,7 @@ import { Input } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createcommentAction } from 'redux/actions/comment_actions';
-import {
-  COMMENT_LOADING_REQUEST,
-  COMMENT_UPLOADING_REQUEST,
-} from 'redux/types/project_types';
+import { COMMENT_LOADING_REQUEST } from 'redux/types/project_types';
 import { Comment_Button } from './style';
 
 function Comments({ id, userId, userName }) {
