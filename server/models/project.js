@@ -11,7 +11,7 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  previewImg : {
+  previewImg: {
     type: Array,
     default: [],
   },
@@ -19,12 +19,10 @@ const ProjectSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  category: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'category',
-    },
-  ],
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'category',
+  },
   date: {
     type: String,
     default: moment().format('MMMM DD, YYYY'),
@@ -32,6 +30,10 @@ const ProjectSchema = new mongoose.Schema({
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
+  },
+  views: {
+    type: Number,
+    default: 0,
   },
 });
 

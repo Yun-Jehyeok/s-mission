@@ -5,6 +5,8 @@ import {
   PROJECT_EDITPAGE_REQUEST,
   PROJECT_UPDATE_REQUEST,
   PROJECT_DELETE_REQUEST,
+  PROJECT_LOADVIEW_REQUEST,
+  PROJECT_UPVIEW_REQUEST,
 } from 'redux/types/project_types';
 
 export const createprojectAction = (data) => ({
@@ -35,4 +37,14 @@ export const deleteprojectAction = (data) => ({
 export const readprojectAction = (data) => ({
   type: PROJECT_LOADING_REQUEST,
   payload: data,
+});
+
+export const loadviewAction = (userID) => ({
+  type: PROJECT_LOADVIEW_REQUEST,
+  payload: userID,
+});
+
+export const upviewAction = (userID) => ({
+  type: PROJECT_UPVIEW_REQUEST,
+  payload: userID,
 });

@@ -30,6 +30,12 @@ const UserSchema = new mongoose.Schema({
       ref: 'project',
     },
   ],
+  views: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'project',
+    },
+  ],
 });
 
 const User = mongoose.model('user', UserSchema);

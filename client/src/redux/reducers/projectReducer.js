@@ -14,6 +14,12 @@ import {
   PROJECT_UPDATE_REQUEST,
   PROJECT_UPDATE_SUCCESS,
   PROJECT_UPDATE_FAILURE,
+  PROJECT_LOADVIEW_REQUEST,
+  PROJECT_LOADVIEW_SUCCESS,
+  PROJECT_LOADVIEW_FAILURE,
+  PROJECT_UPVIEW_REQUEST,
+  PROJECT_UPVIEW_SUCCESS,
+  PROJECT_UPVIEW_FAILURE,
 } from 'redux/types/project_types';
 
 const initialState = {
@@ -29,6 +35,7 @@ const initialState = {
   fileUrl: '',
   date: '',
   errmsg: '',
+  views: 0,
 };
 
 const projectReducer = (state = initialState, action) => {
@@ -38,6 +45,8 @@ const projectReducer = (state = initialState, action) => {
     case PROJECT_DETAIL_REQUEST:
     case PROJECT_WRITE_REQUEST:
     case PROJECT_UPDATE_REQUEST:
+    case PROJECT_LOADVIEW_REQUEST:
+    case PROJECT_UPVIEW_REQUEST:
       return {
         ...state,
         isLoading: true,
@@ -61,7 +70,7 @@ const projectReducer = (state = initialState, action) => {
         creator: action.payload.creator,
         category: action.payload.category,
       };
-    
+
     case PROJECT_UPDATE_SUCCESS:
     case PROJECT_WRITE_SUCCESS:
       return {
@@ -78,6 +87,7 @@ const projectReducer = (state = initialState, action) => {
         is_project: false,
       };
 
+    case PROJECT_LOADVIEW_FAILURE:
     case PROJECT_UPDATE_FAILURE:
     case PROJECT_EDITPAGE_FAILURE:
     case PROJECT_WRITE_FAILURE:
@@ -86,13 +96,27 @@ const projectReducer = (state = initialState, action) => {
         isLoading: false,
         errmsg: action.payload.e,
       };
-    
+
     case PROJECT_LOADING_SUCCESS:
       return {
         ...state,
         projects: action.payload.projectFindResult,
         is_project: true,
-      }
+      };
+    // views
+    case PROJECT_UPVIEW_SUCCESS:
+    case PROJECT_LOADVIEW_SUCCESS:
+      return {
+        ...state,
+        views: action.payload.views,
+        isLoading: false,
+      };
+    case PROJECT_UPVIEW_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        errmsg: action.payload.fail,
+      };
     default:
       return state;
   }

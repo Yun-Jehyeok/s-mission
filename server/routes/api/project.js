@@ -71,51 +71,43 @@ router.post('/write', auth, async (req, res) => {
       creator: req.user.id,
       date: moment().format('MMMM DD, YYYY'),
     });
-    var cate = category.split(',');
-    var cateList = [];
-    for (var i in cate) {
-      cateList = [...cateList, cate[i].trim()];
-    }
+    const categoryFindResult = await Category.findOne({
+      categoryName: category,
+    });
 
-    for (var i in cateList) {
-      const categoryFindResult = await Category.findOne({
-        categoryName: cateList[i],
+    // 카테고리 만들면 실행
+    if (isNullOrUndefined(categoryFindResult)) {
+      const newCategory = await Category.create({
+        categoryName: category,
       });
-
-      // 카테고리 만들면 실행
-      if (isNullOrUndefined(categoryFindResult)) {
-        const newCategory = await Category.create({
-          categoryName: cateList[i],
-        });
-        await Project.findByIdAndUpdate(newProject._id, {
-          $push: {
-            category: newCategory._id,
-          },
-        });
-        await Category.findByIdAndUpdate(newCategory._id, {
-          $push: {
-            projects: newProject._id, //mongoDB는 _id로 저장
-          },
-        });
-        await User.findByIdAndUpdate(req.user.id, {
-          $push: {
-            projects: newProject._id,
-          },
-        });
-      } else {
-        // 카테고리가 존재하면 실행
-        await Category.findByIdAndUpdate(categoryFindResult._id, {
-          $push: { projects: newProject._id },
-        });
-        await Project.findByIdAndUpdate(newProject._id, {
-          $push: { category: categoryFindResult._id },
-        });
-        await User.findByIdAndUpdate(req.user.id, {
-          $push: {
-            projects: newProject._id,
-          },
-        });
-      }
+      await Project.findByIdAndUpdate(newProject._id, {
+        $push: {
+          category: newCategory._id,
+        },
+      });
+      await Category.findByIdAndUpdate(newCategory._id, {
+        $push: {
+          projects: newProject._id, //mongoDB는 _id로 저장
+        },
+      });
+      await User.findByIdAndUpdate(req.user.id, {
+        $push: {
+          projects: newProject._id,
+        },
+      });
+    } else {
+      // 카테고리가 존재하면 실행
+      await Category.findByIdAndUpdate(categoryFindResult._id, {
+        $push: { projects: newProject._id },
+      });
+      await Project.findByIdAndUpdate(newProject._id, {
+        $push: { category: categoryFindResult._id },
+      });
+      await User.findByIdAndUpdate(req.user.id, {
+        $push: {
+          projects: newProject._id,
+        },
+      });
     }
 
     res.redirect(`/api/project/${newProject._id}`);
@@ -159,7 +151,7 @@ router.post('/:id/update', async (req, res, next) => {
   const { title, contents, fileUrl, id, category } = req.body;
 
   try {
-    const update_project = await Post.findByIdAndUpdate(
+    const update_project = await Project.findByIdAndUpdate(
       id,
       {
         title,
@@ -201,6 +193,39 @@ router.delete('/:id/delete', auth, async (req, res) => {
     return res.json({ error: e });
   }
 });
+
+// Views Load //
+router.get('/:id/views', async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    const result = project.views;
+
+    res.json({ views: result });
+  } catch (e) {
+    res.json(e);
+  }
+});
+
+router.post('/:id/views', async (req, res) => {
+  const userID = req.body.userID;
+  try {
+    const project = await Project.findById(req.params.id);
+    const result = project.views + 1;
+
+    await Project.findByIdAndUpdate(req.params.id, {
+      views: result,
+    });
+
+    await User.findByIdAndUpdate(userID, {
+      views: project,
+    });
+
+    res.json({ success: true, views: result });
+  } catch (e) {
+    res.json({ fail: e });
+  }
+});
+
 //
 router.get('/:id/comments', async (req, res) => {
   try {
