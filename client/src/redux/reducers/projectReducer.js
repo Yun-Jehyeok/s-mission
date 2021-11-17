@@ -29,7 +29,7 @@ const initialState = {
   isAuthenticated: null,
   isLoading: false,
   projects: [],
-  projectdetail: [],
+  projectdetail: '',
   is_project: false,
   title: '',
   category: [],

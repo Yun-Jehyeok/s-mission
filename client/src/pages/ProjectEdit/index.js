@@ -1,9 +1,6 @@
-import React, { useState, useLayoutEffect, createRef } from 'react';
+import React, { useState, createRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  editprojectAction,
-  updateprojectAction,
-} from 'redux/actions/project_actions';
+import { updateprojectAction } from 'redux/actions/project_actions';
 import { Form, Input, Button, Upload } from 'antd';
 
 // Editor
@@ -16,7 +13,7 @@ import { PostWriteHeader, ProjectWriteContainer } from './style';
 function ProjectEdit(req) {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const { title, contents, category } = useSelector((state) => state.project);
+  const { projectdetail } = useSelector((state) => state.project);
 
   const normFile = (e) => {
     console.log('Upload event:', e);
@@ -27,8 +24,8 @@ function ProjectEdit(req) {
   };
 
   const [form, setForm] = useState({
-    title: `${title}`,
-    contents: `${contents}`,
+    title: `${projectdetail.title}`,
+    contents: `${projectdetail.contents}`,
     fileUrl: '',
     category: '',
   });
@@ -51,9 +48,6 @@ function ProjectEdit(req) {
   };
 
   const dispatch = useDispatch();
-  useLayoutEffect(() => {
-    dispatch(editprojectAction(req.match.params.id));
-  }, [req.match.params.id, dispatch]);
 
   const onSubmit = async (e) => {
     await e.preventDefault();
@@ -66,7 +60,6 @@ function ProjectEdit(req) {
       category,
       token,
     };
-    console.log(token);
 
     dispatch(updateprojectAction(data));
   };
