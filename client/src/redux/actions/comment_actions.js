@@ -1,8 +1,8 @@
-import { COMMENT_EDIT_REQUEST } from 'redux/types/project_types';
-import { COMMENT_DELETE_REQUEST } from 'redux/types/project_types';
 import {
+  COMMENT_EDIT_REQUEST,
   COMMENT_LOADING_REQUEST,
   COMMENT_UPLOADING_REQUEST,
+  COMMENT_DELETE_REQUEST,
 } from 'redux/types/project_types';
 
 export const loadcommentAction = (projectID) => ({
