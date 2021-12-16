@@ -3,6 +3,7 @@ const { auth } = require('../../middleware/auth');
 const { Project } = require('../../models/project');
 const { Category } = require('../../models/category');
 const { User } = require('../../models/user');
+const { Comment } = require('../../models/comment');
 
 const router = express.Router();
 const moment = require('moment');
