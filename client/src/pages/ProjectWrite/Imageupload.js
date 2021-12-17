@@ -42,7 +42,7 @@ function Imageupload(props) {
     Axios.post('/api/project/uploadimage', formData).then((res) => {
       if (res.data.success) {
         setImages([...Images, res.data.image]);
-        props.onUploadFunction([...Images, res.data.image]);
+        props.refreshFunction([...Images, res.data.image]);
       } else {
         console.log(res.data.e);
       }
@@ -63,7 +63,7 @@ function Imageupload(props) {
         {Images.map((image, index) => (
           <div key={index}>
             {/* 요기가 이상... */}
-            <img src={`http://localhost:7000/${image}`} alt="preview" />
+            <img src={`${image}`} alt="preview" />
           </div>
         ))}
       </div>

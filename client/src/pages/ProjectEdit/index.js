@@ -1,6 +1,6 @@
-import React, { useState, createRef } from 'react';
+import React, { useState, createRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateprojectAction } from 'redux/actions/project_actions';
+import { updateprojectAction, editprojectAction } from 'redux/actions/project_actions';
 import { Form, Input, Button, Upload, Select } from 'antd';
 
 // Editor
@@ -14,7 +14,7 @@ const { Option } = Select;
 function ProjectEdit(req) {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const { projectdetail, category } = useSelector((state) => state.project);
+  const { projectdetail, category, title, contents } = useSelector((state) => state.project);
 
   const normFile = (e) => {
     console.log('Upload event:', e);
@@ -24,9 +24,11 @@ function ProjectEdit(req) {
     return e && e.fileList;
   };
 
+
+
   const [form, setForm] = useState({
-    title: `${projectdetail.title}`,
-    contents: `${projectdetail.contents}`,
+    title: `${projectdetail.title == undefined ? title : projectdetail.title}`,
+    contents: `${projectdetail.contents == undefined ? contents : projectdetail.contents}`,
     fileUrl: '',
     category: `${category.categoryName}`,
   });
@@ -49,6 +51,10 @@ function ProjectEdit(req) {
   };
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(editprojectAction(req.match.params.id));
+  }, [req.match.params.id]);
 
   const onSubmit = async (e) => {
     await e.preventDefault();

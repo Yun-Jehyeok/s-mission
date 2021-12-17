@@ -104,7 +104,7 @@ function ProjectWrite() {
             </Select>
           </Form.Item>
           <Form.Item name={'previewImg'} label="미리보기 이미지">
-            <Imageupload onUploadFunction={onImageChange} />
+            <Imageupload refreshFunction={onImageChange} />
             <span>* 최대 3장까지 업로드 가능</span>
           </Form.Item>
           <Editor
