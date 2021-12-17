@@ -25,7 +25,7 @@ import {
   loadviewAction,
   upviewAction,
 } from 'redux/actions/project_actions';
-import Comments from 'components/Comment/Comments';
+import Comments from 'components/comment/Comments';
 import { Link } from 'react-router-dom';
 import { loadcommentAction } from 'redux/actions/comment_actions';
 import { deletecommentAction } from 'redux/actions/comment_actions';

@@ -1,7 +1,7 @@
 import React, { useState, createRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateprojectAction } from 'redux/actions/project_actions';
-import { Form, Input, Button, Upload } from 'antd';
+import { Form, Input, Button, Upload, Select } from 'antd';
 
 // Editor
 import '@toast-ui/editor/dist/toastui-editor.css';
@@ -10,10 +10,11 @@ import { Editor } from '@toast-ui/react-editor';
 import { UploadOutlined } from '@ant-design/icons';
 import { PostWriteHeader, ProjectWriteContainer } from './style';
 
+const { Option } = Select;
 function ProjectEdit(req) {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const { projectdetail } = useSelector((state) => state.project);
+  const { projectdetail, category } = useSelector((state) => state.project);
 
   const normFile = (e) => {
     console.log('Upload event:', e);
@@ -27,7 +28,7 @@ function ProjectEdit(req) {
     title: `${projectdetail.title}`,
     contents: `${projectdetail.contents}`,
     fileUrl: '',
-    category: '',
+    category: `${category.categoryName}`,
   });
 
   const onValueChange = (e) => {
@@ -83,12 +84,20 @@ function ProjectEdit(req) {
             />
           </Form.Item>
           <Form.Item name={'category'} rules={[{ required: true }]}>
-            <Input
-              name="category"
-              id="category"
-              onChange={onValueChange}
-              defaultValue={form.category}
-            />
+            <Select
+                name="category"
+                style={{ width: 200 }}
+                onChange={onValueChange}
+                placeholder="카테고리를 선택하세요"
+                defaultValue={form.category}
+              >
+                <Option value="web">Web</Option>
+                <Option value="android">Android</Option>
+                <Option value="ios">IOS</Option>
+                <Option value="data">빅데이터</Option>
+                <Option value="ML">인공지능</Option>
+                <Option value="design">Design</Option>
+            </Select>
           </Form.Item>
           <Form.Item
             name={'fileUrl'}
