@@ -138,6 +138,7 @@ function ProjectDetail(req) {
                       marginBottom: '16px',
                     }}
                   >
+                    <Link to={`/user/mypage/${creator._id}`} style={{ marginRight: '10px' }}>{creator.name}</Link>
                     조회수 : {views}
                   </div>
                   <div dangerouslySetInnerHTML={{ __html: contents }}></div>
@@ -173,7 +174,11 @@ function ProjectDetail(req) {
                                 justifyContent: 'space-between',
                               }}
                             >
-                              <div>{comment.creatorName}</div>
+                              <div>
+                                <Link to={`/user/mypage/${comment.creator}`}>
+                                  {comment.creatorName}
+                                </Link>
+                              </div>
                               <div style={{ color: 'gray' }}>
                                 {comment.date}
                               </div>
