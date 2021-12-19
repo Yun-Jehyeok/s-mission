@@ -8,43 +8,19 @@ import Dropzone from 'react-dropzone';
 function Imageupload(props) {
   const [Images, setImages] = useState([]);
 
-  // const onChange = (e) => {
-  //   let formData = new FormData();
-  //   console.log(e.file);
-  //   formData.append('file', e.file.originFileObj);
-
-  //   if (e.file.status === 'success') {
-  //     Axios.post('api/project/uploadimage', formData, {
-  //       headers: {
-  //         withCredentials: true,
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     }).then((res) => {
-  //       console.log(res.data);
-  //       if (res.data.success) {
-  //         setImages([...Images, res.data.image]);
-  //         props.onUploadFunction([...Images]);
-  //       } else {
-  //         console.log(res.data.e);
-  //       }
-  //     });
-  //   } else if (e.file.status === 'error') {
-  //     console.log(e.file.response);
-  //   }
-  // };
-
   const onDrop = (files) => {
     let formData = new FormData();
-    console.log(files);
-
+    const config = {
+      header: {'content-type': 'multipart/form-data'}
+    }
     formData.append('file', files[0]);
 
-    Axios.post('/api/project/uploadimage', formData).then((res) => {
+    Axios.post('/api/project/uploadimage', formData, config).then((res) => {
       if (res.data.success) {
         setImages([...Images, res.data.image]);
         props.refreshFunction([...Images, res.data.image]);
       } else {
-        console.log(res.data.e);
+        alert("이미지 업로드 실패");
       }
     });
   };
@@ -63,7 +39,7 @@ function Imageupload(props) {
         {Images.map((image, index) => (
           <div key={index}>
             {/* 요기가 이상... */}
-            <img src={`${image}`} alt="preview" />
+            <img src={`http://localhost:7000/${image}`} alt={`${image}`} />
           </div>
         ))}
       </div>

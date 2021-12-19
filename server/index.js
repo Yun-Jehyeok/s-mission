@@ -31,8 +31,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(express.static('public')); 
-app.use('/uploads', express.static('uploads'));
+app.use('/upload', express.static('upload'));
 
 const connect = mongoose
   .connect(MONGO_URI, {
