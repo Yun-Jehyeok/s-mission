@@ -55,7 +55,7 @@ function ProjectWrite() {
   const editorRef = createRef();
 
   const onSubmit = async (e) => {
-    const { title, previewImg, contents, category } = form;
+    const { title, contents, category, previewImg } = form;
     const token = localStorage.getItem('token');
     let data = {
       title,

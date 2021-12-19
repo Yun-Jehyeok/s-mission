@@ -68,7 +68,7 @@ router.post('/write', auth, async (req, res) => {
     const newProject = await Project.create({
       title,
       contents,
-      previewImg,
+      previewImg : previewImg,
       creator: req.user.id,
       date: moment().format('MMMM DD, YYYY'),
     });
@@ -149,16 +149,20 @@ router.get('/:id/edit', async (req, res, next) => {
 
 // 수정 action
 router.post('/:id/update', async (req, res, next) => {
-  const { title, contents, fileUrl, id, category } = req.body;
+  const { title, contents, Image, category } = req.body;
 
   try {
+    const categoryFindResult = await Category.findOne({
+      categoryName: category,
+    });
+    console.log("아이디", req.params.id);
     const update_project = await Project.findByIdAndUpdate(
-      id,
+      req.params.id,
       {
         title,
         contents,
-        fileUrl,
-        category,
+        previewImg: Image,
+        category: categoryFindResult._id,
         date: moment().format('MMMM DD, YYYY'),
       },
       { new: true },
