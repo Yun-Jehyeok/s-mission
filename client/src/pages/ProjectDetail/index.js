@@ -33,9 +33,8 @@ import { deletecommentAction } from 'redux/actions/comment_actions';
 const images = [];
 
 function ProjectDetail(req) {
-  const { projectdetail, creator, is_project, category } = useSelector(
-    (state) => state.project,
-  );
+  const { projectdetail, creator, is_project, category, preimages } =
+    useSelector((state) => state.project);
   const { userId, userName } = useSelector((state) => state.auth);
   const { comments } = useSelector((state) => state.comment);
 
@@ -119,6 +118,7 @@ function ProjectDetail(req) {
   return (
     <DetailContainer>
       <Wrap>
+        {console.log(preimages)}
         {is_project ? (
           <>
             <LeftSide>
@@ -138,6 +138,12 @@ function ProjectDetail(req) {
                       marginBottom: '16px',
                     }}
                   >
+                    <Link
+                      to={`/user/mypage/${creator._id}`}
+                      style={{ marginRight: '10px' }}
+                    >
+                      {creator.name}
+                    </Link>
                     조회수 : {views}
                   </div>
                   <div dangerouslySetInnerHTML={{ __html: contents }}></div>
@@ -173,7 +179,11 @@ function ProjectDetail(req) {
                                 justifyContent: 'space-between',
                               }}
                             >
-                              <div>{comment.creatorName}</div>
+                              <div>
+                                <Link to={`/user/mypage/${comment.creator}`}>
+                                  {comment.creatorName}
+                                </Link>
+                              </div>
                               <div style={{ color: 'gray' }}>
                                 {comment.date}
                               </div>
