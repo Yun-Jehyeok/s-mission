@@ -36,6 +36,7 @@ const initialState = {
   contents: '',
   creator: '',
   fileUrl: '',
+  preimages: [],
   date: '',
   errmsg: '',
   categoryFindResult: '',
@@ -71,6 +72,7 @@ const projectReducer = (state = initialState, action) => {
         isLoading: false,
         is_project: true, // 프로젝트가 존재
         projectdetail: action.payload,
+        preimages: action.payload.previewImg,
         creator: action.payload.creator,
         category: action.payload.category,
       };

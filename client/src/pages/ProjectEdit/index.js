@@ -2,6 +2,7 @@ import React, { useState, createRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateprojectAction, editprojectAction } from 'redux/actions/project_actions';
 import { Form, Input, Button, Upload, Select } from 'antd';
+import Imageupload from './Imageupload';
 
 // Editor
 import '@toast-ui/editor/dist/toastui-editor.css';
@@ -14,7 +15,7 @@ const { Option } = Select;
 function ProjectEdit(req) {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const { projectdetail, category, title, contents } = useSelector((state) => state.project);
+  const { projectdetail, category, title, contents, preimages } = useSelector((state) => state.project);
 
   const normFile = (e) => {
     console.log('Upload event:', e);
@@ -24,14 +25,12 @@ function ProjectEdit(req) {
     return e && e.fileList;
   };
 
-
-
   const [form, setForm] = useState({
     title: `${projectdetail.title == undefined ? title : projectdetail.title}`,
     contents: `${projectdetail.contents == undefined ? contents : projectdetail.contents}`,
-    fileUrl: '',
     category: `${category.categoryName}`,
   });
+  const [Image, setImage] = useState([]);
 
   const onValueChange = (e) => {
     setForm({
@@ -50,6 +49,10 @@ function ProjectEdit(req) {
     });
   };
 
+  const onImageChange = (image) => {
+    setImage(image);
+  }
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -58,14 +61,15 @@ function ProjectEdit(req) {
 
   const onSubmit = async (e) => {
     await e.preventDefault();
-    const { title, previewImg, contents, category } = form;
+    const { title, contents, category } = form;
     const token = localStorage.getItem('token');
     let data = {
       title,
       contents,
-      previewImg,
+      Image,
       category,
       token,
+      id: req.match.params.id
     };
 
     dispatch(updateprojectAction(data));
@@ -106,19 +110,13 @@ function ProjectEdit(req) {
             </Select>
           </Form.Item>
           <Form.Item
-            name={'fileUrl'}
+            name={'previewImg'}
             label="project file"
             valuePropName="fileList"
             getValueFromEvent={normFile}
           >
-            <Upload
-              name="fileUrl"
-              action="/upload.do"
-              listType="picture"
-              fileList={[form.fileUrl]}
-            >
-              <Button icon={<UploadOutlined />}>Click to upload</Button>
-            </Upload>
+            <Imageupload refreshFunction={onImageChange} />
+            <span>* 최대 3장까지 업로드 가능</span>
           </Form.Item>
           <Editor
             previewStyle="vertical"

@@ -33,7 +33,7 @@ import { deletecommentAction } from 'redux/actions/comment_actions';
 const images = [];
 
 function ProjectDetail(req) {
-  const { projectdetail, creator, is_project, category } = useSelector(
+  const { projectdetail, creator, is_project, category, preimages } = useSelector(
     (state) => state.project,
   );
   const { userId, userName } = useSelector((state) => state.auth);
@@ -119,6 +119,7 @@ function ProjectDetail(req) {
   return (
     <DetailContainer>
       <Wrap>
+        {console.log(preimages)}
         {is_project ? (
           <>
             <LeftSide>
