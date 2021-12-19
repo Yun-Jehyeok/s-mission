@@ -52,6 +52,8 @@ router.post('/uploadimage', (req, res) => {
   upload(req, res, (err) => {
     if (err) return res.json({ success: false, err });
 
+    console.log(res.req.file);
+
     return res.json({
       success: true,
       image: res.req.file.path,
