@@ -47,6 +47,18 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Top Rate Projects
+router.get('/topRate', async (req, res) => {
+  try {
+    const projectResult = await Project.find().sort({ views: -1 });
+
+    res.json(projectResult);
+  } catch (e) {
+    console.log(e);
+    res.json({ msg: 'No Project' });
+  }
+});
+
 // Upload Image //
 router.post('/uploadimage', (req, res) => {
   upload(req, res, (err) => {
@@ -70,7 +82,7 @@ router.post('/write', auth, async (req, res) => {
     const newProject = await Project.create({
       title,
       contents,
-      previewImg : previewImg,
+      previewImg: previewImg,
       creator: req.user.id,
       date: moment().format('MMMM DD, YYYY'),
     });
@@ -157,7 +169,7 @@ router.post('/:id/update', async (req, res, next) => {
     const categoryFindResult = await Category.findOne({
       categoryName: category,
     });
-    console.log("아이디", req.params.id);
+    console.log('아이디', req.params.id);
     const update_project = await Project.findByIdAndUpdate(
       req.params.id,
       {

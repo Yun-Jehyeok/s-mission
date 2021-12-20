@@ -118,7 +118,6 @@ function ProjectDetail(req) {
   return (
     <DetailContainer>
       <Wrap>
-        {console.log(preimages)}
         {is_project ? (
           <>
             <LeftSide>
@@ -140,7 +139,7 @@ function ProjectDetail(req) {
                   >
                     <Link
                       to={`/user/mypage/${creator._id}`}
-                      style={{ marginRight: '10px' }}
+                      style={{ marginRight: '10px', color: 'black' }}
                     >
                       {creator.name}
                     </Link>
@@ -180,7 +179,10 @@ function ProjectDetail(req) {
                               }}
                             >
                               <div>
-                                <Link to={`/user/mypage/${comment.creator}`}>
+                                <Link
+                                  to={`/user/mypage/${comment.creator}`}
+                                  style={{ color: 'black' }}
+                                >
                                   {comment.creatorName}
                                 </Link>
                               </div>
