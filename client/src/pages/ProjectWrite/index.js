@@ -10,6 +10,7 @@ import { Editor } from '@toast-ui/react-editor';
 import { PostWriteHeader, ProjectWriteContainer } from './style';
 
 import Imageupload from './Imageupload';
+import Fileupload from './Fileupload';
 const { Option } = Select;
 
 function ProjectWrite() {
@@ -17,6 +18,7 @@ function ProjectWrite() {
     title: '',
     contents: '',
     previewImg: [],
+    file : '',
     category: '',
   });
 
@@ -50,12 +52,19 @@ function ProjectWrite() {
     });
   };
 
+  const onFileChange = (file) => {
+    setForm({
+      ...form,
+      file: file,
+    })
+  }
+
   const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const editorRef = createRef();
 
   const onSubmit = async (e) => {
-    const { title, contents, category, previewImg } = form;
+    const { title, contents, category, previewImg, file } = form;
     const token = localStorage.getItem('token');
     let data = {
       title,
@@ -63,6 +72,7 @@ function ProjectWrite() {
       previewImg,
       category,
       token,
+      file
     };
 
     dispatch(createprojectAction(data));
@@ -107,7 +117,9 @@ function ProjectWrite() {
             <Imageupload refreshFunction={onImageChange} />
             <span>* 최대 3장까지 업로드 가능</span>
           </Form.Item>
-          
+          <Form.Item name={'file'} label="첨부파일">
+            <Fileupload refreshFunction={onFileChange} />
+          </Form.Item>
           <Editor
             previewStyle="vertical"
             height="400px"

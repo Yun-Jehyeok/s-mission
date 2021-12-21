@@ -5,6 +5,8 @@ const { Category } = require('../../models/category');
 const { User } = require('../../models/user');
 const { Comment } = require('../../models/comment');
 
+var fs = require('fs');
+
 const router = express.Router();
 const moment = require('moment');
 const dotenv = require('dotenv');
@@ -32,6 +34,7 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage }).single('file');
+var uploadfile = multer({ dest: 'uploadedFiles/' }).single('file');
 
 // Project All //
 router.get('/', async (req, res) => {
@@ -64,8 +67,6 @@ router.post('/uploadimage', (req, res) => {
   upload(req, res, (err) => {
     if (err) return res.json({ success: false, err });
 
-    console.log(res.req.file);
-
     return res.json({
       success: true,
       image: res.req.file.path,
@@ -74,10 +75,23 @@ router.post('/uploadimage', (req, res) => {
   });
 });
 
+// Upload File //
+router.post('/uploadfile', async(req, res) =>{
+  uploadfile(req, res, (err) => {
+    if (err) return res.json({ success: false, err });
+
+    return res.json({
+      success: true,
+      filedest: res.req.file.path,
+      filename: res.req.file.filename,
+    });
+  });
+});
+
 // Project Create //
 router.post('/write', auth, async (req, res) => {
   try {
-    const { title, contents, category, previewImg } = req.body;
+    const { title, contents, category, previewImg, file } = req.body;
     // 새로운 프로젝트 생성
     const newProject = await Project.create({
       title,
@@ -85,6 +99,7 @@ router.post('/write', auth, async (req, res) => {
       previewImg: previewImg,
       creator: req.user.id,
       date: moment().format('MMMM DD, YYYY'),
+      files: file
     });
     const categoryFindResult = await Category.findOne({
       categoryName: category,
@@ -129,6 +144,44 @@ router.post('/write', auth, async (req, res) => {
   } catch (e) {
     console.log(e);
   }
+});
+
+
+// Get file //
+router.get('/:originalFileName', function(req, res){
+  Project.findOne({file:req.params.originalFileName}, async function(err, file){
+    if(err) return res.json(err);
+
+    var stream;
+    var statusCode = 200;
+    try{
+      await function(){
+        var filePath = path.join(__dirname,'..','uploadedFiles',this.serverFileName);
+        var fileExists = fs.existsSync(filePath);
+        if(fileExists){
+          stream = fs.createReadStream(filePath);
+        }
+        else {
+          this.processDelete();
+        }
+      }
+    }
+    catch(e){
+      statusCode = e;
+    }
+
+    if(stream){
+      res.writeHead(statusCode, {
+        'Content-Type': 'application/octet-stream',
+        'Content-Disposition': 'attachment; filename=' + file.originalFileName
+      });
+      stream.pipe(res);
+    }
+    else {
+      res.statusCode = statusCode;
+      res.end();
+    }
+  });
 });
 
 // Project Detail //
