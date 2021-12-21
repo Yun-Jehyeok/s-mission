@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
 import ImageGallery from 'react-image-gallery';
 import ChatImg from './chat.png';
 
@@ -30,9 +30,9 @@ import { Link } from 'react-router-dom';
 import { loadcommentAction } from 'redux/actions/comment_actions';
 import { deletecommentAction } from 'redux/actions/comment_actions';
 
-const images = [];
-
 function ProjectDetail(req) {
+  const images = [];
+  
   const { projectdetail, creator, is_project, category, preimages } =
     useSelector((state) => state.project);
   const { userId, userName } = useSelector((state) => state.auth);
@@ -48,17 +48,17 @@ function ProjectDetail(req) {
   };
 
   useLayoutEffect(() => {
-    dispatch(detailprojectAction(projectID));
     dispatch(loadviewAction(data));
     dispatch(upviewAction(data));
-  }, [dispatch, projectID]);
-
-  useEffect(() => {
     dispatch(loadcommentAction(projectID));
   }, [dispatch, projectID]);
 
-  const imageList = previewImg
-    ? previewImg.map((item) => {
+  useEffect(() => {
+    dispatch(detailprojectAction(projectID));
+  }, [dispatch, projectID]);
+
+  const listimage =  preimages
+    ? preimages.map((item) => {
         images.push({
           original: `http://localhost:7000/${item}`,
           thumbnail: `http://localhost:7000/${item}`,
@@ -219,8 +219,8 @@ function ProjectDetail(req) {
               </div>
             </LeftSide>
             <RightSide>
-              {previewImg ? (
-                previewImg.length > 0 ? (
+              {preimages ? (
+                preimages.length > 0 ? (
                   <ImageGallery items={images} autoPlay />
                 ) : (
                   ''

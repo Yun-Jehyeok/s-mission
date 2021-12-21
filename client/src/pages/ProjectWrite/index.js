@@ -91,7 +91,7 @@ function ProjectWrite() {
           <Form.Item name={'category'} rules={[{ required: true }]}>
             <Select
               name="category"
-              style={{ width: 200 }}
+              style={{ width: '100%' }}
               onChange={onSelectChange}
               placeholder="카테고리를 선택하세요"
             >
@@ -107,6 +107,7 @@ function ProjectWrite() {
             <Imageupload refreshFunction={onImageChange} />
             <span>* 최대 3장까지 업로드 가능</span>
           </Form.Item>
+          
           <Editor
             previewStyle="vertical"
             height="400px"
