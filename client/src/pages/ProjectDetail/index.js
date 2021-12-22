@@ -17,6 +17,7 @@ import {
   ChatImgContainer,
 } from './style';
 import { Button } from 'antd';
+import { FolderOpenOutlined } from '@ant-design/icons';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -229,10 +230,13 @@ function ProjectDetail(req) {
                 ''
               )}
               <FileContainer>
-                <div>파일이 들어갈 공간입니다.</div>
-                <div>파일이 들어갈 공간입니다.</div>
-                <div>파일이 들어갈 공간입니다.</div>
-                <div>파일이 들어갈 공간입니다.</div>
+                {projectdetail.files ?
+                  projectdetail.originalfileName.map((file, idx) => 
+                    <div key={idx}>
+                      <FolderOpenOutlined />
+                      &nbsp;{projectdetail.originalfileName[idx]}
+                    </div>
+                  ): ""}
               </FileContainer>
               {userId === creator._id ? EditDelete_Button : <></>}
             </RightSide>

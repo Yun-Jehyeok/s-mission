@@ -83,7 +83,7 @@ router.post('/uploadfile', async(req, res) =>{
     return res.json({
       success: true,
       filedest: res.req.file.path,
-      filename: res.req.file.filename,
+      filename: res.req.file.originalname,
     });
   });
 });
@@ -91,7 +91,7 @@ router.post('/uploadfile', async(req, res) =>{
 // Project Create //
 router.post('/write', auth, async (req, res) => {
   try {
-    const { title, contents, category, previewImg, file } = req.body;
+    const { title, contents, category, previewImg, file, originalfileName } = req.body;
     // 새로운 프로젝트 생성
     const newProject = await Project.create({
       title,
@@ -99,7 +99,8 @@ router.post('/write', auth, async (req, res) => {
       previewImg: previewImg,
       creator: req.user.id,
       date: moment().format('MMMM DD, YYYY'),
-      files: file
+      files: file,
+      originalfileName,
     });
     const categoryFindResult = await Category.findOne({
       categoryName: category,
@@ -148,13 +149,12 @@ router.post('/write', auth, async (req, res) => {
 
 
 // Get file //
-router.get('/:originalFileName', function(req, res){
-  Project.findOne({file:req.params.originalFileName}, async function(err, file){
-    if(err) return res.json(err);
+router.get('/uploadedFiles/:originalFileName', async function(req, res){
+  if(err) return res.json({ success: false, err });
 
-    var stream;
-    var statusCode = 200;
-    try{
+  var stream;
+  var statusCode = 200;
+  try{
       await function(){
         var filePath = path.join(__dirname,'..','uploadedFiles',this.serverFileName);
         var fileExists = fs.existsSync(filePath);
@@ -165,23 +165,20 @@ router.get('/:originalFileName', function(req, res){
           this.processDelete();
         }
       }
-    }
-    catch(e){
-      statusCode = e;
-    }
+  } catch(e){
+    statusCode = e;
+  }
 
-    if(stream){
-      res.writeHead(statusCode, {
-        'Content-Type': 'application/octet-stream',
-        'Content-Disposition': 'attachment; filename=' + file.originalFileName
-      });
-      stream.pipe(res);
-    }
-    else {
-      res.statusCode = statusCode;
-      res.end();
-    }
-  });
+  if(stream){
+    res.writeHead(statusCode, {
+      'Content-Type': 'application/octet-stream',
+      'Content-Disposition': 'attachment; filename=' + file.originalFileName
+    });
+    stream.pipe(res);
+  } else {
+    res.statusCode = statusCode;
+    res.end();
+  }
 });
 
 // Project Detail //

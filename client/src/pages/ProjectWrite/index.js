@@ -18,7 +18,8 @@ function ProjectWrite() {
     title: '',
     contents: '',
     previewImg: [],
-    file : '',
+    file : [],
+    originalfileName : [],
     category: '',
   });
 
@@ -52,11 +53,12 @@ function ProjectWrite() {
     });
   };
 
-  const onFileChange = (file) => {
+  const onFileChange = (file, filename) => {
     setForm({
       ...form,
       file: file,
-    })
+      originalfileName: filename
+    });
   }
 
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -64,7 +66,7 @@ function ProjectWrite() {
   const editorRef = createRef();
 
   const onSubmit = async (e) => {
-    const { title, contents, category, previewImg, file } = form;
+    const { title, contents, category, previewImg, file, originalfileName} = form;
     const token = localStorage.getItem('token');
     let data = {
       title,
@@ -72,7 +74,8 @@ function ProjectWrite() {
       previewImg,
       category,
       token,
-      file
+      file,
+      originalfileName
     };
 
     dispatch(createprojectAction(data));

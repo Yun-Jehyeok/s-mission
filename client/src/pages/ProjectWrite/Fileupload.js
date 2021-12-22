@@ -7,6 +7,7 @@ import Dropzone from 'react-dropzone';
 
 function Fileupload(props) {
   const [Files, setFiles] = useState([]);
+  const [fileoriginalname, setfileoriginalname] = useState([]);
 
   const onDrop = (files) => {
     let formData = new FormData();
@@ -18,7 +19,9 @@ function Fileupload(props) {
     Axios.post('/api/project/uploadfile', formData, config).then((res) => {
       if (res.data.success) {
         setFiles([...Files, res.data.filedest]);
-        props.refreshFunction([...Files, res.data.filedest]);
+        setfileoriginalname([...fileoriginalname, res.data.filename])
+        props.refreshFunction([...Files, res.data.filedest], [...fileoriginalname, res.data.filename]);
+        console.log(res.data);
       } else {
         alert('파일 업로드 실패');
       }
