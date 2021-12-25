@@ -1,4 +1,7 @@
 import { TOP_RATED_PROJECTS_SUCCESS } from 'redux/types/project_types';
+import { SEARCH_REQUEST } from 'redux/types/project_types';
+import { SEARCH_FAILURE } from 'redux/types/project_types';
+import { SEARCH_SUCCESS } from 'redux/types/project_types';
 import { TOP_RATED_PROJECTS_FAILURE } from 'redux/types/project_types';
 import { TOP_RATED_PROJECTS_REQUEST } from 'redux/types/project_types';
 import {
@@ -45,6 +48,8 @@ const initialState = {
   errmsg: '',
   categoryFindResult: '',
   views: 0,
+  searchResult: '',
+  searchBy: '',
 };
 
 const projectReducer = (state = initialState, action) => {
@@ -111,10 +116,18 @@ const projectReducer = (state = initialState, action) => {
         is_project: false,
       };
 
+    case PROJECT_WRITE_FAILURE:
+      alert(action.payload);
+
+      return {
+        ...state,
+        isLoading: false,
+        errmsg: action.payload,
+      };
+
     case PROJECT_LOADVIEW_FAILURE:
     case PROJECT_UPDATE_FAILURE:
     case PROJECT_EDITPAGE_FAILURE:
-    case PROJECT_WRITE_FAILURE:
       return {
         ...state,
         isLoading: false,
@@ -162,6 +175,27 @@ const projectReducer = (state = initialState, action) => {
         isLoading: false,
         errmsg: action.payload.fail,
       };
+
+    // Search
+    case SEARCH_REQUEST:
+      return {
+        ...state,
+        searchBy: action.payload,
+        isLoading: true,
+      };
+    case SEARCH_SUCCESS:
+      return {
+        ...state,
+        searchResult: action.payload,
+        isLoading: false,
+      };
+    case SEARCH_FAILURE:
+      return {
+        ...state,
+        searchResult: action.payload,
+        isLoading: false,
+      };
+
     default:
       return state;
   }

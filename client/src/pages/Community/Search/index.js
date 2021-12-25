@@ -1,24 +1,25 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Button, Col, Row } from 'antd';
+import { Col, Row } from 'antd';
+import { CardContent, Header, OfficeContainer } from './style';
+import { Link, useParams } from 'react-router-dom';
+import { searchAction } from 'redux/actions/project_actions';
 
-// style
-import { OfficeContainer, CardContent } from './style';
-
-import { readprojectAction } from 'redux/actions/project_actions';
-import { Link } from 'react-router-dom';
-
-function ProjectContainer() {
-  const { projects } = useSelector((state) => state.project);
+function Search() {
+  let { searchTerm } = useParams();
 
   const dispatch = useDispatch();
-  useLayoutEffect(() => {
-    dispatch(readprojectAction(0));
-  }, [dispatch]);
+  const { searchResult, searchBy } = useSelector((state) => state.project);
 
-  const projectCard = projects
-    ? projects.slice(0, 9).map((project, index) => {
+  useEffect(() => {
+    if (searchTerm) {
+      dispatch(searchAction(searchTerm));
+    }
+  }, [dispatch, searchTerm]);
+
+  const searchCard = Array.isArray(searchResult)
+    ? searchResult.map((project, index) => {
         var content = project.contents.replace(
           /<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/gi,
           '',
@@ -42,12 +43,10 @@ function ProjectContainer() {
 
   return (
     <OfficeContainer>
-      <Row>{projectCard}</Row>
-      <a href="/project">
-        <Button type="primary">더보기</Button>
-      </a>
+      <Header>검색어 : {searchBy}</Header>
+      <Row>{searchCard}</Row>
     </OfficeContainer>
   );
 }
 
-export default ProjectContainer;
+export default Search;

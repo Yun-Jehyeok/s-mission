@@ -1,5 +1,9 @@
 import axios from 'axios';
+import { push } from 'connected-react-router';
 import { all, call, put, takeEvery, fork } from 'redux-saga/effects';
+import { SEARCH_SUCCESS } from 'redux/types/project_types';
+import { SEARCH_REQUEST } from 'redux/types/project_types';
+import { SEARCH_FAILURE } from 'redux/types/project_types';
 import { TOP_RATED_PROJECTS_REQUEST } from 'redux/types/project_types';
 import { TOP_RATED_PROJECTS_FAILURE } from 'redux/types/project_types';
 import { TOP_RATED_PROJECTS_SUCCESS } from 'redux/types/project_types';
@@ -63,7 +67,7 @@ function* createProject(action) {
   } catch (e) {
     yield put({
       type: PROJECT_WRITE_FAILURE,
-      payload: e,
+      payload: e.response.data.msg,
     });
   }
 }
@@ -325,6 +329,32 @@ function* watchprojectupview() {
   yield takeEvery(PROJECT_UPVIEW_REQUEST, upviewproject);
 }
 
+// Search
+const SearchResultAPI = (payload) => {
+  return axios.get(`/api/search/${encodeURIComponent(payload)}`);
+};
+
+function* SearchResult(action) {
+  try {
+    const result = yield call(SearchResultAPI, action.payload);
+
+    console.log(result.data);
+    yield put({
+      type: SEARCH_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: SEARCH_FAILURE,
+      payload: e,
+    });
+  }
+}
+
+function* watchSearchResult() {
+  yield takeEvery(SEARCH_REQUEST, SearchResult);
+}
+
 export default function* projectSaga() {
   yield all([
     // project CRUD
@@ -336,6 +366,7 @@ export default function* projectSaga() {
     fork(watchupdateproject),
     fork(watchdeleteProject),
     fork(watchCategoryFind),
+    fork(watchSearchResult),
     // view
     fork(watchprojectloadview),
     fork(watchprojectupview),

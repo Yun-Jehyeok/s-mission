@@ -52,15 +52,16 @@ app.use('/api/user', require('./routes/api/user'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/project', require('./routes/api/project'));
 app.use('/api/chat', require('./routes/api/chat'));
+app.use('/api/search', require('./routes/api/search'));
 
 app.use(
   '/api-docs',
   swaggerUi.serve,
   swaggerUi.setup(specs, { explorer: true }),
-  function(req, res, next) {
+  function (req, res, next) {
     res.locals.util = util;
     next();
-  }
+  },
 );
 
 ///////////////// socket.io /////////////////

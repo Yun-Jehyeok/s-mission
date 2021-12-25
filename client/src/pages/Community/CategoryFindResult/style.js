@@ -8,6 +8,7 @@ export const CategoryContainer = styled.div`
   left: 50%;
   transform: translateX(-50%);
   margin-top: 5%;
+  margin-bottom: 64px;
 `;
 
 export const CardContent = styled(Card)`

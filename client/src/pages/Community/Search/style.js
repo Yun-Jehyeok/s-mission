@@ -8,6 +8,7 @@ export const OfficeContainer = styled.div`
   left: 50%;
   transform: translateX(-50%);
   margin-top: 5%;
+  margin-bottom: 64px;
 `;
 
 export const CardContent = styled(Card)`
@@ -15,4 +16,10 @@ export const CardContent = styled(Card)`
   height: 213px;
   margin-bottom: 32px;
   border-bottom: 2px solid #1990ff;
+`;
+
+export const Header = styled.h1`
+  border-bottom: 1px solid #dbdbdb;
+  padding-bottom: 8px;
+  margin-bottom: 32px;
 `;

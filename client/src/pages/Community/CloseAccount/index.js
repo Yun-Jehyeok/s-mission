@@ -3,7 +3,7 @@ import { CloseContainer, Wrap } from './style';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeAccountAction } from 'redux/actions/user_actions';
-import { SignUpSuccess } from 'pages/SignUp/style';
+import { SignUpSuccess } from 'pages/Community/SignUp/style';
 
 function CloseAccount() {
   const { user, userId, closeAccount } = useSelector((state) => state.auth);

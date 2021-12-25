@@ -6,6 +6,7 @@ export const ProjectWriteContainer = styled.div`
   margin-top: 64px;
   background-color: white;
   padding: 64px;
+  margin-bottom: 64px;
 `;
 
 export const PostWriteHeader = styled.h1`

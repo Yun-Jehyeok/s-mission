@@ -5,6 +5,7 @@ export const DetailContainer = styled.div`
   min-height: 500px;
   display: flex;
   justify-content: center;
+  margin-bottom: 64px;
 `;
 
 export const Wrap = styled.div`
