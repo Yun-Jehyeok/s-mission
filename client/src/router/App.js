@@ -22,6 +22,9 @@ import CategoryFindResult from 'pages/Community/CategoryFindResult';
 import Search from 'pages/Community/Search';
 import Overview from 'pages/Manage/Overview';
 import Projects from 'pages/Manage/Projects';
+import TaskList from 'pages/Manage/TaskList';
+import Timeline from 'pages/Manage/Timeline';
+import Calendar from 'pages/Manage/Calendar';
 
 function App() {
   let Navigation =
@@ -70,6 +73,9 @@ function App() {
         {/* Manage */}
         <Route path="/manage/projects" exact component={Projects} />
         <Route path="/manage/overview" exact component={Overview} />
+        <Route path="/manage/tasklist" exact component={TaskList} />
+        <Route path="/manage/timeline" exact component={Timeline} />
+        <Route path="/manage/calendar" exact component={Calendar} />
       </Switch>
       {FooterContainer}
     </Layout>
