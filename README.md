@@ -7,4 +7,4 @@ S-Mission is a project that provides side project community & management service
 
 ## Dependencies
 
-- Mac, Windows, iOS, Android 모두 사용 가능
+- 대부분의  사용 가능
