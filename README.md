@@ -7,4 +7,4 @@ S-Mission is a project that provides side project community & management service
 
 ## Start
 
-- Mongo DB 및 개인 정보가 포함되어 실행이 불가능합니다.
+개인 정보 포함으로 실행이 불가능합니다.
